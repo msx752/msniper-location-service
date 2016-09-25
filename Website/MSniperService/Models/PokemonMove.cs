@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace RMSniper1.Models
+namespace MSniperService.Models
 {
 
     public enum PokemonMove : short

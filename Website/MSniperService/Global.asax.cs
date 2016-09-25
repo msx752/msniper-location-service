@@ -9,9 +9,9 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;
-using RMSniper1.Enums;
+using MSniperService.Enums;
 
-namespace RMSniper1
+namespace MSniperService
 {
     public class MvcApplication : System.Web.HttpApplication
     {

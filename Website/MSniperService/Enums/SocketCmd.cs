@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RMSniper1.Enums
+namespace MSniperService.Enums
 {
     public enum SocketCmd
     {

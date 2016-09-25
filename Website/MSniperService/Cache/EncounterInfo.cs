@@ -7,9 +7,9 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
-using RMSniper1.Statics;
+using MSniperService.Statics;
 
-namespace RMSniper1.Models
+namespace MSniperService.Models
 {
     public class EncounterInfo
     {

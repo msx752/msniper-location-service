@@ -1,8 +1,8 @@
 ﻿using System;
 using Owin;
 using Microsoft.Owin;
-[assembly: OwinStartup(typeof(RMSniper1.Startup))]
-namespace RMSniper1
+[assembly: OwinStartup(typeof(MSniperService.Startup))]
+namespace MSniperService
 {
     public class Startup
     {

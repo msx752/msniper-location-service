@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using RMSniper1.Models;
+using MSniperService.Models;
 
-namespace RMSniper1.Statics
+namespace MSniperService.Statics
 {
     public static class Extensions
     {

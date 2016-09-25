@@ -5,9 +5,9 @@ using System.Configuration;
 using System.Reflection;
 using System.Runtime.Caching;
 using Newtonsoft.Json;
-using RMSniper1.Cache;
-using RMSniper1.Models;
-using RMSniper1.Statics;
+using MSniperService.Cache;
+using MSniperService.Models;
+using MSniperService.Statics;
 
 public sealed class CacheManager<T> where T : class
 {

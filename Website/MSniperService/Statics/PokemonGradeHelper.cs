@@ -1,8 +1,8 @@
-﻿using RMSniper1.Models;
+﻿using MSniperService.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RMSniper1.Statics
+namespace MSniperService.Statics
 {
     public static class PokemonGradeHelper
     {

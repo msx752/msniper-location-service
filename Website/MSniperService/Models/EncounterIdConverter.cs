@@ -5,7 +5,7 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace RMSniper1.Models
+namespace MSniperService.Models
 {
     //public class EncounterIdConverter : JsonConverter
     //{

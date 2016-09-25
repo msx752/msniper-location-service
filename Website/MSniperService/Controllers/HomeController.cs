@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.SignalR;
-using RMSniper1.Cache;
-using RMSniper1.Enums;
-using RMSniper1.Models;
+using MSniperService.Cache;
+using MSniperService.Enums;
+using MSniperService.Models;
 
-namespace RMSniper1.Controllers
+namespace MSniperService.Controllers
 {
     public class HomeController : Controller
     {

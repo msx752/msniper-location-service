@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using Newtonsoft.Json;
-using RMSniper1.Cache;
-using RMSniper1.Enums;
-using RMSniper1.Models;
-using RMSniper1.Statics;
+using MSniperService.Cache;
+using MSniperService.Enums;
+using MSniperService.Models;
+using MSniperService.Statics;
 
-namespace RMSniper1
+namespace MSniperService
 {
     public class msniperHub : Hub
     {

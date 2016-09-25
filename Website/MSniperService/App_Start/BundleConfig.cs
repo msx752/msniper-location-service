@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace RMSniper1
+namespace MSniperService
 {
     public class BundleConfig
     {

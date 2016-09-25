@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace RMSniper1.Statics
+namespace MSniperService.Statics
 {
     public static class DateConverter
     {
