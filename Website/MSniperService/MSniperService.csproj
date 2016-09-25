@@ -344,6 +344,7 @@
     <Content Include="Pkmn\wigglytuff.png" />
     <Content Include="Pkmn\zapdos.png" />
     <Content Include="Pkmn\zubat.png" />
+    <Content Include="Scripts\AutoMSniper.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\client.js" />

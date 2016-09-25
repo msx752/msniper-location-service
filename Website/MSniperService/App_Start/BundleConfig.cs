@@ -37,7 +37,8 @@ namespace MSniperService
                 "~/Scripts/jquery.signalR-2.2.1.js",
                 "~/Scripts/pokemonImages.js",
                 "~/Scripts/pkmn.js",
-                "~/Scripts/client.js"
+                "~/Scripts/client.js",
+                "~/Scripts/AutoMSniper.js"
                 ));
 
             BundleTable.EnableOptimizations = true;//for now

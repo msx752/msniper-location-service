@@ -53,6 +53,44 @@
                         </datalist>
                         <input type="text" class="form-control searchpkmn pull-left" placeholder="Search pokemon..." autocomplete="on" list="pkmlst">
                         <button style="margin-left: 1px;" class="btn btn-outline-success btn-filter" type="button">Filter By IV</button>
+                        <button id="autosnipe" style="margin-left: 1px;" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#autosnipe-panel">
+                            Auto MSniper BETA
+                        </button>
+                        <div class="modal fade" id="autosnipe-panel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button id="autosnipe-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="autosnipe-state">
+                                            Auto MSniper BETA
+                                            <span class="tag tag-danger" id="autosnipe-state">Stopped</span>
+                                        </h4>
+                                        <span><b>be careful using bot will cause ban, using bot your own risk</b></span>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input id="autosnipe-selectlist" type="text" class="form-control searchpkmn pull-left" placeholder="Add to list" autocomplete="on" list="pkmlst">
+                                        <button id="autosnipe-add" type="button" class="btn btn-success">Add</button>
+                                        <br />
+                                        <span><b>min iv</b></span>
+                                        <br />
+                                        <input id="autosnipe-iv" style="min-width: 5px; width:80px;" maxlength="5" value="100.0" type="text" class="form-control">
+                                        <br />
+                                        <span class="tag tag-info">click to pokemon for remove</span>
+                                        <span class="tag tag-warning">set msniper delay 2</span>
+                                        <div id="autosnipe-selected-context">
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">STOP</button>*@
+                                        <button id="autosnipe-start" type="button" class="btn btn-primary">START</button>
+                                        <button id="autosnipe-stop" type="button" class="btn btn-danger">STOP</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
