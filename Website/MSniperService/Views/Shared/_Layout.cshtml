@@ -1,0 +1,101 @@
+﻿@using RMSniper1.Models
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Msx752">
+    <meta name="description" content="Snipe 'Em All">
+
+    @*
+        meta example
+
+        <meta content="https://avatars0.githubusercontent.com/u/21159620?v=3&amp;s=400" property="og:image" />
+        <meta content="GitHub" property="og:site_name" />
+        <meta content="object" property="og:type" />
+        <meta content="1.0.0.0 Token expired ... · Issue #245 · Necrobot-Private/NecroBot" property="og:title" />
+        <meta content="https://github.com/Necrobot-Private/NecroBot/issues/245" property="og:url" />
+        <meta content="After error below bot freeze ... ( account google - not ptc)Version: 1.0.0.0" property="og:description"/>*@
+
+    <link rel="icon" type="image/x-icon" href="https://github.com/msx752/MSniper/raw/master/MSniper/Resources/msniper.ico">
+
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Styles/Global")
+    @RenderSection("styles", required: false)
+    @Styles.Render("~/Scripts/modernizr")
+</head>
+
+<body>
+
+    <div class="container">
+        <nav class="navbar navbar-light bg-faded col-lg-10">
+            <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">
+                &#9776;
+            </button>
+            <div class="collapse navbar-toggleable-xs" id="navbar-header">
+                <a class="mainpage navbar-brand" href="#">Snipe 'Em All</a>
+                <ul class="nav navbar-nav">
+                    @*<li class="nav-item active">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
+                </ul>
+                @if (ViewBag.EnableSearch != null)
+                {
+                    <div class="form-inline pull-xs-right">
+                        <datalist id="pkmlst">
+                            <option value="all" />
+                            @foreach (var pkmn in Enum.GetValues(typeof(PokemonId)))
+                            {
+                                <option value="@pkmn.ToString().ToLower()" />
+                            }
+                        </datalist>
+                        <input type="text" class="form-control searchpkmn pull-left" placeholder="Search pokemon..." autocomplete="on" list="pkmlst">
+                        <button style="margin-left: 1px;" class="btn btn-outline-success btn-filter" type="button">Filter By IV</button>
+                    </div>
+                }
+            </div>
+        </nav>
+        @RenderBody()
+    </div>
+    <footer class="footer">
+        <div class="container content-footer">
+            <div style="text-align: center;">
+                <span>
+                    site has been made specifically for the <a href="https://github.com/Necrobot-Private/NecroBot" target="_blank">Necrobot2</a>
+                    by <a href="https://github.com/msx752/" target="_blank">Msx752</a> & <a href="https://github.com/Necrobot-Private/" target="_blank">Team Necrobot2</a>
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha256-/5pHDZh2fv1eZImyfiThtB5Ag4LqDjyittT7fLjdT/8=" crossorigin="anonymous"></script>
+
+    @Scripts.Render("~/Scripts/Global")
+    @RenderSection("scripts", required: false)
+
+    <script>
+        //mobile fix
+        (function () {
+            'use strict';
+
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+                var msViewportStyle = document.createElement('style');
+                msViewportStyle.appendChild(
+                    document.createTextNode(
+                        '@@-ms-viewport{width:auto!important}'
+                    )
+                );
+                document.head.appendChild(msViewportStyle);
+            }
+
+        })();
+    </script>
+
+    @if (!Request.IsLocal)
+    {
+        <script src="~/Scripts/ga.js"></script>
+    }
+</body>
+</html>
