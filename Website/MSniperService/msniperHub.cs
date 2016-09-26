@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Caching;
@@ -11,6 +12,7 @@ using MSniperService.Cache;
 using MSniperService.Enums;
 using MSniperService.Models;
 using MSniperService.Statics;
+using Newtonsoft.Json.Linq;
 
 namespace MSniperService
 {
@@ -38,79 +40,70 @@ namespace MSniperService
             Leave();
             return base.OnDisconnected(stopCalled);
         }
-        public void Send(string command, string data)
+
+        public void SendPokemon(List<EncounterInfo> data)
         {
-            SocketCmd cmd = (SocketCmd)Enum.Parse(typeof(SocketCmd), command);
-            PokemonCounter pco;
-            switch (cmd)
+            var news = CacheManager<EncounterInfo>.Instance.NonContainsCache(data);
+            if (news.Count > 0)
             {
-                case SocketCmd.Identity:
-                    //feder joined
-                    Join(HubType.Feeder);
-                    Clients.Client(this.Context.ConnectionId).sendIdentity(cmd.ToString(), this.Context.ConnectionId);
-                    break;
-
-                case SocketCmd.ImListener:
-                    //visitor joined
-                    Join(HubType.Listener);
-                    Clients.Client(this.Context.ConnectionId).ImListener("connection established");
-                    //Clients.Client(this.Context.ConnectionId).NewPokemons(JsonConvert.SerializeObject(CacheManager.Instance.GetAll())); //get all data instead of mvc render
-                    Clients.Client(this.Context.ConnectionId).ServerInfo(Feeders.Count, Listeners.Count);
-
-
-                    var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
-                    if (rlist == null)
-                    {
-                        rlist = defaultRareList;
-                    }
-                    Clients.Client(this.Context.ConnectionId)
-                        .SendRareList(rlist.PokemonNames);
-                    break;
-
-
-                case SocketCmd.SendPokemon:
-                    //fresh pokemons came
-                    var notFound = CacheManager<EncounterInfo>.Instance.NonContainsCache(JsonConvert.DeserializeObject<List<EncounterInfo>>(data));
-                    if (notFound.Count > 0)
-                    {
-                        Dictionary<string, List<EncounterInfo>> tolistener =
-                            new Dictionary<string, List<EncounterInfo>>();
-                        tolistener.Add("data", notFound);
-                        Clients.Group(HubType.Listener.ToString()).NewPokemons(JsonConvert.SerializeObject(tolistener));
-                    }
-                    break;
-
-                case SocketCmd.LPing:
-                    if ((DateTime.Now - PokemonLastCheck) >= new TimeSpan(0, 0, 15))//get fresh pokemons from feeders
-                    {
-                        PokemonLastCheck = DateTime.Now;
-                        Clients.Group(HubType.Feeder.ToString()).sendPokemon(SocketCmd.SendPokemon.ToString(), "");
-
-                        Clients.Group(HubType.Listener.ToString()).ServerInfo(Feeders.Count, Listeners.Count); // server information feeder/hunter
-                    }
-
-                    if ((DateTime.Now - RateLastCheck) >= new TimeSpan(0, 1, 0))//top 5 snipped pokemons
-                    {
-                        RateLastCheck = DateTime.Now;
-                        pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
-                        if (pco == null)
-                            pco = new PokemonCounter();
-                        var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(5).ToList();
-                        Clients.Group(HubType.Listener.ToString()).SendRate(pokeInfos);
-                    }
-                    break;
-
-                case SocketCmd.Rate:
-                    //check snipped pokemons
-                    pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
-                    if (pco == null)
-                        pco = new PokemonCounter();
-
-                    pco.Increase(data);
-                    CacheManager<PokemonCounter>.Instance.AddCache(pco);
-                    break;
-
+                Clients.Group(HubType.Listener.ToString()).NewPokemons(news);
             }
+        }
+
+        public void ReceiveIdentity()
+        {
+            //feder joined
+            Join(HubType.Feeder);
+            Clients.Client(this.Context.ConnectionId).SendIdentity(this.Context.ConnectionId);
+        }
+        public void SendImListener()
+        {
+            Join(HubType.Listener);
+            Clients.Client(this.Context.ConnectionId).ReceiveImListener("connection established");
+            //Clients.Client(this.Context.ConnectionId).NewPokemons(CacheManager.Instance.GetAll()); //get all data instead of mvc render
+            Clients.Client(this.Context.ConnectionId).ServerInfo(Feeders.Count, Listeners.Count);
+
+
+            var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
+            if (rlist == null)
+            {
+                rlist = defaultRareList;
+            }
+            Clients.Client(this.Context.ConnectionId)
+                .SendRareList(rlist.PokemonNames);
+        }
+
+        public void LPing()
+        {
+            if ((DateTime.Now - PokemonLastCheck) >= new TimeSpan(0, 0, 15))//get fresh pokemons from feeders
+            {
+                PokemonLastCheck = DateTime.Now;
+                Clients.Group(HubType.Feeder.ToString()).sendPokemon(SocketCmd.SendPokemon.ToString(), "");
+
+                Clients.Group(HubType.Listener.ToString()).ServerInfo(Feeders.Count, Listeners.Count); // server information feeder/hunter
+            }
+
+            if ((DateTime.Now - RateLastCheck) >= new TimeSpan(0, 1, 0))//top 5 snipped pokemons
+            {
+                RateLastCheck = DateTime.Now;
+                var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
+                if (pco == null)
+                    pco = new PokemonCounter();
+                var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(5).ToList();
+                Clients.Group(HubType.Listener.ToString()).SendRate(pokeInfos);
+            }
+
+        }
+
+        public void ReceiveRate(string data)
+        {
+            //check snipped pokemons
+            var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
+            if (pco == null)
+                pco = new PokemonCounter();
+
+            pco.Increase(data.ToString());
+            CacheManager<PokemonCounter>.Instance.AddCache(pco);
         }
 
         public void Join(HubType groupName)
