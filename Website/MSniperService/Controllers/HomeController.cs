@@ -24,9 +24,8 @@ namespace MSniperService.Controllers
         {
             var xRightList = CacheManager<RareList>.Instance.GetCache("RareList");
             if (xRightList == null)
-            {
                 xRightList = msniperHub.defaultRareList;
-            }
+            
             return View(xRightList);
         }
 

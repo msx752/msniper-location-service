@@ -12,7 +12,7 @@ namespace RMSniperFeeder
     {
         private static List<EncounterInfo> CreateData()
         {
-            List<EncounterInfo> PkmnLocations = new List<EncounterInfo>();
+            var PkmnLocations = new List<EncounterInfo>();
             Random rn = new Random();
             int c = rn.Next(1, 10);
             for (int i = 1; i < c; i++)
@@ -61,24 +61,23 @@ namespace RMSniperFeeder
             connection.Closed += Connection_Closed;
             connection.Start().Wait();
 
-            msniperHub.Invoke("Send", "Identity", null);
+            msniperHub.Invoke("Identity");
         }
 
         private static void Connection_Closed()
         {
-            Console.WriteLine("closed");
+            Console.WriteLine("connection closed");
         }
 
         private static void Connection_Reconnected()
         {
-            Console.WriteLine("reconnect");
-            //msniperHub.Invoke("Send", "Identity", null);
+            Console.WriteLine("reconnected");
         }
 
         private static void Connection_Reconnecting()
         {
             Console.WriteLine("reconnecting");
-            Process.GetCurrentProcess().Kill();
+            //Process.GetCurrentProcess().Kill();
         }
 
         private static void Connection_Received(string obj)
@@ -86,11 +85,10 @@ namespace RMSniperFeeder
             try
             {
                 HubData xx = connection.JsonDeserializeObject<HubData>(obj);
-                SocketCmd cmd = (SocketCmd)Enum.Parse(typeof(SocketCmd), xx.List[0]);
                 switch (xx.Method)
                 {
                     case "sendIdentity":
-                        Console.WriteLine($"(Identity) [ {xx.List[1]} ] connection establisted");
+                        Console.WriteLine($"(Identity) [ {xx.List[0]} ] connection establisted");
                         Console.WriteLine("now waiting pokemon request (15sec)");
                         break;
 

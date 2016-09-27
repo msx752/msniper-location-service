@@ -14,15 +14,13 @@ public sealed class CacheManager<T> where T : class
     private static volatile CacheManager<T> instance;
     private static object syncRoot = new Object();
     private ObjectCache cache = null;
-    private CacheItemPolicy defaultCacheItemPolicy = null;
-    //private static List<string> keys = new List<string>();
     private CacheEntryRemovedCallback callback = null;
     private bool allowCache = true;
 
     private CacheManager()
     {
         cache = MemoryCache.Default;
-        callback = new CacheEntryRemovedCallback(this.CachedItemRemovedCallback);
+        callback = new CacheEntryRemovedCallback(CachedItemRemovedCallback);
 
     }
     public static CacheManager<T> Instance
@@ -128,7 +126,6 @@ public sealed class CacheManager<T> where T : class
                         cacheItemPolicy.RemovedCallback = callback;
                         cache.Set(Key_, data, cacheItemPolicy);
                     }
-                    //keys.Add(Key_);
                 }
             }
             else if (typeof(T) == typeof(PokemonCounter))
@@ -156,7 +153,7 @@ public sealed class CacheManager<T> where T : class
         }
         catch (Exception)
         {
-            //return false;
+
         }
     }
 

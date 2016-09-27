@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Infrastructure;
+using MSniperService.Cache;
 using MSniperService.Enums;
 
 namespace MSniperService
@@ -21,6 +22,8 @@ namespace MSniperService
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            CacheManager<RareList>.Instance.AddCache(msniperHub.defaultRareList);
         }
 
 
