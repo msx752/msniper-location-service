@@ -38,6 +38,15 @@ namespace MSniperService
             Leave();
             return base.OnDisconnected(stopCalled);
         }
+
+        public void RecvPokemons(List<EncounterInfo> data)
+        {
+           if (data.Count > 0)
+            {
+                Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
+            }
+        }
+
         public void Send(string command, string data)
         {
             SocketCmd cmd = (SocketCmd)Enum.Parse(typeof(SocketCmd), command);
@@ -70,18 +79,11 @@ namespace MSniperService
 
                 case SocketCmd.SendPokemon:
                     //fresh pokemons came
-                    var notFound = CacheManager<EncounterInfo>.Instance.NonContainsCache(JsonConvert.DeserializeObject<List<EncounterInfo>>(data));
-                    if (notFound.Count > 0)
-                    {
-                        Dictionary<string, List<EncounterInfo>> tolistener =
-                            new Dictionary<string, List<EncounterInfo>>();
-                        tolistener.Add("data", notFound);
-                        Clients.Group(HubType.Listener.ToString()).NewPokemons(JsonConvert.SerializeObject(tolistener));
-                    }
+                   
                     break;
 
                 case SocketCmd.LPing:
-                    if ((DateTime.Now - PokemonLastCheck) >= new TimeSpan(0, 0, 15))//get fresh pokemons from feeders
+                    if ((DateTime.Now - PokemonLastCheck) >= new TimeSpan(0, 0, 15))//default 15sec ;get fresh pokemons from feeders
                     {
                         PokemonLastCheck = DateTime.Now;
                         Clients.Group(HubType.Feeder.ToString()).sendPokemon(SocketCmd.SendPokemon.ToString(), "");

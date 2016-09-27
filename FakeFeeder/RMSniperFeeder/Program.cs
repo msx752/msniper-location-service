@@ -97,10 +97,7 @@ namespace RMSniperFeeder
                     case "sendPokemon":
                         var data = CreateData();
                         Console.WriteLine($"sending.. {data.Count} count");
-                        msniperHub.Invoke("Send", "SendPokemon",
-                            JsonConvert.SerializeObject(
-                            data
-                            ));
+                        msniperHub.Invoke("RecvPokemons", data);
                         break;
                 }
             }

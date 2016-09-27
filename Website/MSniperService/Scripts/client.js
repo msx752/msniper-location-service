@@ -29,11 +29,10 @@ $(document).ready(function () {
         Rarelist = data;
     };
 
-    signalr.client.NewPokemons = function (data) {
-        var obj = $.parseJSON(data);
+    signalr.client.NewPokemons = function (obj) {
         //console.log(obj);
-        for (var i = 0; i < obj.data.length; i++) {
-            InsertJsonToPage(obj.data[i]);
+        for (var i = 0; i < obj.length; i++) {
+            InsertJsonToPage(obj[i]);
         }
     };
     setInterval(function () {
