@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Newtonsoft.Json.Linq;
 
 namespace RMSniperFeeder
 {
@@ -62,7 +61,7 @@ namespace RMSniperFeeder
             connection.Closed += Connection_Closed;
             connection.Start().Wait();
 
-            msniperHub.Invoke("ReceiveIdentity");
+            msniperHub.Invoke("Send", "Identity", null);
         }
 
         private static void Connection_Closed()
@@ -73,6 +72,7 @@ namespace RMSniperFeeder
         private static void Connection_Reconnected()
         {
             Console.WriteLine("reconnect");
+            //msniperHub.Invoke("Send", "Identity", null);
         }
 
         private static void Connection_Reconnecting()
@@ -89,15 +89,18 @@ namespace RMSniperFeeder
                 SocketCmd cmd = (SocketCmd)Enum.Parse(typeof(SocketCmd), xx.List[0]);
                 switch (xx.Method)
                 {
-                    case "SendIdentity":
+                    case "sendIdentity":
                         Console.WriteLine($"(Identity) [ {xx.List[1]} ] connection establisted");
-                        Console.WriteLine("waiting the requests (in 15sec)");
+                        Console.WriteLine("now waiting pokemon request (15sec)");
                         break;
 
-                    case "SendPokemon":
+                    case "sendPokemon":
                         var data = CreateData();
-                        Console.WriteLine($"sends {data.Count} count");
-                        msniperHub.Invoke("SendPokemon",  data);
+                        Console.WriteLine($"sending.. {data.Count} count");
+                        msniperHub.Invoke("Send", "SendPokemon",
+                            JsonConvert.SerializeObject(
+                            data
+                            ));
                         break;
                 }
             }
