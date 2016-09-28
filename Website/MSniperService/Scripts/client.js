@@ -25,7 +25,7 @@ $(document).ready(function () {
     };
 
     signalr.client.rareList = function (data) {
-        //right menu items
+        //right menu items (significant pokemons)
         Rarelist = data;
     };
 
@@ -35,13 +35,6 @@ $(document).ready(function () {
             InsertJsonToPage(obj[i]);
         }
     };
-    setInterval(function () {
-        signalr.server.lPing()
-            .done(function () {
-
-        });
-    }, 15001);
-
     $.connection.hub.start().done(function () {
         signalr.server.recvIdentity().done(function (obj) {
             console.log(obj);//connection established

@@ -22,8 +22,6 @@ namespace MSniperService
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            CacheManager<RareList>.Instance.AddCache(msniperHub.defaultRareList);
         }
 
 
