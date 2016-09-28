@@ -14,8 +14,7 @@ public sealed class CacheManager<T> where T : class
     private static volatile CacheManager<T> instance;
     private static object syncRoot = new Object();
     private ObjectCache cache = null;
-    private CacheEntryRemovedCallback callback = null;
-    private bool allowCache = true;
+    private static CacheEntryRemovedCallback callback = null;
 
     private CacheManager()
     {
@@ -44,7 +43,7 @@ public sealed class CacheManager<T> where T : class
 
     public List<T> GetAll()
     {
-        List<T> datas = new List<T>();
+        var datas = new List<T>();
         foreach (var VARIABLE in cache)
         {
             var obj = VARIABLE.Value;
@@ -58,7 +57,7 @@ public sealed class CacheManager<T> where T : class
 
     public List<T> NonContainsCache(List<T> Keys)
     {
-        List<T> lst = new List<T>();
+        var lst = new List<T>();
         foreach (var item in Keys)
         {
             object dat = null;
@@ -75,16 +74,16 @@ public sealed class CacheManager<T> where T : class
         return lst;
     }
 
-    public T GetCache(String Key)
+    public T GetCache(string Key)
     {
-        if (Key == null || !allowCache)
+        if (Key == null)
         {
             return null;
         }
 
         try
         {
-            String Key_ = Key;
+            string Key_ = Key;
             if (cache.Contains(Key_))
             {
                 return (T)cache.Get(Key_);
@@ -110,7 +109,6 @@ public sealed class CacheManager<T> where T : class
 
     public void AddCache(T data)
     {
-        //if (!allowCache) return true;
         try
         {
             if (typeof(T) == typeof(EncounterInfo))
@@ -157,10 +155,8 @@ public sealed class CacheManager<T> where T : class
         }
     }
 
-    private void CachedItemRemovedCallback(CacheEntryRemovedArguments arguments)
+    private static void CachedItemRemovedCallback(CacheEntryRemovedArguments arguments)
     {
-        //keys.Remove(arguments.CacheItem.Key);
-        //String strLog = String.Concat("Reason: ", arguments.RemovedReason.ToString(), " | Key-Name: ", arguments.CacheItem.Key, " | Value-Object: ", arguments.CacheItem.Value.ToString());
-
+        //after deleting event
     }
 }

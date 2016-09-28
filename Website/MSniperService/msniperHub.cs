@@ -21,10 +21,10 @@ namespace MSniperService
                                              }
         };
 
-        private static readonly List<string> feeders = new List<string>();
-        private static readonly List<string> listeners = new List<string>();
-        private static readonly Timer pokemonTimer;
-        private static readonly Timer pokemonTop5Timer;
+        private static List<string> feeders { get; } = new List<string>();
+        private static List<string> listeners { get; } = new List<string>();
+        private static Timer pokemonTimer { get; }
+        private static Timer pokemonTop5Timer { get; }
 
         static msniperHub()
         {
@@ -149,8 +149,9 @@ namespace MSniperService
 
         public void RecvPokemons(List<EncounterInfo> data)
         {
-            if (data.Count > 0)
+            if (data.Count > 0 /* && data.Count < 20temp flood fix */ )
             {
+                CacheManager<EncounterInfo>.Instance.AddRangeCache(data);
                 Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
             }
         }
