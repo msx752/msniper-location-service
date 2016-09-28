@@ -10,12 +10,12 @@ namespace RMSniperFeeder
 {
     internal class Program
     {
-        private static List<EncounterInfo> CreateData()
+        public static List<EncounterInfo> CreateData()
         {
             var PkmnLocations = new List<EncounterInfo>();
             Random rn = new Random();
-            int c = rn.Next(1, 10);
-            for (int i = 1; i < c; i++)
+            int c = rn.Next(1, 2);
+            for (int i = 1; i < c + 1; i++)
             {
                 PkmnLocations.Add(new EncounterInfo()
                 {
@@ -37,7 +37,11 @@ namespace RMSniperFeeder
         {
             try
             {
-                Run();
+                for (int i = 0; i < 5; i++)
+                {
+                    CloneConnection clone = new CloneConnection(i);
+                    clone.Run();
+                }
                 do
                 {
                     Thread.Sleep(99999);
@@ -48,60 +52,7 @@ namespace RMSniperFeeder
             }
         }
 
-        private static HubConnection connection;
-        private static IHubProxy msniperHub;
 
-        private static void Run()
-        {
-            connection = new HubConnection("http://localhost:55774/signalr", useDefaultUrl: false);
-            msniperHub = connection.CreateHubProxy("msniperHub");
-            connection.Received += Connection_Received;
-            connection.Reconnecting += Connection_Reconnecting;
-            connection.Reconnected += Connection_Reconnected;
-            connection.Closed += Connection_Closed;
-            connection.Start().Wait();
 
-            msniperHub.Invoke("Identity");
-        }
-
-        private static void Connection_Closed()
-        {
-            Console.WriteLine("connection closed");
-        }
-
-        private static void Connection_Reconnected()
-        {
-            Console.WriteLine("reconnected");
-        }
-
-        private static void Connection_Reconnecting()
-        {
-            Console.WriteLine("reconnecting");
-            //Process.GetCurrentProcess().Kill();
-        }
-
-        private static void Connection_Received(string obj)
-        {
-            try
-            {
-                HubData xx = connection.JsonDeserializeObject<HubData>(obj);
-                switch (xx.Method)
-                {
-                    case "sendIdentity":
-                        Console.WriteLine($"(Identity) [ {xx.List[0]} ] connection establisted");
-                        Console.WriteLine("now waiting pokemon request (15sec)");
-                        break;
-
-                    case "sendPokemon":
-                        var data = CreateData();
-                        Console.WriteLine($"sending.. {data.Count} count");
-                        msniperHub.Invoke("RecvPokemons", data);
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
     }
 }

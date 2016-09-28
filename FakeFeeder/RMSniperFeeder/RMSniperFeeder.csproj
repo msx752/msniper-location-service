@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CloneConnection.cs" />
     <Compile Include="EncounterInfo.cs" />
     <Compile Include="extensions.cs" />
     <Compile Include="PokemonId.cs" />
