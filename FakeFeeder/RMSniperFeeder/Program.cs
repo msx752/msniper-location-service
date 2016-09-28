@@ -10,10 +10,11 @@ namespace RMSniperFeeder
 {
     internal class Program
     {
+        static Random rn = new Random();
         public static List<EncounterInfo> CreateData()
         {
             var PkmnLocations = new List<EncounterInfo>();
-            Random rn = new Random();
+
             int c = rn.Next(1, 2);
             for (int i = 1; i < c + 1; i++)
             {
