@@ -13,6 +13,7 @@ namespace MSniperService
         public void Configuration(IAppBuilder app)
         {
             GlobalHost.HubPipeline.AddModule(new ErrorHubPipelineModule());
+            GlobalHost.HubPipeline.AddModule(new LoggingPipelineModule());
             var hubConfiguration = new HubConfiguration
             {
                 EnableDetailedErrors = true,

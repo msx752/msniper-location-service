@@ -12,70 +12,70 @@ namespace MSniperService
 {
     public class msniperHub : Hub
     {
-        public static RareList defaultRareList = new RareList()
+        public static RareList DefaultRareList = new RareList()
         {
             PokemonNames = new List<string>(){
-                                                "dragonite", "snorlax", "pikachu", "charmeleon",
-                                                "vaporeon", "lapras", "gyarados","dragonair", "charizard",
-                                                "blastoise", "magikarp", "dratini", "growlithe","pidgey"
+                    "dragonite", "snorlax", "pikachu", "charmeleon",
+                    "vaporeon", "lapras", "gyarados","dragonair", "charizard",
+                    "blastoise", "magikarp", "dratini", "growlithe","pidgey"
                                              }
         };
 
-        private static List<string> feeders { get; } = new List<string>();
-        private static List<string> listeners { get; } = new List<string>();
-        private static Timer pokemonTimer { get; }
-        private static Timer pokemonTop5Timer { get; }
+        private static List<string> Feeders { get; } = new List<string>();
+        private static List<string> Listeners { get; } = new List<string>();
+        private static Timer PokemonTimer { get; }
+        private static Timer PokemonTop5Timer { get; }
 
         static msniperHub()
         {
-            pokemonTimer = new Timer(pokemonTick, null,
+            PokemonTimer = new Timer(pokemonTick, null,
                 (int)new TimeSpan(0, 0, 15).TotalMilliseconds,
                 (int)new TimeSpan(0, 0, 15).TotalMilliseconds);
 
-            pokemonTop5Timer = new Timer(pokemonTop5Tick, null,
+            PokemonTop5Timer = new Timer(pokemonTop5Tick, null,
                 (int)new TimeSpan(0, 1, 0).TotalMilliseconds,
                 (int)new TimeSpan(0, 1, 0).TotalMilliseconds);
         }
 
-        public static IHubContext Instance
-        {
-            get
-            {
-                return GlobalHost.ConnectionManager.GetHubContext<msniperHub>();
-            }
-        }
+        public static IHubContext Instance => GlobalHost.ConnectionManager.GetHubContext<msniperHub>();
 
-        public void Join(HubType groupName)
+        public bool Join(HubType groupName)
         {
             switch (groupName)
             {
                 case HubType.Feeder:
                     Groups.Add(this.Context.ConnectionId, HubType.Feeder.ToString());
-                    if (feeders.IndexOf(this.Context.ConnectionId) == -1)
-                        feeders.Add(this.Context.ConnectionId);
+                    if (Feeders.IndexOf(this.Context.ConnectionId) == -1)
+                    {
+                        Feeders.Add(this.Context.ConnectionId);
+                        return true;
+                    }
                     break;
-
                 case HubType.Listener:
                     Groups.Add(this.Context.ConnectionId, HubType.Listener.ToString());
-                    if (listeners.IndexOf(this.Context.ConnectionId) == -1)
-                        listeners.Add(this.Context.ConnectionId);
+                    if (Listeners.IndexOf(this.Context.ConnectionId) == -1)
+                    {
+                        Listeners.Add(this.Context.ConnectionId);
+                        return true;
+                    }
                     break;
             }
+            return false;
         }
 
         public void Leave()
         {
-            var index = feeders.IndexOf(this.Context.ConnectionId);
+            var index = Feeders.IndexOf(this.Context.ConnectionId);
             if (index != -1)
             {
-                feeders.Remove(this.Context.ConnectionId);
+                Feeders.Remove(this.Context.ConnectionId);
             }
             else
             {
-                index = listeners.IndexOf(this.Context.ConnectionId);
+                index = Listeners.IndexOf(this.Context.ConnectionId);
                 if (index != -1)
                 {
-                    listeners.Remove(this.Context.ConnectionId);
+                    Listeners.Remove(this.Context.ConnectionId);
                 }
             }
         }
@@ -88,15 +88,15 @@ namespace MSniperService
 
         private static void pokemonTick(object state)
         {
-            Instance.Clients.Group(HubType.Feeder.ToString()).sendPokemon();
-            Instance.Clients.Group(HubType.Listener.ToString()).ServerInfo(feeders.Count, listeners.Count); // server information feeder/hunter
+            Instance.Clients.Group(HubType.Feeder.ToString())
+                .sendPokemon();
+            Instance.Clients.Group(HubType.Listener.ToString())
+                .ServerInfo(Feeders.Count, Listeners.Count); // server information feeder/hunter
         }
 
         private static void pokemonTop5Tick(object state)
         {
-            var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
-            if (pco == null)
-                pco = new PokemonCounter();
+            var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter") ?? new PokemonCounter();
 
             var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(5).ToList();
             Instance.Clients.Group(HubType.Listener.ToString()).rate(pokeInfos);
@@ -107,16 +107,17 @@ namespace MSniperService
         public void Identity()
         {
             //feder joined
-            Join(HubType.Feeder);
-            Clients.Client(this.Context.ConnectionId).sendIdentity(this.Context.ConnectionId);
+            if (Join(HubType.Feeder))
+            {
+                Instance.Clients.Client(this.Context.ConnectionId)
+                    .sendIdentity(this.Context.ConnectionId);
+            }
         }
 
         public void Rate(string pokemonName)
         {
             //check snipped pokemons
-            var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter");
-            if (pco == null)
-                pco = new PokemonCounter();
+            var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter") ?? new PokemonCounter();
 
             pco.Increase(pokemonName);
             CacheManager<PokemonCounter>.Instance.AddCache(pco);
@@ -128,16 +129,16 @@ namespace MSniperService
             {
                 //visitor joined
                 Join(HubType.Listener);
-                Clients.Client(this.Context.ConnectionId).ServerInfo(feeders.Count, listeners.Count);
-
+                Instance.Clients.Client(this.Context.ConnectionId)
+                    .ServerInfo(Feeders.Count, Listeners.Count);
                 var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
                 if (rlist == null)
                 {
-                    rlist = defaultRareList;
-                    CacheManager<RareList>.Instance.AddCache(defaultRareList);
+                    rlist = DefaultRareList;
+                    CacheManager<RareList>.Instance.AddCache(DefaultRareList);
                 }
 
-                Clients.Client(this.Context.ConnectionId)
+                Instance.Clients.Client(this.Context.ConnectionId)
                     .RareList(rlist.PokemonNames);
                 return "connection established";
             }
@@ -152,7 +153,8 @@ namespace MSniperService
             if (data.Count > 0 /* && data.Count < 20temp flood fix */ )
             {
                 CacheManager<EncounterInfo>.Instance.AddRangeCache(data);
-                Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
+                Instance.Clients.Group(HubType.Listener.ToString())
+                    .NewPokemons(data);
             }
         }
 
