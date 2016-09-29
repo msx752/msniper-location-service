@@ -6,16 +6,17 @@ $(document).ready(function () {
 
     $.connection.hub.reconnecting(function () {
         tryingToReconnect = true;
-        alert("trying to reconnect");
+        alert("connection lost, trying to reconnect");
     });
 
     $.connection.hub.reconnected(function () {
         tryingToReconnect = false;
+        alert("connected to server");
     });
 
     $.connection.hub.disconnected(function () {
         if (tryingToReconnect) {
-            alert("connection lost, auto reconnect activated");
+            //alert("connection lost, auto reconnect activated");
             setTimeout(function () {
                 tryingToReconnect = false;
                 $.connection.hub.start();

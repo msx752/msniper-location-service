@@ -9,7 +9,6 @@ namespace MSniperService
 {
     public class Startup
     {
-
         public void Configuration(IAppBuilder app)
         {
             GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(110);
