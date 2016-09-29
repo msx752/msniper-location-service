@@ -12,6 +12,10 @@ namespace MSniperService
 
         public void Configuration(IAppBuilder app)
         {
+            GlobalHost.Configuration.ConnectionTimeout = TimeSpan.FromSeconds(110);
+            GlobalHost.Configuration.DisconnectTimeout = TimeSpan.FromSeconds(30);
+            GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(10);
+
             GlobalHost.HubPipeline.AddModule(new ErrorHubPipelineModule());
             GlobalHost.HubPipeline.AddModule(new LoggingPipelineModule());
             var hubConfiguration = new HubConfiguration

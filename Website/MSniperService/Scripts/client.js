@@ -1,6 +1,23 @@
 ﻿var signalr;
+var tryingToReconnect = false;
+
 $(document).ready(function () {
     signalr = $.connection.msniperHub;
+
+    $.connection.hub.reconnecting(function () {
+        tryingToReconnect = true;
+        alert("trying to reconnect");
+    });
+
+    $.connection.hub.reconnected(function () {
+        tryingToReconnect = false;
+    });
+
+    $.connection.hub.disconnected(function () {
+        if (tryingToReconnect) {
+            alert("connection lost");
+        }
+    });
 
     signalr.exceptionHandler = function (error) {
         console.log('Error: ' + error);
