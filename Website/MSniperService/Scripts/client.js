@@ -15,7 +15,11 @@ $(document).ready(function () {
 
     $.connection.hub.disconnected(function () {
         if (tryingToReconnect) {
-            alert("connection lost");
+            alert("connection lost, auto reconnect activated");
+            setTimeout(function () {
+                tryingToReconnect = false;
+                $.connection.hub.start();
+            }, 5000); // Restart connection after 5 seconds.
         }
     });
 
