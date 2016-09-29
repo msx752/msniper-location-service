@@ -156,6 +156,7 @@
     <Compile Include="Cache\RareList.cs" />
     <Compile Include="Enums\HubType.cs" />
     <Compile Include="Cache\PokemonCounter.cs" />
+    <Compile Include="Models\SOHubPipelineModule.cs" />
     <Compile Include="msniperHub.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Enums\SocketCmd.cs" />

@@ -2,6 +2,11 @@
 $(document).ready(function () {
     signalr = $.connection.msniperHub;
 
+    signalr.exceptionHandler = function (error) {
+        console.log('Error: ' + error);
+        alert('Error: ' + error);
+    };
+
     signalr.client.ImListener = function (data) {
         console.log(data);
     };
