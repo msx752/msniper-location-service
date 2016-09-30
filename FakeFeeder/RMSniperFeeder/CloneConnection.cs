@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 
@@ -26,23 +27,25 @@ namespace RMSniperFeeder
             connection.Reconnected += Connection_Reconnected;
             connection.Closed += Connection_Closed;
             connection.Start().Wait();
-
-            msniperHub.Invoke("Identity");
+            Console.WriteLine($"[{numb}]connected");
+            msniperHub.Invoke($"Identity");
         }
 
-        private static void Connection_Closed()
+        private void Connection_Closed()
         {
-            Console.WriteLine("connection closed");
+            Console.WriteLine($"[{numb}]connection closed");
+            Thread.Sleep(5000);
+            msniperHub.Invoke("Identity");
         }
 
         private void Connection_Reconnected()
         {
-            Console.WriteLine("reconnected");
+            Console.WriteLine($"[{numb}]reconnected");
         }
 
         private void Connection_Reconnecting()
         {
-            Console.WriteLine("reconnecting");
+            Console.WriteLine($"[{numb}]reconnecting");
             //Process.GetCurrentProcess().Kill();
         }
 
@@ -60,8 +63,15 @@ namespace RMSniperFeeder
 
                     case "sendPokemon":
                         var data = Program.CreateData();
-                        //Console.WriteLine($"sending.. {data.Count} count");
+                        Console.WriteLine($"[{numb}]sending.. {data.Count} count");
                         msniperHub.Invoke("RecvPokemons", data);
+                        break;
+
+                    case "Exceptions":
+                        var defaultc = Console.ForegroundColor;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("ERROR: " + xx.List.FirstOrDefault());
+                        Console.ForegroundColor = defaultc;
                         break;
                 }
             }

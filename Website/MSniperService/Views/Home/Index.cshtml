@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model List<MSniperService.Models.EncounterInfo>
+@*@model List<MSniperService.Models.EncounterInfo>*@
 @section styles{
     @Styles.Render("~/Styles/snipe")
 }
@@ -13,7 +13,7 @@
     <section class="content">
         <div class="col-md-10">
             <div id="cards" class="table table-filter">
-                @foreach (var pokemon in Model)
+                @*foreach (var pokemon in Model)
                 {
                     <div class="pokemon-card col-xs-12 col-lg-3" data-status="@pokemon.PokemonName.ToLower()">
                         <div class="left-box col-xs-5 col-lg-3">
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                   }
+                   }*@
             </div>
         </div>
         <div class="col-lg-2" id="sidebar">
@@ -59,7 +59,7 @@
                 </li>
                 <li id="all" class="list-group-item">
                     <a class="url" onclick="sideBarFilter();">Pokemons</a>
-                    <span id="totalspawns" class="tag tag-default tag-pill pull-xs-right">@Model.Count</span>
+                    <span id="totalspawns" class="tag tag-default tag-pill pull-xs-right">0</span>
                 </li>
             </ul>
         </div>

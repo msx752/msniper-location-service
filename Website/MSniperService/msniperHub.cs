@@ -39,23 +39,23 @@ namespace MSniperService
 
         public static IHubContext Instance => GlobalHost.ConnectionManager.GetHubContext<msniperHub>();
 
-        public bool Join(HubType groupName)
+        public static bool Join(HubType groupName, string connectionId)
         {
             switch (groupName)
             {
                 case HubType.Feeder:
-                    Groups.Add(this.Context.ConnectionId, HubType.Feeder.ToString());
-                    if (Feeders.IndexOf(this.Context.ConnectionId) == -1)
+                    Instance.Groups.Add(connectionId, HubType.Feeder.ToString());
+                    if (Feeders.IndexOf(connectionId) == -1)
                     {
-                        Feeders.Add(this.Context.ConnectionId);
+                        Feeders.Add(connectionId);
                         return true;
                     }
                     break;
                 case HubType.Listener:
-                    Groups.Add(this.Context.ConnectionId, HubType.Listener.ToString());
-                    if (Listeners.IndexOf(this.Context.ConnectionId) == -1)
+                    Instance.Groups.Add(connectionId, HubType.Listener.ToString());
+                    if (Listeners.IndexOf(connectionId) == -1)
                     {
-                        Listeners.Add(this.Context.ConnectionId);
+                        Listeners.Add(connectionId);
                         return true;
                     }
                     break;
@@ -63,27 +63,21 @@ namespace MSniperService
             return false;
         }
 
-        public void Leave()
+        public static void Leave(string connectionId)
         {
-            var index = Feeders.IndexOf(this.Context.ConnectionId);
+            var index = Feeders.IndexOf(connectionId);
             if (index != -1)
             {
-                Feeders.Remove(this.Context.ConnectionId);
+                Feeders.Remove(connectionId);
             }
             else
             {
-                index = Listeners.IndexOf(this.Context.ConnectionId);
+                index = Listeners.IndexOf(connectionId);
                 if (index != -1)
                 {
-                    Listeners.Remove(this.Context.ConnectionId);
+                    Listeners.Remove(connectionId);
                 }
             }
-        }
-
-        public override Task OnDisconnected(bool stopCalled)
-        {
-            Leave();
-            return base.OnDisconnected(stopCalled);
         }
 
         private static void pokemonTick(object state)
@@ -102,12 +96,20 @@ namespace MSniperService
             Instance.Clients.Group(HubType.Listener.ToString()).rate(pokeInfos);
         }
 
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            Leave(this.Context.ConnectionId);
+            return base.OnDisconnected(stopCalled);
+        }
+
         #region signalr receivers
+
+        private bool firstPokemons = true;
 
         public void Identity()
         {
             //feder joined
-            if (Join(HubType.Feeder))
+            if (Join(HubType.Feeder, this.Context.ConnectionId))
             {
                 Instance.Clients.Client(this.Context.ConnectionId)
                     .sendIdentity(this.Context.ConnectionId);
@@ -128,7 +130,7 @@ namespace MSniperService
             try
             {
                 //visitor joined
-                Join(HubType.Listener);
+                Join(HubType.Listener, this.Context.ConnectionId);
                 Instance.Clients.Client(this.Context.ConnectionId)
                     .ServerInfo(Feeders.Count, Listeners.Count);
                 var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
@@ -137,9 +139,20 @@ namespace MSniperService
                     rlist = DefaultRareList;
                     CacheManager<RareList>.Instance.AddCache(DefaultRareList);
                 }
+                if (firstPokemons)
+                {
+                    Instance.Clients.Client(this.Context.ConnectionId)
+                   .NewPokemons(CacheManager<EncounterInfo>
+                   .Instance.GetAll()
+                   .OrderBy(p => p.Iv)
+                   .ToList());
+                    firstPokemons = false;
+                }
 
                 Instance.Clients.Client(this.Context.ConnectionId)
                     .RareList(rlist.PokemonNames);
+
+
                 return "connection established";
             }
             catch (Exception e)

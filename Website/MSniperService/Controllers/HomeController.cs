@@ -16,7 +16,7 @@ namespace MSniperService.Controllers
         public ActionResult Index()
         {
             ViewBag.EnableSearch = true;
-            return View(CacheManager<EncounterInfo>.Instance.GetAll().OrderBy(p => p.Iv).ToList());
+            return View(/*new List<EncounterInfo>()*/);
         }
 
         [Route("Home/Panel")]
