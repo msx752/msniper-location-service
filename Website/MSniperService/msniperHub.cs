@@ -39,7 +39,7 @@ namespace MSniperService
 
         public static IHubContext Instance => GlobalHost.ConnectionManager.GetHubContext<msniperHub>();
 
-        public static bool Join(HubType groupName, string connectionId)
+        private static bool Join(HubType groupName, string connectionId)
         {
             switch (groupName)
             {
@@ -63,7 +63,7 @@ namespace MSniperService
             return false;
         }
 
-        public static void Leave(string connectionId)
+        private static void Leave(string connectionId)
         {
             var index = Feeders.IndexOf(connectionId);
             if (index != -1)
@@ -104,15 +104,20 @@ namespace MSniperService
 
         #region signalr receivers
 
-        private bool firstPokemons = true;
+        private bool _firstRecvIdentity = true;
+        private bool _firstIdentity = true;
 
         public void Identity()
         {
-            //feder joined
-            if (Join(HubType.Feeder, this.Context.ConnectionId))
+            if (_firstIdentity)
             {
-                Instance.Clients.Client(this.Context.ConnectionId)
-                    .sendIdentity(this.Context.ConnectionId);
+                _firstIdentity = false;
+                //feder joined
+                if (Join(HubType.Feeder, this.Context.ConnectionId))
+                {
+                    Instance.Clients.Client(this.Context.ConnectionId)
+                        .sendIdentity(this.Context.ConnectionId);
+                }
             }
         }
 
@@ -129,45 +134,46 @@ namespace MSniperService
         {
             try
             {
-                //visitor joined
-                Join(HubType.Listener, this.Context.ConnectionId);
-                Instance.Clients.Client(this.Context.ConnectionId)
-                    .ServerInfo(Feeders.Count, Listeners.Count);
-                var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
-                if (rlist == null)
+                if (_firstRecvIdentity)
                 {
-                    rlist = DefaultRareList;
-                    CacheManager<RareList>.Instance.AddCache(DefaultRareList);
-                }
-                if (firstPokemons)
-                {
+                    _firstRecvIdentity = false;
+
+                    //visitor joined
+                    Join(HubType.Listener, this.Context.ConnectionId);
                     Instance.Clients.Client(this.Context.ConnectionId)
-                   .NewPokemons(CacheManager<EncounterInfo>
-                   .Instance.GetAll()
-                   .OrderBy(p => p.Iv)
-                   .ToList());
-                    firstPokemons = false;
+                        .ServerInfo(Feeders.Count, Listeners.Count);
+                    var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
+                    if (rlist == null)
+                    {
+                        rlist = DefaultRareList;
+                        CacheManager<RareList>.Instance.AddCache(DefaultRareList);
+                    }
+
+                    Instance.Clients.Client(this.Context.ConnectionId)
+                        .NewPokemons(CacheManager<EncounterInfo>
+                            .Instance.GetAll()
+                            .OrderBy(p => p.Iv)
+                            .ToList());
+
+
+                    Instance.Clients.Client(this.Context.ConnectionId)
+                        .RareList(rlist.PokemonNames);
+                    return "connection established - " + this.Context.ConnectionId;
                 }
-
-                Instance.Clients.Client(this.Context.ConnectionId)
-                    .RareList(rlist.PokemonNames);
-
-
-                return "connection established";
             }
             catch (Exception e)
             {
                 return e.Message;
             }
+            return null;
         }
 
         public void RecvPokemons(List<EncounterInfo> data)
         {
-            if (data.Count > 0 /* && data.Count < 20temp flood fix */ )
+            if (data.Count > 0 /* && data.Count < 20 temp flood fix */ )
             {
-                CacheManager<EncounterInfo>.Instance.AddRangeCache(data);
                 Instance.Clients.Group(HubType.Listener.ToString())
-                    .NewPokemons(data);
+                    .NewPokemons(CacheManager<EncounterInfo>.Instance.NonContainsCache(data));
             }
         }
 

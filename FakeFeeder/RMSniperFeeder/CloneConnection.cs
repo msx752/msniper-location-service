@@ -20,6 +20,11 @@ namespace RMSniperFeeder
         }
         public void Run()
         {
+            Connect();
+        }
+
+        private void Connect()
+        {
             connection = new HubConnection("http://localhost:55774/signalr", useDefaultUrl: false);
             msniperHub = connection.CreateHubProxy("msniperHub");
             connection.Received += Connection_Received;
@@ -30,12 +35,11 @@ namespace RMSniperFeeder
             Console.WriteLine($"[{numb}]connected");
             msniperHub.Invoke($"Identity");
         }
-
         private void Connection_Closed()
         {
             Console.WriteLine($"[{numb}]connection closed");
             Thread.Sleep(5000);
-            msniperHub.Invoke("Identity");
+            Connect();
         }
 
         private void Connection_Reconnected()

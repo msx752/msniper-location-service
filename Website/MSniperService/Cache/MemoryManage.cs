@@ -12,8 +12,8 @@ using MSniperService.Statics;
 public sealed class CacheManager<T> where T : class
 {
     private static volatile CacheManager<T> instance;
-    private static object syncRoot = new Object();
-    private ObjectCache cache = null;
+    private static readonly object syncRoot = new Object();
+    private readonly ObjectCache cache = null;
     private static CacheEntryRemovedCallback callback = null;
 
     private CacheManager()
@@ -113,43 +113,43 @@ public sealed class CacheManager<T> where T : class
         {
             if (typeof(T) == typeof(EncounterInfo))
             {
-                var Key_ = (data as EncounterInfo)?.UniqueKey();
+                var key_ = (data as EncounterInfo)?.UniqueKey();
 
-                lock (Key_)
+                lock (key_)
                 {
-                    if ((data as EncounterInfo)?.GetDateTime() > DateTime.Now.AddSeconds(-15) && (data as EncounterInfo).GetDateTime() < DateTime.Now.AddMinutes(25))
-                    {
-                        var cacheItemPolicy = new CacheItemPolicy();
-                        cacheItemPolicy.AbsoluteExpiration = DateConverter.JavaTimeStampToDateTime((data as EncounterInfo).Expiration);
-                        cacheItemPolicy.RemovedCallback = callback;
-                        cache.Set(Key_, data, cacheItemPolicy);
-                    }
+                    if (!((data as EncounterInfo)?.GetDateTime() > DateTime.Now.AddSeconds(-5)) ||
+                        (data as EncounterInfo).GetDateTime() >= DateTime.Now.AddMinutes(25)) return;
+
+                    var cacheItemPolicy = new CacheItemPolicy();
+                    cacheItemPolicy.AbsoluteExpiration = DateConverter.JavaTimeStampToDateTime((data as EncounterInfo).Expiration);
+                    cacheItemPolicy.RemovedCallback = callback;
+                    cache.Set(key_, data, cacheItemPolicy);
                 }
             }
             else if (typeof(T) == typeof(PokemonCounter))
             {
-                var Key2_ = (data as PokemonCounter)?.UniqueKey();
-                lock (Key2_)
+                var key2 = (data as PokemonCounter)?.UniqueKey();
+                lock (key2)
                 {
                     var cacheItemPolicy = new CacheItemPolicy();
                     cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddMonths(12);
                     cacheItemPolicy.RemovedCallback = callback;
-                    cache.Set(Key2_, data, cacheItemPolicy);
+                    cache.Set(key2, data, cacheItemPolicy);
                 }
             }
             else if (typeof(T) == typeof(RareList))
             {
-                var Key3_ = (data as RareList)?.UniqueKey();
-                lock (Key3_)
+                var key3 = (data as RareList)?.UniqueKey();
+                lock (key3)
                 {
                     var cacheItemPolicy = new CacheItemPolicy();
                     cacheItemPolicy.AbsoluteExpiration = DateTime.Now.AddMonths(12);
                     cacheItemPolicy.RemovedCallback = callback;
-                    cache.Set(Key3_, data, cacheItemPolicy);
+                    cache.Set(key3, data, cacheItemPolicy);
                 }
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
 
         }
