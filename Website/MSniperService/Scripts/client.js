@@ -7,6 +7,7 @@ $(document).ready(function () {
     $.connection.hub.reconnecting(function () {
         tryingToReconnect = true;
         alert("connection lost, trying to reconnect");
+        reConnect();
     });
 
     $.connection.hub.reconnected(function () {
@@ -16,11 +17,9 @@ $(document).ready(function () {
 
     $.connection.hub.disconnected(function () {
         if (tryingToReconnect) {
-            //alert("connection lost, auto reconnect activated");
-            setTimeout(function () {
-                tryingToReconnect = false;
-                $.connection.hub.start();
-            }, 5000); // Restart connection after 5 seconds.
+            alert("connection lost, auto reconnect activated");
+            tryingToReconnect = false;
+            reConnect();
         }
     });
 
@@ -67,6 +66,16 @@ $(document).ready(function () {
             console.log(obj);//connection established
         });
     });
+
+    function reConnect() {
+        setTimeout(function () {
+            $.connection.hub.start().done(function () {
+                signalr.server.recvIdentity().done(function (obj) {
+                    console.log(obj);//connection established
+                });
+            });
+        }, 30000); // Restart connection after 30 seconds.
+    }
 
 });
 // This optional function html-encodes messages for display in the page.
