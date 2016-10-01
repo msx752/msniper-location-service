@@ -1,68 +1,246 @@
-﻿@using System.Globalization
-@*@model List<MSniperService.Models.EncounterInfo>*@
+﻿
 @section styles{
-    @Styles.Render("~/Styles/snipe")
+  
 }
 @section scripts{
-    @Scripts.Render("~/Scripts/snipe")
-    <script src="~/signalr/hubs"></script>
+    @Scripts.Render("~/Scripts/table")
+    @*@Scripts.Render("~/Scripts/snipe")*@
+    @*<script src="~/signalr/hubs"></script>*@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js"></script>
 }
 
-<div class="row">
-    <section class="content">
-        <div class="col-md-10">
-            <div id="cards" class="table table-filter">
-                @*foreach (var pokemon in Model)
-                {
-                    <div class="pokemon-card col-xs-12 col-lg-3" data-status="@pokemon.PokemonName.ToLower()">
-                        <div class="left-box col-xs-5 col-lg-3">
-                            <img src="~/Pkmn/@{@pokemon.PokemonName.ToLower();}.png" class="media-photo" alt="">
-                            <span class="pokemo-iv">
-                                (@pokemon.Iv.ToString("##.##", CultureInfo.InvariantCulture))
-                            </span>
-                            @{
-                                long expiration = pokemon.Expiration;
-                            }
-                            <span class="pokemon-expire pull-left" id="tilltime" expiration="@expiration">
-                                Loading.
-                            </span>
-                            <a href="@pokemon.GetLink1()" class="linkmsniper" style="display: none; position: absolute"></a>
-                        </div>
-                        <div class="right-box pokemon-info col-xs-7 col-lg-7">
-                            <h4 class="title">
-                                (@pokemon.PokemonName.ToString())
-                            </h4>
-                            <span class="move"><b>M1:</b>ThunderShockFast</span>
-                            <br />
-                            <span class="move"><b>M2:</b>ThunderShockFast</span>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="pull-right">
-                                <a href="@pokemon.GetLink1()" onclick="RemoveSelf();" class="btn btn-secondary btn-sm pull-left">msniper</a>
-                                <a href="@pokemon.GetLink2()" onclick="RemoveSelf();" class="btn btn-secondary btn-sm pull-right">pokesniper2</a>
-                            </div>
-                        </div>
-                    </div>
-                   }*@
-            </div>
-        </div>
-        <div class="col-lg-2" id="sidebar">
-            <ul id="filterlist" class="list-group">
-                <li id="hunters" class="list-group-item">
-                    <label>Hunters</label>
-                    <span id="totalvisitor" class="tag tag-default tag-pill pull-xs-right">0</span>
+  <!-- END TOP NAV BAR -->
+<!-- COLUMN LEFT -->
+<div id="col-left" class="col-left">
+    <div class="main-nav-wrapper">
+        <nav id="main-nav" class="main-nav">
+            <h3>RARE POKEMONS</h3>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
                 </li>
-                <li id="feeders" class="list-group-item">
-                    <label>Feeders</label>
-                    <span id="totalfeeder" class="tag tag-default tag-pill pull-xs-right">0</span>
+                <li class="list-group-item">
+                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
                 </li>
-                <li id="all" class="list-group-item">
-                    <a class="url" onclick="sideBarFilter();">Pokemons</a>
-                    <span id="totalspawns" class="tag tag-default tag-pill pull-xs-right">0</span>
+                <li class="list-group-item">
+                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
+                </li>
+                <li class="list-group-item">
+                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
                 </li>
             </ul>
+        </nav>
+    </div>
+</div>
+<!-- END COLUMN LEFT -->
+<!-- COLUMN RIGHT -->
+<div id="col-right" class="col-right ">
+    <div class="container-fluid primary-content">
+        <!-- PRIMARY CONTENT HEADING -->
+        <div class="primary-content-heading clearfix">
+            <br>
+            <!-- quick task modal -->
+            <div class="modal fade" id="quick-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Quick Task</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group">
+                                    <label for="task-title" class="control-label sr-only">Title</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" id="task-title" placeholder="Title">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label sr-only">Description</label>
+                                    <div class="col-sm-12">
+                                        <textarea class="form-control" name="task-description" rows="5" cols="30" placeholder="Description"></textarea>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save Task</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end quick task modal -->
         </div>
-    </section>
+        <!-- END PRIMARY CONTENT HEADING -->
+        <div class="widget bottom-30px">
+            <div class="widget-header clearfix">
+                <h3><i class="icon ion-navicon"></i> <span>TODAY'S TOP 6 POKEMONS</span></h3>
+                <div class="btn-group widget-header-toolbar">
+                    <a href="queenadmin-1.2.html#" title="Expand/Collapse" class="btn btn-link btn-toggle-expand"><i class="icon ion-ios-arrow-up"></i></a>
+                </div>
+            </div>
 
+
+
+
+            <!-- QUICK SUMMARY INFO -->
+            <div class="widget-content">
+                <h3 class="sr-only">INFO</h3>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>1. <span>AbraAbraAbra</span></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>2. <span>Abra</span></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>3. <span>Abra</span></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>4. <span>Abra</span></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>5. <span>Abra</span></p>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-2 text-center">
+                        <div class="quick-info horizontal">
+                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                            <p>6. <span>Abra</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END QUICK SUMMARY INFO -->
+        </div>
+
+        <div class="widget">
+            <div class="widget-header clearfix">
+                <h3><i class="icon ion-ios-grid-view-outline"></i> <span>POKEMONS</span></h3>
+                <div class="btn-group widget-header-toolbar visible-lg">
+                    <button type="button" class="btn btn-xs btn-warning" data-toggle="modal" data-target="#quick-task-modal"><i class="icon ion-ios-checkmark-outline"></i> <span>AUTO MSniper (OFF)</span></button>
+                </div>
+            </div>
+            <div class="widget-content">
+                <div class="table-responsive">
+                    <table id="datatable-column-filter" class="table table-sorting table-striped table-hover datatable project-list">
+                        <thead>
+                            <tr>
+                                <th>Picture</th>
+                                <th>IV %</th>
+                                <th>Move1</th>
+                                <th>Move2</th>
+                                <th>Country</th>
+                                <th>Expires</th>
+                                <th>Snipe1</th>
+                                <th>Snipe2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pokemon-content">
+                            <tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+                                <td>
+                                    <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">CAbra</a>
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="95" aria-valuenow="95" style="width: 95%;">95%</div>
+                                    </div>
+                                </td>
+                                <td><span class="label label-info">ConfisuonFastFast</span></td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+                                <td><span class="label label-default">UNDEFINED</span></td>
+                                <td><span class="label label-danger">00:34</span></td>
+                                <td>
+                                    <a id="addRow" class="btn btn-primary btn-xs">MSniper</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs">Pokesniper2</a>
+                                </td>
+                            </tr>
+                            <tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+                                <td>
+                                    <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">FAbra</a>
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="95" aria-valuenow="95" style="width: 95%;">90%</div>
+                                    </div>
+                                </td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+
+                                <td><span class="label label-default">UNDEFINED</span></td>
+                                <td><span class="label label-danger">00:34</span></td>
+                                <td>
+                                    <a class="btn btn-primary btn-xs">MSniper</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs">Pokesniper2</a>
+                                </td>
+                            </tr>
+                            <tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+                                <td>
+                                    <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">BAbra</a>
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="95" aria-valuenow="95" style="width: 95%;">100%</div>
+                                    </div>
+                                </td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+
+                                <td><span class="label label-default">UNDEFINED</span></td>
+                                <td><span class="label label-danger">00:34</span></td>
+                                <td>
+                                    <a class="btn btn-primary btn-xs">MSniper</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs">Pokesniper2</a>
+                                </td>
+                            </tr>
+                            <tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+                                <td>
+                                    <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">Abra</a>
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-success" data-transitiongoal="95" aria-valuenow="95" style="width: 95%;">95%</div>
+                                    </div>
+                                </td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+                                <td><span class="label label-default">ConfisuonFastFast</span></td>
+
+                                <td><span class="label label-default">UNDEFINED</span></td>
+                                <td><span class="label label-danger">00:34</span></td>
+                                <td>
+                                    <a class="btn btn-primary btn-xs">MSniper</a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-default btn-xs">Pokesniper2</a>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
 </div>

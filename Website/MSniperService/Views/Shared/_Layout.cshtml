@@ -1,102 +1,128 @@
 ﻿@using MSniperService.Models
 
 <!DOCTYPE html>
-<html lang="en">
+<!--[if IE 9 ]><html class="ie ie9" lang="en" class="no-js"> <![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Msx752">
     <meta name="description" content="Snipe 'Em All">
+    @Styles.Render("~/Styles/global")
+    @RenderSection("styles", required: false)
+    @*@Styles.Render("~/Scripts/modernizr")*@
 
-    @*
-        meta example
-
-        <meta content="https://avatars0.githubusercontent.com/u/21159620?v=3&amp;s=400" property="og:image" />
-        <meta content="GitHub" property="og:site_name" />
-        <meta content="object" property="og:type" />
-        <meta content="1.0.0.0 Token expired ... · Issue #245 · Necrobot-Private/NecroBot" property="og:title" />
-        <meta content="https://github.com/Necrobot-Private/NecroBot/issues/245" property="og:url" />
-        <meta content="After error below bot freeze ... ( account google - not ptc)Version: 1.0.0.0" property="og:description"/>*@
-
-    <link rel="icon" type="image/x-icon" href="https://github.com/msx752/MSniper/raw/master/MSniper/Resources/msniper.ico">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="144x144" href="~/assets/ico/queenadmin-favicon144x144.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="114x114" href="~/assets/ico/queenadmin-favicon114x114.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="72x72" href="~/assets/ico/queenadmin-favicon72x72.png">
+    <link rel="apple-touch-icon-precomposed" type="image/png" sizes="57x57" href="~/assets/ico/queenadmin-favicon57x57.png">
+    <link rel="shortcut icon" href="~/assets/ico/favicon.ico">
 
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/Styles/Global")
-    @RenderSection("styles", required: false)
-    @Styles.Render("~/Scripts/modernizr")
+
 </head>
 
-<body>
+<body class="fixed-top-active fixed-left-active dashboard">
 
-    <div class="container">
-        <nav class="navbar navbar-light bg-faded col-lg-10">
-            <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header">
-                &#9776;
-            </button>
-            <div class="collapse navbar-toggleable-xs" id="navbar-header">
-                <a class="mainpage navbar-brand" href="#">Snipe 'Em All</a>
-                <ul class="nav navbar-nav">
-                    @*<li class="nav-item active">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>*@
-                </ul>
-                @if (ViewBag.EnableSearch != null)
-                {
-                    <div class="form-inline pull-xs-right">
-                        <datalist id="pkmlst">
-                            <option value="all" />
-                            @foreach (var pkmn in Enum.GetValues(typeof(PokemonId)))
-                            {
-                                <option value="@pkmn.ToString().ToLower()" />
-                            }
-                        </datalist>
-                        <input type="text" class="form-control searchpkmn pull-left" placeholder="Search pokemon..." autocomplete="on" list="pkmlst">
-                        <button style="margin-left: 1px;" class="btn btn-outline-success btn-filter" type="button">Filter By IV</button>
-                        <button id="autosnipe" style="margin-left: 1px;" type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#autosnipe-panel">
-                            Auto MSniper BETA
-                        </button>
-                        <div class="modal fade" id="autosnipe-panel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button id="autosnipe-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                        <h4 class="modal-title" id="autosnipe-state">
-                                            Auto MSniper BETA
-                                            <span class="tag tag-danger" id="autosnipe-state">Stopped</span>
-                                        </h4>
-                                        <span><b>be careful using bot will cause ban, using bot your own risk</b></span>
-                                    </div>
-                                    <div class="modal-body">
-                                        <input id="autosnipe-selectlist" type="text" class="form-control searchpkmn pull-left" placeholder="Add to list" autocomplete="on" list="pkmlst">
-                                        <button id="autosnipe-add" type="button" class="btn btn-success">Add</button>
-                                        <br />
-                                        <span><b>min iv</b></span>
-                                        <br />
-                                        <input id="autosnipe-iv" style="min-width: 5px; width:80px;" maxlength="5" value="100.0" type="text" class="form-control">
-                                        <br />
-                                        <span class="tag tag-info">click to pokemon for remove</span>
-                                        <span class="tag tag-warning">set msniper delay 2</span>
-                                        <div id="autosnipe-selected-context">
-
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">STOP</button>*@
-                                        <button id="autosnipe-start" type="button" class="btn btn-primary">START</button>
-                                        <button id="autosnipe-stop" type="button" class="btn btn-danger">STOP</button>
-                                    </div>
-                                </div>
+    <!-- WRAPPER -->
+    <div class="wrapper">
+        <!-- TOP NAV BAR -->
+        <nav class="top-bar navbar-fixed-top" role="navigation">
+            <div class="logo-area">
+                <a href="queenadmin-1.2.html#" id="btn-nav-sidebar-minified" class="btn btn-link btn-nav-sidebar-minified pull-left"><i class="icon ion-arrow-swap"></i></a>
+                <a class="btn btn-link btn-off-canvas pull-left"><i class="icon ion-navicon"></i></a>
+                <div class="logo pull-left">
+                    <a href="index.html">
+                        <img src="~/assets/img/msniper-logo.png" alt="MSniper Logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <div class="action-group hidden-xs hidden-sm">
+                    <ul>
+                        <li class="action-item general">
+                            <div class="btn-group">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="icon ion-ios-bell-outline"></i><span class="count">8</span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="menu-item-header">You have 8 notifications</li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-chatbubble text-success"></i>
+                                            <span class="text">New comment on the blog postNew com<br>New comment on the blog postNew com</span>
+                                            <span class="timestamp text-muted">1 minute ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-person-add text-success"></i>
+                                            <span class="text">New registered user</span>
+                                            <span class="timestamp text-muted">12 minutes ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-chatbubble text-success"></i>
+                                            <span class="text">New comment on the blog post</span>
+                                            <span class="timestamp text-muted">18 minutes ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-ios-cart text-danger"></i>
+                                            <span class="text">4 new sales order</span>
+                                            <span class="timestamp text-muted">4 hours ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-edit yellow-font"></i>
+                                            <span class="text">3 product reviews awaiting moderation</span>
+                                            <span class="timestamp text-muted">1 day ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-chatbubble text-success"></i>
+                                            <span class="text">New comment on the blog post</span>
+                                            <span class="timestamp text-muted">3 days ago</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-chatbubble text-success"></i>
+                                            <span class="text">New comment on the blog post</span>
+                                            <span class="timestamp text-muted">Oct 15</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="icon ion-alert-circled text-danger"></i>
+                                            <span class="text text-danger">Low disk space!</span>
+                                            <span class="timestamp text-muted">Oct 11</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item-footer">
+                                        <a href="#">View All Notifications</a>
+                                    </li>
+                                </ul>
                             </div>
-                        </div>
-                    </div>
-                }
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
         @RenderBody()
+
     </div>
+    <!-- END COLUMN RIGHT -->
+    <!-- END WRAPPER -->
     <footer class="footer">
         <div class="container content-footer">
             <div style="text-align: center;">
@@ -107,10 +133,8 @@
             </div>
         </div>
     </footer>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.3.7/js/tether.min.js" integrity="sha256-/5pHDZh2fv1eZImyfiThtB5Ag4LqDjyittT7fLjdT/8=" crossorigin="anonymous"></script>
-
-    @Scripts.Render("~/Scripts/Global")
+    <!-- Javascript -->
+    @Scripts.Render("~/Scripts/global")
     @RenderSection("scripts", required: false)
 
     <script>

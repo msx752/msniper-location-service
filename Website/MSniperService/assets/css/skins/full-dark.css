@@ -1,0 +1,69 @@
+/*------------------------------------------------*/
+/*	Skin: Full Dark
+/*------------------------------------------------*/
+/* top bar */
+/* line 8, ../../../sass/skins/full-dark.scss */
+.top-bar {
+  background-color: #1d1d1d;
+  border-bottom-color: #040404;
+}
+/* line 14, ../../../sass/skins/full-dark.scss */
+.top-bar .action-group .btn-group > a {
+  color: #5d5d5d;
+}
+/* line 21, ../../../sass/skins/full-dark.scss */
+.top-bar .action-group .action-item > a {
+  color: #5d5d5d;
+}
+/* line 24, ../../../sass/skins/full-dark.scss */
+.top-bar .action-group .action-item > a:hover, .top-bar .action-group .action-item > a:active, .top-bar .action-group .action-item > a.active {
+  color: #fff;
+}
+/* line 32, ../../../sass/skins/full-dark.scss */
+.top-bar .logged-user .btn-group > a {
+  color: #5d5d5d;
+}
+/* line 36, ../../../sass/skins/full-dark.scss */
+.top-bar .logged-user .btn img {
+  border-color: #fff;
+}
+/* line 43, ../../../sass/skins/full-dark.scss */
+.top-bar .action-group .btn-group > a:hover,
+.top-bar .logged-user .btn-group > a:hover {
+  color: #fff;
+}
+/* line 47, ../../../sass/skins/full-dark.scss */
+.top-bar .action-group .btn-group.open > a,
+.top-bar .logged-user .btn-group.open > a {
+  color: #fff;
+}
+
+/* minified and off-canvas toggle button */
+/* line 54, ../../../sass/skins/full-dark.scss */
+.btn-nav-sidebar-minified i,
+.btn-off-canvas i {
+  color: #fff;
+}
+/* line 58, ../../../sass/skins/full-dark.scss */
+.btn-nav-sidebar-minified i:hover,
+.btn-off-canvas i:hover {
+  color: #fff;
+}
+
+/* custom nav pills */
+/* line 65, ../../../sass/skins/full-dark.scss */
+.nav-pills-custom-minimal > li.active a {
+  border-top-color: #1d1d1d;
+}
+/* line 68, ../../../sass/skins/full-dark.scss */
+.nav-pills-custom-minimal > li.active a:hover, .nav-pills-custom-minimal > li.active a:focus {
+  border-top-color: #1d1d1d;
+}
+/* line 74, ../../../sass/skins/full-dark.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a {
+  border-bottom-color: #1d1d1d;
+}
+/* line 77, ../../../sass/skins/full-dark.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a:hover, .nav-pills-custom-minimal.custom-minimal-bottom > li.active a:focus {
+  border-bottom-color: #1d1d1d;
+}

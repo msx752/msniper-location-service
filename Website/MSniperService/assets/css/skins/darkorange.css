@@ -1,0 +1,69 @@
+/*------------------------------------------------*/
+/*	Skin: Dark Orange
+/*------------------------------------------------*/
+/* top bar */
+/* line 8, ../../../sass/skins/darkorange.scss */
+.top-bar {
+  background-color: #ff9800;
+  border-bottom-color: #cc7a00;
+}
+/* line 14, ../../../sass/skins/darkorange.scss */
+.top-bar .action-group .btn-group > a {
+  color: #cc7a00;
+}
+/* line 21, ../../../sass/skins/darkorange.scss */
+.top-bar .action-group .action-item > a {
+  color: #cc7a00;
+}
+/* line 24, ../../../sass/skins/darkorange.scss */
+.top-bar .action-group .action-item > a:hover, .top-bar .action-group .action-item > a:active, .top-bar .action-group .action-item > a.active {
+  color: #fff;
+}
+/* line 32, ../../../sass/skins/darkorange.scss */
+.top-bar .logged-user .btn-group > a {
+  color: #cc7a00;
+}
+/* line 36, ../../../sass/skins/darkorange.scss */
+.top-bar .logged-user .btn img {
+  border-color: #fff;
+}
+/* line 43, ../../../sass/skins/darkorange.scss */
+.top-bar .action-group .btn-group > a:hover,
+.top-bar .logged-user .btn-group > a:hover {
+  color: #fff;
+}
+/* line 47, ../../../sass/skins/darkorange.scss */
+.top-bar .action-group .btn-group.open > a,
+.top-bar .logged-user .btn-group.open > a {
+  color: #fff;
+}
+
+/* minified and off-canvas toggle button */
+/* line 54, ../../../sass/skins/darkorange.scss */
+.btn-nav-sidebar-minified i,
+.btn-off-canvas i {
+  color: #fff;
+}
+/* line 58, ../../../sass/skins/darkorange.scss */
+.btn-nav-sidebar-minified i:hover,
+.btn-off-canvas i:hover {
+  color: #fff;
+}
+
+/* custom nav pills */
+/* line 65, ../../../sass/skins/darkorange.scss */
+.nav-pills-custom-minimal > li.active a {
+  border-top-color: #ff9800;
+}
+/* line 68, ../../../sass/skins/darkorange.scss */
+.nav-pills-custom-minimal > li.active a:hover, .nav-pills-custom-minimal > li.active a:focus {
+  border-top-color: #ff9800;
+}
+/* line 74, ../../../sass/skins/darkorange.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a {
+  border-bottom-color: #ff9800;
+}
+/* line 77, ../../../sass/skins/darkorange.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a:hover, .nav-pills-custom-minimal.custom-minimal-bottom > li.active a:focus {
+  border-bottom-color: #ff9800;
+}

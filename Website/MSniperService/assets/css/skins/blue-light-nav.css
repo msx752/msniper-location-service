@@ -1,0 +1,144 @@
+/*------------------------------------------------*/
+/*	Skin: Blue, Clean Nav
+/*------------------------------------------------*/
+/* top bar */
+/* line 10, ../../../sass/skins/blue-light-nav.scss */
+.top-bar {
+  background-color: #1D92AF;
+  border-bottom-color: #166d83;
+}
+/* line 16, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .action-group .btn-group > a {
+  color: #166d83;
+}
+/* line 23, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .action-group .action-item > a {
+  color: #166d83;
+}
+/* line 26, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .action-group .action-item > a:hover, .top-bar .action-group .action-item > a:active, .top-bar .action-group .action-item > a.active {
+  color: #fff;
+}
+/* line 34, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .logged-user .btn-group > a {
+  color: #166d83;
+}
+/* line 38, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .logged-user .btn img {
+  border-color: #fff;
+}
+/* line 45, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .action-group .btn-group > a:hover,
+.top-bar .logged-user .btn-group > a:hover {
+  color: #fff;
+}
+/* line 49, ../../../sass/skins/blue-light-nav.scss */
+.top-bar .action-group .btn-group.open > a,
+.top-bar .logged-user .btn-group.open > a {
+  color: #fff;
+}
+
+/* minified and off-canvas toggle button */
+/* line 56, ../../../sass/skins/blue-light-nav.scss */
+.btn-nav-sidebar-minified i,
+.btn-off-canvas i {
+  color: #fff;
+}
+/* line 60, ../../../sass/skins/blue-light-nav.scss */
+.btn-nav-sidebar-minified i:hover,
+.btn-off-canvas i:hover {
+  color: #fff;
+}
+
+/* custom nav pills */
+/* line 67, ../../../sass/skins/blue-light-nav.scss */
+.nav-pills-custom-minimal > li.active a {
+  border-top-color: #1D92AF;
+}
+/* line 70, ../../../sass/skins/blue-light-nav.scss */
+.nav-pills-custom-minimal > li.active a:hover, .nav-pills-custom-minimal > li.active a:focus {
+  border-top-color: #1D92AF;
+}
+/* line 76, ../../../sass/skins/blue-light-nav.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a {
+  border-bottom-color: #1D92AF;
+}
+/* line 79, ../../../sass/skins/blue-light-nav.scss */
+.nav-pills-custom-minimal.custom-minimal-bottom > li.active a:hover, .nav-pills-custom-minimal.custom-minimal-bottom > li.active a:focus {
+  border-bottom-color: #1D92AF;
+}
+
+/* main navigation */
+/* line 87, ../../../sass/skins/blue-light-nav.scss */
+body {
+  background: #fff;
+}
+
+/* line 91, ../../../sass/skins/blue-light-nav.scss */
+#col-right {
+  border-right: 1px solid #ccc;
+}
+
+/* line 95, ../../../sass/skins/blue-light-nav.scss */
+.main-nav h3 {
+  border-bottom: 1px solid #ccc;
+}
+
+/* line 101, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu li a {
+  color: #696565;
+}
+/* line 104, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu li a:hover, ul.main-menu li a:focus {
+  background-color: #e7e7e7;
+  color: #696565;
+}
+/* line 111, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu li.active > a {
+  background-color: #e7e7e7;
+  color: #696565;
+}
+/* line 115, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu li.active > a.submenu-toggle {
+  background-color: #fff;
+  color: #696565;
+}
+/* line 126, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu .sub-menu > li a,
+ul.main-menu .sub-menu .sub-menu > li a {
+  background-color: #fff;
+}
+/* line 129, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu .sub-menu > li a:hover, ul.main-menu .sub-menu > li a:focus,
+ul.main-menu .sub-menu .sub-menu > li a:hover,
+ul.main-menu .sub-menu .sub-menu > li a:focus {
+  background-color: #e7e7e7;
+}
+/* line 135, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu .sub-menu > li.active > a,
+ul.main-menu .sub-menu .sub-menu > li.active > a {
+  background-color: #e7e7e7;
+}
+/* line 138, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu .sub-menu > li.active > a:hover, ul.main-menu .sub-menu > li.active > a:focus,
+ul.main-menu .sub-menu .sub-menu > li.active > a:hover,
+ul.main-menu .sub-menu .sub-menu > li.active > a:focus {
+  background-color: #e7e7e7;
+}
+/* line 144, ../../../sass/skins/blue-light-nav.scss */
+ul.main-menu .sub-menu > li.has-submenu a,
+ul.main-menu .sub-menu .sub-menu > li.has-submenu a {
+  background-color: #fff;
+}
+
+/* line 152, ../../../sass/skins/blue-light-nav.scss */
+.main-nav-minified #col-left ul.main-menu li > a:hover {
+  background-color: #e7e7e7;
+}
+/* line 156, ../../../sass/skins/blue-light-nav.scss */
+.main-nav-minified #col-left ul.main-menu > li:hover ul.sub-menu {
+  -moz-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  height: auto !important;
+}

@@ -1,0 +1,91 @@
+﻿thead > tr#row, th {
+    text-align: center;
+}
+
+tbody#pokemon-snipe > tr, td {
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: center;
+}
+
+tbody > * .progress {
+    height: 20px;
+    margin-top: 10px;
+}
+
+tbody > tr > td > span {
+    position: relative;
+    padding: 5px;
+    top: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.project-list > tbody > tr > td > span {
+    height: 20px;
+    padding: 5px;
+    margin-top: 30px !important;
+}
+
+.project-list > tbody > tr > td > a {
+    position: relative;
+    padding: 5px;
+    top: 7px;
+}
+
+.avatar {
+    width: 45px !important;
+    padding: 5px;
+}
+
+.list-group-item {
+    height: 40px;
+}
+
+    .list-group-item > a > span {
+        position: relative;
+        padding: 5px;
+        left: 10px;
+    }
+
+
+    /* footer*/
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 25px;
+    background-color: #cbc0c0;
+}
+
+
+
+.footer > .container {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+code {
+    font-size: 80%;
+}
+
+.content-footer span {
+    color: #000 !important;
+    font-size: 12px;
+    text-align: center;
+}
+
+    .content-footer span a {
+        color: inherit;
+        font-weight: bold;
+    }
