@@ -16,14 +16,14 @@ namespace RMSniperFeeder
             var PkmnLocations = new List<EncounterInfo>();
 
             int c = rn.Next(1, 2);
-            for (int i = 1; i < c + 1; i++)
+            for (int i = 1; i < c + 11; i++)
             {
                 PkmnLocations.Add(new EncounterInfo()
                 {
                     EncounterId = (2157859740816806781 + rn.Next(1, 999)).ToString(),
                     Expiration = DateTime.Now.ToUnixTimestamp() + (int)new TimeSpan(0, 0, rn.Next(30, 90)).TotalMilliseconds,
                     PokemonName = ((PokemonId)rn.Next(1, 152)).ToString(),
-                    Iv = 100,
+                    Iv = rn.Next(0, 101),
                     Latitude = (-33.8646353402715 + rn.Next(1, 99999)).ToString("G17", CultureInfo.InvariantCulture),
                     Longitude = (151.20600957337419 + rn.Next(1, 99999)).ToString("G17", CultureInfo.InvariantCulture),
                     Move1 = ((PokemonMove)rn.Next(1, 241)).ToString(),

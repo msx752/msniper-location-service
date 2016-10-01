@@ -114,10 +114,10 @@ function createSideBarPokemon(ulfound, name) {
 
     if (checkImportantPokemon(name)) {
         var strVar = "";
-        strVar += "<li id=\"" + name + "\" class=\"list-group-item\">";
-        strVar += "<a class=\"url\" onclick=\"sideBarFilter();\">" + name + "<\/a>";
-        strVar += "<span class=\"tag tag-default tag-pill pull-xs-right\">1<\/span>";
+        strVar += "<li id=\"" + name + "\"  class=\"list-group-item\">";
+        strVar += "<a><span class=\"text\">" + name + "<\/span><span id=\"" + name + "\" style=\"float: right;\" class=\"badge bg-info\">1<\/span><\/a>";
         strVar += "<\/li>";
+
         //console.log($(strVar));
         //console.log($(ulfound));
         $(ulfound).append($(strVar));
@@ -128,6 +128,7 @@ function findPokemonSideBar(lifound, increase) {
     if (lifound.length > 0) {
         //var afound = lifound.find(".url");
         var spanfound = lifound.find("span").get(0);
+        //console.log(spanfound);
         if (increase) {
             spanfound.innerText = (parseInt(spanfound.innerText) + 1);
         } else {
@@ -165,7 +166,7 @@ function setFilter(target) {
     $('.pokemon-card').css('display', 'none').css('position', 'fixed');
     if (target !== '' && target !== 'all') {
         $('.pokemon-card[data-status="' + target + '"]').css('position', 'relative').fadeIn('slow');
-        
+
     } else if (target === 'all' || target === '') {
         $('.pokemon-card').css('display', 'none').css('position', 'relative').fadeIn('slow');
     }
@@ -215,23 +216,106 @@ function selectCard2(card) {
 
 function setCardTime2(event) {
     var data = event.strftime('%M:%S');
-
     if (data === "00:00") {
-        //console.log(data);
+
         $(event.target.parentNode.parentNode)
             .fadeTo(5000, 0.0, function () {
-                findPokemonSideBar(findLi($(this).attr("data-status")), false);
-                $(this).remove();
+                var pkname = $(this).find('#tilltime').attr("pokemonName");
+                //console.log(pkname);
+                findPokemonSideBar(findLi(pkname), false);
+
+                $(this).addClass("deleted");
+                $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
             });
     } else {
         $(this).html(data);
     }
 };
 
+
+$('#datatable-column-filter').dataTable({
+    "createdRow": function (row, data, dataIndex) {
+        var tmr = $(row).find("#tilltime");
+                var expiretime = tmr.attr("expiration");
+
+                var firstValue = parseInt(expiretime);
+                //console.log(firstValue);
+                tmr.countdown(new Date(firstValue), setCardTime2);
+    }
+});
+
 function InsertJsonToPage(received) {
     //console.log(received);
     var linkk1 = "msniper://" + received.PokemonName + "/" + received.EncounterId + "/" + received.SpawnPointId + "/" + received.Latitude + "," + received.Longitude + "/" + received.Iv;
     var linkk2 = "pokesniper2://" + received.PokemonName + "/" + received.Latitude + "," + received.Longitude;
+
+
+
+    //console.log();
+
+
+    $('#datatable-column-filter')
+        .DataTable()
+        .row.add([
+            $('<img />',
+            {
+                id: received.PokemonName.toString().toLowerCase(),
+                src: poimgs[ponms.indexOf(received.PokemonName.toString().toLowerCase())].toString(),
+                alt: received.PokemonName.toString().toLowerCase()
+            })
+            .addClass("avatar pull-left")
+            .get(0)
+            .outerHTML +
+            $('<a />', {})
+            .addClass("pull-left")
+            .append(received.PokemonName.toString())
+            .get(0)
+            .outerHTML,
+            "<div class=\"progress\"><div class=\"progress-bar progress-bar-success\" data-transitiongoal=\"" +
+            received.Iv.toString() +
+            "\" aria-valuenow=\"" +
+            received.Iv.toString() +
+            "\" style=\"width: " +
+            received.Iv.toString() +
+            "%;\">" +
+            received.Iv.toString() +
+            "%</div></div>",
+            $('<span/>').addClass('label label-default').append(received.Move1).get(0).outerHTML,
+            $('<span/>').addClass('label label-default').append(received.Move2).get(0).outerHTML,
+            $('<span/>').addClass('label label-default').append('UNDEFINED').get(0).outerHTML,
+            $('<span/>',
+            {
+                id: "tilltime",
+                pokemonName:received.PokemonName.toString().toLowerCase(),
+                expiration: parseInt(received.Expiration)
+
+            }).addClass('label label-danger').append("00:00").get(0).outerHTML,
+
+            $('<a />', { href: linkk1 }).addClass('btn btn-primary btn-xs').append("MSniper").get(0).outerHTML,
+            $('<a />', { href: linkk2 }).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
+        ])
+        .draw(false);
+      InsertToSideBar(received.PokemonName.toString().toLowerCase());
+    //<tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+    //                           <td>
+    //                               <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">FAbra</a>
+    //                           </td>
+    //                           <td>
+    //                               <div class="progress"><div class="progress-bar progress-bar-success" data-transitiongoal="95" aria-valuenow="95" style="width: 95%;">90%</div></div>
+    //                           </td>
+    //                           <td><span class="label label-default">ConfisuonFastFast</span></td>
+    //                           <td><span class="label label-default">ConfisuonFastFast</span></td>
+
+    //                           <td><span class="label label-default">UNDEFINED</span></td>
+    //                           <td><span class="label label-danger">00:34</span></td>
+    //                           <td>
+    //                               <a class="btn btn-primary btn-xs">MSniper</a>
+    //                           </td>
+    //                           <td>
+    //                               <a class="btn btn-default btn-xs">Pokesniper2</a>
+    //                           </td>
+    //                       </tr>
+    return;
     var pokemoncardNew = "";
     pokemoncardNew += " <div class=\"pokemon-card col-xs-12 col-lg-3\" data-status=\"" +
         received.PokemonName.toString().toLowerCase() +
@@ -260,9 +344,7 @@ function InsertJsonToPage(received) {
     pokemoncardNew += "<\/div>";
     pokemoncardNew += "<div class=\"col-lg-12\">";
     pokemoncardNew += " <div class=\"pull-right\">";
-    pokemoncardNew += "  <a   href=\"" +
-        linkk1 +
-        "\" onclick=\"RemoveSelf();\" class=\"btn btn-secondary btn-sm pull-left\">msniper<\/a>";
+    pokemoncardNew += "  <a   href=\"" + linkk1 + "\" onclick=\"RemoveSelf();\" class=\"btn btn-secondary btn-sm pull-left\">msniper<\/a>";
     pokemoncardNew += "  <a  href=\"" +
         linkk2 +
         "\" onclick=\"RemoveSelf();\" class=\"btn btn-secondary btn-sm pull-right\">pokesniper2<\/a>";
@@ -292,8 +374,6 @@ function InsertJsonToPage(received) {
                 $($(snc).get(0).parentNode.parentNode).css('position', 'relative').fadeIn('slow');
             }
         }
-
-        InsertToSideBar(received.PokemonName.toString().toLowerCase());
     } else {
         //console.log("x");
     }

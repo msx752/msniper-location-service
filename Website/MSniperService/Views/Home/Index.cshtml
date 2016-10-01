@@ -4,9 +4,9 @@
 }
 @section scripts{
     @Scripts.Render("~/Scripts/table")
-    @*@Scripts.Render("~/Scripts/snipe")*@
-    @*<script src="~/signalr/hubs"></script>*@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.countdown/2.2.0/jquery.countdown.min.js"></script>
+    @Scripts.Render("~/Scripts/snipe")
+    <script src="~/signalr/hubs"></script>
 }
 
   <!-- END TOP NAV BAR -->
@@ -15,21 +15,12 @@
     <div class="main-nav-wrapper">
         <nav id="main-nav" class="main-nav">
             <h3>RARE POKEMONS</h3>
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
+            <ul id="filterlist" class="list-group">
+                <li id="feeders" class="list-group-item">
+                    <a ><span class="text">Feeders</span><span  id="totalfeeder" style="float: right;" class="badge bg-info">0</span></a>
                 </li>
-                <li class="list-group-item">
-                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
-                </li>
-                <li class="list-group-item">
-                    <a href="#"><span class="text">Pikachu</span><span style="float: right;" class="badge bg-green">12654</span></a>
+                <li id="hunters" class="list-group-item">
+                    <a ><span class="text">Hunters</span><span id="totalvisitor"  style="float: right;" class="badge bg-info">0</span></a>
                 </li>
             </ul>
         </nav>
@@ -153,7 +144,7 @@
                             </tr>
                         </thead>
                         <tbody id="pokemon-content">
-                            <tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
+                            @*<tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
                                 <td>
                                     <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">CAbra</a>
                                 </td>
@@ -235,7 +226,7 @@
                                 <td>
                                     <a class="btn btn-default btn-xs">Pokesniper2</a>
                                 </td>
-                            </tr>
+                            </tr>*@
                     </table>
                 </div>
             </div>

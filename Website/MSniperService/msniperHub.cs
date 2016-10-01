@@ -17,7 +17,7 @@ namespace MSniperService
             PokemonNames = new List<string>(){
                     "dragonite", "snorlax", "pikachu", "charmeleon",
                     "vaporeon", "lapras", "gyarados","dragonair", "charizard",
-                    "blastoise", "magikarp", "dratini", "growlithe","pidgey"
+                    "blastoise", "magikarp", "dratini", "arcanine","aerodactyl"
                                              }
         };
 
@@ -92,7 +92,7 @@ namespace MSniperService
         {
             var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter") ?? new PokemonCounter();
 
-            var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(5).ToList();
+            var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(6).ToList();
             Instance.Clients.Group(HubType.Listener.ToString()).rate(pokeInfos);
         }
 

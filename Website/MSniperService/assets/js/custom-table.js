@@ -25,22 +25,13 @@ $(document).ready(function(){
 				"<'row'<'col-sm-6'i><'col-sm-6'p>>"
 		}); 
 
-var counter = 1;
+//var counter = 1;
  
-    $('#addRow').on( 'click', function () {
-       $('#datatable-column-filter').DataTable().row.add( [
-            counter +'.1',
-            counter +'.2',
-            counter +'.3',
-            '<span class="label label-info">ConfisuonFastFast',
-            counter +'.5',
-            counter + '.6',
-            counter + '.7',
-            counter + '.8',
-        ] ).draw( false );
+//    $('#addRow').on( 'click', function () {
+       
  
-        counter++;
-    } );
+//        counter++;
+//    } );
 
 		$('#datatable-column-filter thead').append('<tr class="row-filter"><th></th><th></th><th></th><th></th><th></th></tr>');
 		$('#datatable-column-filter thead .row-filter th').each( function() {

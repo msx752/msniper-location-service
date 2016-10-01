@@ -89,3 +89,60 @@ code {
         color: inherit;
         font-weight: bold;
     }
+
+    /*
+        sidebar
+
+    */
+
+.pikachu {
+    background-color: #FDCC51;
+}
+
+.dragonite {
+    background-color: #ffbb57;
+}
+
+.snorlax {
+    background-color: #076a88;
+}
+
+.dragonair {
+    background-color: #88AAD4;
+}
+
+.vaporeon {
+    background-color: #B1F2F7;
+}
+
+.gyarados {
+    background-color: #185881;
+}
+
+.charmeleon {
+    background-color: #FB7E68;
+}
+
+.charizard {
+    background-color: #D27834;
+}
+
+.blastoise {
+    background-color: #F2E7C4;
+}
+
+.lapras {
+    background-color: #65C7F8;
+}
+.magikarp {
+    background-color: #CF9E83;
+}
+.dratini {
+    background-color: #C9D0DC;
+}
+.growlithe {
+    background-color: #93847B;
+}
+.aerodactyl {
+    background-color: #989ba1;
+}

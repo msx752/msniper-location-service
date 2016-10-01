@@ -35,18 +35,18 @@ $(document).ready(function () {
     signalr.client.serverInfo = function (feeders, hunters) {
         var lifound = findLi("feeders");
         if (lifound.length > 0) {
-            var spanfound1 = lifound.find("span").get(0);
+            var spanfound1 = lifound.find("span#totalfeeder").get(0);
             spanfound1.innerText = feeders;
         }
         lifound = findLi("hunters");
         if (lifound.length > 0) {
-            var spanfound2 = lifound.find("span").get(0);
+            var spanfound2 = lifound.find("span#totalvisitor").get(0);
             spanfound2.innerText = hunters;
         }
     };
 
     signalr.client.rate = function (data) {
-        //top 5 snipped pokemons
+        //top 6 snipped pokemons
         console.log(data);
     };
 
@@ -55,11 +55,49 @@ $(document).ready(function () {
         Rarelist = data;
     };
 
+    //function initDataTable() {
+    //    var dtt = $('#datatable-column-filter tbody#pokemon-content');
+    //    console.log(dtt);
+        //dtt.dataTable({
+        //    "rowCallback": function (row, data, index) {
+        //        console.log(row);
+
+        //    }
+        //});
+
+        //dtt.DataTable({
+        //    rowCallback: function (nRow) {
+
+        //        console.log(nRow)
+        //        //var tmr = $(nRow).find("#tilltime");
+        //        //var expiretime = tmr.attr("expiration");
+
+        //        //var firstValue = parseInt(expiretime);
+        //        ////console.log(firstValue);
+        //        //tmr.countdown(new Date(firstValue), setCardTime2);
+
+        //        /* This is your code */
+        //        // $(nRow).find('[countdown]').each(function () {
+        //        //    var $this = $(this),
+        //        //      finalDate = $(this).data('countdown');
+        //        //    $this.countdown(finalDate, function (event) {
+        //        //        $this.html(event.strftime('%D days %H:%M:%S'));
+        //        //    });
+        //        //}).on('finish.countdown', function (event) {
+        //        //    $(this).addClass("label label-sm label-danger");
+        //        //    $(this).html('This offer has expired!');
+        //        //});
+        //    }
+        //});
+
+    //};
+
     signalr.client.newPokemons = function (obj) {
         //console.log(obj);
         for (var i = 0; i < obj.length; i++) {
             InsertJsonToPage(obj[i]);
         }
+        //initDataTable();
     };
     $.connection.hub.start().done(function () {
         signalr.server.recvIdentity().done(function (obj) {
