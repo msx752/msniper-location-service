@@ -34,16 +34,23 @@ $(document)
 
 
     });
+function SetTimer(row) {
+    var tmr = $(row).find("#tilltime");
+    var expiretime = tmr.attr("expiration");
 
+    var firstValue = parseInt(expiretime);
+
+    tmr.countdown(new Date(firstValue), setCardTime2);
+}
 $(document)
     .ready(function setTimer() {
 
 
-        $(".pokemon-card").each(function myfunction() {
-            selectCard($(this));
-            InsertToSideBar($(this).attr("data-status"));
-        }
-        );
+        //$(".pokemon-card").each(function myfunction() {
+        //    selectCard($(this));
+        //    InsertToSideBar($(this).attr("data-status"));
+        //}
+        //);
 
 
     });
@@ -79,13 +86,17 @@ function RemoveSelf() {
 
 function sideBarFilter() {
     //console.log(event.target.parentNode.id);
-    $(window).scrollTop(0);
-    setFilter(event.target.parentNode.id);
+
+
+    //event.target.innerText
+    $($("tr.row-filter th input.form-control.input-sm").get(0)).val(event.target.innerText).change();
+    $(window).scrollTop(50);
+    //setFilter(event.target.parentNode.id);
 }
 
 
 function findLi(name) {
-    return ulfound.find("#" + name);
+    return ulfound.find("span.badge." + name);
 }
 
 function InsertToSideBar(name) {
@@ -114,8 +125,8 @@ function createSideBarPokemon(ulfound, name) {
 
     if (checkImportantPokemon(name)) {
         var strVar = "";
-        strVar += "<li id=\"" + name + "\"  class=\"list-group-item\">";
-        strVar += "<a><span class=\"text\">" + name + "<\/span><span id=\"" + name + "\" style=\"float: right;\" class=\"badge bg-info\">1<\/span><\/a>";
+        strVar += "<li  class=\"list-group-item\">";
+        strVar += "<a href=\"#\" onclick=\"sideBarFilter()\"><span class=\"text\">" + name + "<\/span><span style=\"float: right;\" class=\"badge " + name + "\">1<\/span><\/a>";
         strVar += "<\/li>";
 
         //console.log($(strVar));
@@ -127,14 +138,17 @@ function createSideBarPokemon(ulfound, name) {
 function findPokemonSideBar(lifound, increase) {
     if (lifound.length > 0) {
         //var afound = lifound.find(".url");
-        var spanfound = lifound.find("span").get(0);
+
+        var spanfound = lifound.get(0);
         //console.log(spanfound);
         if (increase) {
             spanfound.innerText = (parseInt(spanfound.innerText) + 1);
         } else {
             spanfound.innerText = (parseInt(spanfound.innerText) - 1);
-            if (spanfound.innerText === "0") {
-                $(lifound).remove();
+            if (parseInt(spanfound.innerText) === 0) {
+                spanfound.parentNode.parentNode.remove();
+            } else if (parseInt(spanfound.innerText) < 0) {
+                spanfound.innerText = (parseInt(spanfound.innerText) * -1);
             }
         }
         //console.log(spanfound);
@@ -142,77 +156,77 @@ function findPokemonSideBar(lifound, increase) {
         //console.log(afound);
         //console.log(spanfound);
     }
-    DecreasePokemonCount();
+    //DecreasePokemonCount();
 }
 
-function IncreatePokemonCount() {
-    var lifound = findLi("all");
-    if (lifound.length > 0) {
-        var spanfound = lifound.find("span").get(0);
-        spanfound.innerText = (parseInt(spanfound.innerText) + 1);
-    }
-}
-function DecreasePokemonCount() {
-    var lifound = findLi("all");
-    if (lifound.length > 0) {
-        var spanfound = lifound.find("span").get(0);
-        spanfound.innerText = (parseInt(spanfound.innerText) - 1);
-    }
-}
+//function IncreatePokemonCount() {
+//    var lifound = findLi("all");
+//    if (lifound.length > 0) {
+//        var spanfound = lifound.find("span").get(0);
+//        spanfound.innerText = (parseInt(spanfound.innerText) + 1);
+//    }
+//}
+//function DecreasePokemonCount() {
+//    var lifound = findLi("all");
+//    if (lifound.length > 0) {
+//        var spanfound = lifound.find("span").get(0);
+//        spanfound.innerText = (parseInt(spanfound.innerText) - 1);
+//    }
+//}
 
-var currentFilter = "all";
-function setFilter(target) {
-    currentFilter = target;
-    $('.pokemon-card').css('display', 'none').css('position', 'fixed');
-    if (target !== '' && target !== 'all') {
-        $('.pokemon-card[data-status="' + target + '"]').css('position', 'relative').fadeIn('slow');
+//var currentFilter = "all";
+//function setFilter(target) {
+//    currentFilter = target;
+//    $('.pokemon-card').css('display', 'none').css('position', 'fixed');
+//    if (target !== '' && target !== 'all') {
+//        $('.pokemon-card[data-status="' + target + '"]').css('position', 'relative').fadeIn('slow');
 
-    } else if (target === 'all' || target === '') {
-        $('.pokemon-card').css('display', 'none').css('position', 'relative').fadeIn('slow');
-    }
-
-
-    var items = $('.pokemon-card:visible');
-    items.sort(function (a, b) {
-
-        var valueA = parseFloat($(a).find(".pokemo-iv").text().replace("(", "").replace(")", ""));
-        var valueB = parseFloat($(b).find(".pokemo-iv").text().replace("(", "").replace(")", ""));
-        //console.log(valueB);
-        if (valueA > valueB) {
-            return -1;
-        }
-        if (valueA < valueB) {
-            return 1;
-        }
-        return 0;
-    });
-
-    //console.log(items.index);
-    $('.pokemon-card:visible').remove();
-    items.each(function myfunction() {
-        selectCard($(this));
-        $('#cards').append($(this));
-    });
-    //console.log(items);
-}
-
-setInterval(function () {
-    var pos = $(window).scrollTop();
-
-    $('#sidebar').css('top', (pos - 80) + 'px');
-    //console.log(hih);
-
-}, 10000);
+//    } else if (target === 'all' || target === '') {
+//        $('.pokemon-card').css('display', 'none').css('position', 'relative').fadeIn('slow');
+//    }
 
 
-function selectCard2(card) {
-    var tmr = card.find("#tilltime");
-    var expiretime = tmr.attr("expiration");
+//    var items = $('.pokemon-card:visible');
+//    items.sort(function (a, b) {
 
-    var firstValue = parseInt(expiretime);
-    //console.log(firstValue);
-    tmr.countdown(new Date(firstValue), setCardTime2);
-};
+//        var valueA = parseFloat($(a).find(".pokemo-iv").text().replace("(", "").replace(")", ""));
+//        var valueB = parseFloat($(b).find(".pokemo-iv").text().replace("(", "").replace(")", ""));
+//        //console.log(valueB);
+//        if (valueA > valueB) {
+//            return -1;
+//        }
+//        if (valueA < valueB) {
+//            return 1;
+//        }
+//        return 0;
+//    });
+
+//    //console.log(items.index);
+//    $('.pokemon-card:visible').remove();
+//    items.each(function myfunction() {
+//        selectCard($(this));
+//        $('#cards').append($(this));
+//    });
+//    //console.log(items);
+//}
+
+//setInterval(function () {
+//    var pos = $(window).scrollTop();
+
+//    $('#sidebar').css('top', (pos - 80) + 'px');
+//    //console.log(hih);
+
+//}, 10000);
+
+
+//function selectCard2(card) {
+//    var tmr = card.find("#tilltime");
+//    var expiretime = tmr.attr("expiration");
+
+//    var firstValue = parseInt(expiretime);
+//    //console.log(firstValue);
+//    tmr.countdown(new Date(firstValue), setCardTime2);
+//};
 
 function setCardTime2(event) {
     var data = event.strftime('%M:%S');
@@ -233,22 +247,39 @@ function setCardTime2(event) {
 };
 
 
+setInterval(function () {
+    $('#datatable-column-filter tbody tr').each(function () {
+        SetTimer(this);
+    });
+}, 1001);
+
 $('#datatable-column-filter').dataTable({
     "createdRow": function (row, data, dataIndex) {
-        var tmr = $(row).find("#tilltime");
-                var expiretime = tmr.attr("expiration");
-
-                var firstValue = parseInt(expiretime);
-                //console.log(firstValue);
-                tmr.countdown(new Date(firstValue), setCardTime2);
+        //console.log(row);
+        SetTimer(row);
     }
 });
+
+//$('#datatable-column-filter_paginate')
+//    .click(function () {
+//        console.log("DESC");
+
+//    });
+
+//$('.sorting_asc')
+//    .click(function () {
+//        console.log("ASC");
+//        $('#datatable-column-filter tbody tr').each(function () {
+//            SetTimer(this);
+//        });
+//    });
+
+
 
 function InsertJsonToPage(received) {
     //console.log(received);
     var linkk1 = "msniper://" + received.PokemonName + "/" + received.EncounterId + "/" + received.SpawnPointId + "/" + received.Latitude + "," + received.Longitude + "/" + received.Iv;
     var linkk2 = "pokesniper2://" + received.PokemonName + "/" + received.Latitude + "," + received.Longitude;
-
 
 
     //console.log();
@@ -286,7 +317,7 @@ function InsertJsonToPage(received) {
             $('<span/>',
             {
                 id: "tilltime",
-                pokemonName:received.PokemonName.toString().toLowerCase(),
+                pokemonName: received.PokemonName.toString().toLowerCase(),
                 expiration: parseInt(received.Expiration)
 
             }).addClass('label label-danger').append("00:00").get(0).outerHTML,
@@ -295,7 +326,7 @@ function InsertJsonToPage(received) {
             $('<a />', { href: linkk2 }).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
         ])
         .draw(false);
-      InsertToSideBar(received.PokemonName.toString().toLowerCase());
+    InsertToSideBar(received.PokemonName.toString().toLowerCase());
     //<tr id="pokemon-snipe" pokemon="abra" expiration="1234125123">
     //                           <td>
     //                               <img src="http://msniper.com/pkmn1x/abra.png" alt="Avatar" class="avatar"> <a href="#">FAbra</a>

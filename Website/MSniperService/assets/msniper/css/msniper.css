@@ -49,7 +49,7 @@ tbody > tr > td > span {
     }
 
 
-    /* footer*/
+/* footer*/
 html {
     position: relative;
     min-height: 100%;
@@ -70,10 +70,10 @@ body {
 
 
 
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
-}
+    .footer > .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
 
 code {
     font-size: 80%;
@@ -90,7 +90,7 @@ code {
         font-weight: bold;
     }
 
-    /*
+/*
         sidebar
 
     */
@@ -134,15 +134,29 @@ code {
 .lapras {
     background-color: #65C7F8;
 }
+
 .magikarp {
     background-color: #CF9E83;
 }
+
 .dratini {
     background-color: #C9D0DC;
 }
+
 .growlithe {
     background-color: #93847B;
 }
+
 .aerodactyl {
     background-color: #989ba1;
+}
+
+ul#filterlist > li>a {
+    font-weight: bold;
+     color: black !important;
+}
+
+ul#filterlist > li>a>span.badge {
+    font-weight: bold;
+     color: #151313 !important;
 }
