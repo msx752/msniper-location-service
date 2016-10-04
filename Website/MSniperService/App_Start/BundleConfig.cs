@@ -66,7 +66,7 @@ namespace MSniperService
                 "~/assets/msniper/js/AutoMSniper.js"
                 ));
 
-            BundleTable.EnableOptimizations = true;//for now
+            BundleTable.EnableOptimizations = false;//for now
         }
     }
 }

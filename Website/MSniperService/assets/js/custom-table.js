@@ -22,7 +22,8 @@ $(document).ready(function () {
         var dtTable = $('#datatable-column-filter').DataTable({ // use DataTable, not dataTable
             sDom: // redefine sDom without lengthChange and default search box
 				"t" +
-				"<'row'<'col-sm-6'i><'col-sm-6'p>>"
+				"<'row'<'col-sm-6'i><'col-sm-6'p>>",
+            "lengthMenu": [25]
         });
 
 

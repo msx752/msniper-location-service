@@ -34,8 +34,8 @@ tbody > tr > td > span {
 }
 
 .avatar {
-    width: 45px !important;
-    padding: 5px;
+    width: 42px !important;
+    padding: 4px;
 }
 
 .list-group-item {
@@ -151,12 +151,22 @@ code {
     background-color: #989ba1;
 }
 
-ul#filterlist > li>a {
+ul#filterlist >a {
     font-weight: bold;
      color: black !important;
+     cursor: pointer;
 }
 
-ul#filterlist > li>a>span.badge {
+ul#filterlist >a>span.badge {
     font-weight: bold;
      color: #151313 !important;
+}
+
+tbody#pokemon-content > tr>td>a {
+    font-weight: bold;
+     color: black !important;
+     font-size:10px;
+}tbody#pokemon-content > tr>td>span {
+    font-weight: bold;
+     font-size:12px;
 }

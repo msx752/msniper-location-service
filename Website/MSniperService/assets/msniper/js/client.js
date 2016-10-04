@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     signalr.client.rate = function (data) {
         //top 6 snipped pokemons
-        console.log(data);
+        UpdateTop6Pokemons(data);
     };
 
     signalr.client.rareList = function (data) {

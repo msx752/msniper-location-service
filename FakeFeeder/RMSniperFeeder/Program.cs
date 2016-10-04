@@ -16,7 +16,7 @@ namespace RMSniperFeeder
             var PkmnLocations = new List<EncounterInfo>();
 
             int c = rn.Next(1, 2);
-            for (int i = 1; i < c + 10; i++)
+            for (int i = 1; i < c + 5; i++)
             {
                 PkmnLocations.Add(new EncounterInfo()
                 {

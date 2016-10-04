@@ -93,6 +93,14 @@ namespace MSniperService
             var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter") ?? new PokemonCounter();
 
             var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(6).ToList();
+            //PokemonCounter pc = new PokemonCounter();
+            //pc.Increase(PokemonId.Abra);
+            //pc.Increase(PokemonId.Aerodactyl);
+            //pc.Increase(PokemonId.Alakazam);
+            //pc.Increase(PokemonId.Arcanine);
+            //pc.Increase(PokemonId.Beedrill);
+            //pc.Increase(PokemonId.Blastoise);
+            //pc.PCounter = pc.PCounter.OrderByDescending(p=>p.Count).ToList();
             Instance.Clients.Group(HubType.Listener.ToString()).rate(pokeInfos);
         }
 
