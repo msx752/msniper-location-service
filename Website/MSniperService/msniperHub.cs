@@ -150,22 +150,26 @@ namespace MSniperService
                     Join(HubType.Listener, this.Context.ConnectionId);
                     Instance.Clients.Client(this.Context.ConnectionId)
                         .ServerInfo(Feeders.Count, Listeners.Count);
+                    //
                     var rlist = CacheManager<RareList>.Instance.GetCache("RareList");
                     if (rlist == null)
                     {
                         rlist = DefaultRareList;
                         CacheManager<RareList>.Instance.AddCache(DefaultRareList);
                     }
-
+                    Instance.Clients.Client(this.Context.ConnectionId)
+                        .RareList(rlist.PokemonNames);
+                    
+                    //
+                    var pco = CacheManager<PokemonCounter>.Instance.GetCache("PokemonCounter") ?? new PokemonCounter();
+                    var pokeInfos = pco.PCounter.OrderByDescending(p => p.Count).Take(6).ToList();
+                    Instance.Clients.Client(this.Context.ConnectionId).rate(pokeInfos);
+                    //
                     Instance.Clients.Client(this.Context.ConnectionId)
                         .NewPokemons(CacheManager<EncounterInfo>
                             .Instance.GetAll()
                             .OrderBy(p => p.Iv)
                             .ToList());
-
-
-                    Instance.Clients.Client(this.Context.ConnectionId)
-                        .RareList(rlist.PokemonNames);
                     return "connection established - " + this.Context.ConnectionId;
                 }
             }

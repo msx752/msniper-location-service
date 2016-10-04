@@ -23,7 +23,8 @@ namespace MSniperService.Models
 
         public void Increase(string pokemonName)
         {
-            if (Firstdata < DateTime.Now.AddHours(24))
+            TimeSpan ts = DateTime.Now - Firstdata;
+            if (ts.TotalHours > 24)
             {
                 Firstdata = DateTime.Today;
                 for (int i = 0; i < PCounter.Count; i++)

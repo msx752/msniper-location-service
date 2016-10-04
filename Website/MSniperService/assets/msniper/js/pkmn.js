@@ -19,7 +19,7 @@ $(document).ready(function () {
         $(this.parentNode.parentNode).addClass("deleted");
         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
       
-        signalr.server.send("Rate", $(this).attr("pName")).done(function (obj) {
+        $.connection.msniperHub.server.rate($(this).attr("pName")).done(function (obj) {
            
         });
     });

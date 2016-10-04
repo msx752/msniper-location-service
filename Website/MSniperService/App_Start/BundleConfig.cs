@@ -61,8 +61,8 @@ namespace MSniperService
             bundles.Add(new ScriptBundle("~/Scripts/snipe").Include(
                 "~/assets/msniper/js/jquery.signalR-2.2.1.js",
                 "~/assets/msniper/js/pokemonImages.js",
-                "~/assets/msniper/js/pkmn.js",
                 "~/assets/msniper/js/client.js",
+                "~/assets/msniper/js/pkmn.js",
                 "~/assets/msniper/js/AutoMSniper.js"
                 ));
 
