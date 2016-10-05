@@ -22,10 +22,9 @@ namespace MSniperService.Controllers
         [Route("Home/Panel")]
         public ActionResult AdminPanel()
         {
-            var xRightList = CacheManager<RareList>.Instance.GetCache("RareList");
-            if (xRightList == null)
-                xRightList = msniperHub.DefaultRareList;
-            
+            var xRightList = msniperData.Instance.GetRareList();
+
+
             return View(xRightList);
         }
 

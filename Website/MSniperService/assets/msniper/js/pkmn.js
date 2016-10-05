@@ -1,11 +1,6 @@
 ﻿
 var identity;
-var Rarelist =
-[
-"dragonite", "snorlax", "pikachu", "charmeleon", "vaporeon", "lapras", "gyarados",
-"dragonair", "charizard", "blastoise", "magikarp", "dratini", "growlithe"
-];
-
+var Rarelist = [];
 var ulfound = $('#filterlist');
 
 $(document).ready(function () {
@@ -18,12 +13,18 @@ $(document).ready(function () {
     $(document).on('click', 'tbody#pokemon-content tr td a#link', function () {
         $(this.parentNode.parentNode).addClass("deleted");
         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
-      
-        $.connection.msniperHub.server.rate($(this).attr("pName")).done(function (obj) {
-           
+
+        signalr.server.rate($(this).attr("pName")).done(function (obj) {
+
         });
     });
 });
+
+setInterval(function () {
+    $('#datatable-column-filter tbody tr').each(function () {
+        SetTimer(this);
+    });
+}, 1000);
 
 function SetTimer(row) {
     var tmr = $(row).find("#tilltime");
@@ -56,12 +57,11 @@ function InsertToSideBar(name) {
     var lifound = findLi(name);
 
     if (lifound.length > 0) {
-        findPokemonSideBar(lifound, true);
+        findSideBarPokemon(lifound, true);
     } else {
         createSideBarPokemon(ulfound, name);
     }
 }
-
 
 function checkImportantPokemon(name) {
     var inx = Rarelist.indexOf(name);
@@ -93,9 +93,8 @@ function createSideBarPokemon(ulfound, name) {
     }
 }
 
-function findPokemonSideBar(lifound, increase) {
+function findSideBarPokemon(lifound, increase) {
     if (lifound.length > 0) {
-
         var spanfound = lifound.get(0);
         //console.log(spanfound);
         if (increase) {
@@ -110,12 +109,6 @@ function findPokemonSideBar(lifound, increase) {
         }
     }
 }
-
-setInterval(function () {
-    $('#datatable-column-filter tbody tr').each(function () {
-        SetTimer(this);
-    });
-}, 1001);
 
 function InsertJsonToPage(received) {
     //console.log(received);

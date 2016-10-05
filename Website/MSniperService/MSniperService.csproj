@@ -154,11 +154,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Cache\RareList.cs" />
+    <Compile Include="msniperHub.cs" />
     <Compile Include="Enums\HubType.cs" />
     <Compile Include="Cache\PokemonCounter.cs" />
+    <Compile Include="msniperData.cs" />
     <Compile Include="Models\ErrorHubPipelineModule.cs" />
     <Compile Include="Models\LoggingPipelineModule.cs" />
-    <Compile Include="msniperHub.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Enums\SocketCmd.cs" />
     <Compile Include="Global.asax.cs">
