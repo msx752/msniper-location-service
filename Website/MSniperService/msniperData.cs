@@ -47,7 +47,7 @@ namespace MSniperService
                 switch (groupName)
                 {
                     case HubType.Feeder:
-                        Instance.Groups.Add(connectionId, HubType.Feeder.ToString());
+                        Groups.Add(connectionId, HubType.Feeder.ToString());
                         if (Feeders.IndexOf(connectionId) == -1)
                         {
                             Feeders.Add(connectionId);
@@ -55,7 +55,7 @@ namespace MSniperService
                         }
                         break;
                     case HubType.Listener:
-                        Instance.Groups.Add(connectionId, HubType.Listener.ToString());
+                        Groups.Add(connectionId, HubType.Listener.ToString());
                         if (Listeners.IndexOf(connectionId) == -1)
                         {
                             Listeners.Add(connectionId);
@@ -99,7 +99,7 @@ namespace MSniperService
         {
             if (data.Count > 0 /* && data.Count < 20 temp flood fix */ )
             {
-                Instance.Clients.Group(HubType.Listener.ToString())
+               Clients.Group(HubType.Listener.ToString())
                     .NewPokemons(CacheManager<EncounterInfo>.Instance.NonContainsCache(data));
             }
         }
@@ -150,7 +150,7 @@ namespace MSniperService
             //feder joined
             if (Join(HubType.Feeder, connectionId))
             {
-                Instance.Clients.Client(connectionId)
+                Clients.Client(connectionId)
                     .sendIdentity(connectionId);
             }
         }
@@ -162,16 +162,16 @@ namespace MSniperService
                 //visitor joined
                 if (Join(HubType.Listener, connectionId))
                 {
-                    Instance.Clients.Client(connectionId)
+                    Clients.Client(connectionId)
                     .ServerInfo(Feeders.Count, Listeners.Count);
                     //
-                    Instance.Clients.Client(connectionId)
+                    Clients.Client(connectionId)
                         .RareList(GetRareList());
                     //
                     var pokeInfos = RateList.PCounter.OrderByDescending(p => p.Count).Take(6).ToList();
-                    Instance.Clients.Client(connectionId).rate(pokeInfos);
+                    Clients.Client(connectionId).rate(pokeInfos);
                     //
-                    Instance.Clients.Client(connectionId)
+                    Clients.Client(connectionId)
                         .NewPokemons(CacheManager<EncounterInfo>
                             .Instance.GetAll()
                             .OrderBy(p => p.Iv)
