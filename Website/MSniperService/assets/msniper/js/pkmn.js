@@ -29,7 +29,7 @@ setInterval(function () {
     $('#datatable-column-filter tbody tr').each(function () {
         SetTimer(this);
     });
-}, 1000);
+}, 1500);
 
 function SetTimer(row) {
     var tmr = $(row).find("#tilltime");
@@ -119,57 +119,60 @@ function InsertJsonToPage(received) {
     //console.log(received);
     var linkk1 = "msniper://" + received.PokemonName + "/" + received.EncounterId + "/" + received.SpawnPointId + "/" + received.Latitude + "," + received.Longitude + "/" + received.Iv;
     var linkk2 = "pokesniper2://" + received.PokemonName + "/" + received.Latitude + "," + received.Longitude;
+    var addtoList = true;
     if (snipelist.indexOf(received.PokemonName.toString().toLowerCase()) !== -1) {
         //console.log(autosnipeON);
         //console.log(parseFloat(received.Iv));
         if (autosnipeON === true && parseFloat(received.Iv) >= minIv) {
             var x = window.open(linkk1, "window", 'height=100,width=100');
             x.close();
+            addtoList = false;
         }
     }
 
     //console.log();
+    if (addtoList) {
+        $('#datatable-column-filter')
+      .DataTable()
+      .row.add([
+          $('<img />',
+          {
+              id: received.PokemonName.toString().toLowerCase(),
+              src: poimgs[ponms.indexOf(received.PokemonName.toString().toLowerCase())].toString(),
+              alt: received.PokemonName.toString().toLowerCase()
+          })
+          .addClass("avatar pull-left")
+          .get(0)
+          .outerHTML +
+          $('<a />', {})
+          .addClass("pull-left")
+          .append(received.PokemonName.toString())
+          .get(0)
+          .outerHTML,
+          "<div class=\"progress\"><div class=\"progress-bar progress-bar-success\" data-transitiongoal=\"" +
+          received.Iv.toString() +
+          "\" aria-valuenow=\"" +
+          received.Iv.toString() +
+          "\" style=\"width: " +
+          received.Iv.toString() +
+          "%;\">" +
+          received.Iv.toString() +
+          "%</div></div>",
+          $('<span/>').addClass('label label-default').append(received.Move1).get(0).outerHTML,
+          $('<span/>').addClass('label label-default').append(received.Move2).get(0).outerHTML,
+          $('<span/>').addClass('label label-default').append('UNDEFINED').get(0).outerHTML,
+          $('<span/>',
+          {
+              id: "tilltime",
+              pokemonName: received.PokemonName.toString().toLowerCase(),
+              expiration: parseInt(received.Expiration)
 
-    $('#datatable-column-filter')
-        .DataTable()
-        .row.add([
-            $('<img />',
-            {
-                id: received.PokemonName.toString().toLowerCase(),
-                src: poimgs[ponms.indexOf(received.PokemonName.toString().toLowerCase())].toString(),
-                alt: received.PokemonName.toString().toLowerCase()
-            })
-            .addClass("avatar pull-left")
-            .get(0)
-            .outerHTML +
-            $('<a />', {})
-            .addClass("pull-left")
-            .append(received.PokemonName.toString())
-            .get(0)
-            .outerHTML,
-            "<div class=\"progress\"><div class=\"progress-bar progress-bar-success\" data-transitiongoal=\"" +
-            received.Iv.toString() +
-            "\" aria-valuenow=\"" +
-            received.Iv.toString() +
-            "\" style=\"width: " +
-            received.Iv.toString() +
-            "%;\">" +
-            received.Iv.toString() +
-            "%</div></div>",
-            $('<span/>').addClass('label label-default').append(received.Move1).get(0).outerHTML,
-            $('<span/>').addClass('label label-default').append(received.Move2).get(0).outerHTML,
-            $('<span/>').addClass('label label-default').append('UNDEFINED').get(0).outerHTML,
-            $('<span/>',
-            {
-                id: "tilltime",
-                pokemonName: received.PokemonName.toString().toLowerCase(),
-                expiration: parseInt(received.Expiration)
+          }).addClass('label label-danger').append("00:00").get(0).outerHTML,
 
-            }).addClass('label label-danger').append("00:00").get(0).outerHTML,
-
-            $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk1 + '" />', {}).addClass('btn btn-primary btn-xs').append("MSniper").get(0).outerHTML,
-            $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk2 + '" />', {}).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
-        ])
-        .draw();
-    InsertToSideBar(received.PokemonName.toString().toLowerCase());
+          $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk1 + '" />', {}).addClass('btn btn-primary btn-xs').append("MSniper").get(0).outerHTML,
+          $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk2 + '" />', {}).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
+      ])
+      .draw();
+        InsertToSideBar(received.PokemonName.toString().toLowerCase());
+    }
 }

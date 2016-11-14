@@ -17,7 +17,7 @@ $(document).ready(function () {
 
     $.connection.hub.disconnected(function () {
         if (tryingToReconnect) {
-            alert("connection lost, auto reconnect activated");
+            //alert("connection lost, auto reconnect activated");
             tryingToReconnect = false;
             reConnect();
         }
