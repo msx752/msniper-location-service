@@ -10,6 +10,11 @@ $(document).ready(function () {
         $("tr.row-filter th:first-child input.form-control.input-sm").val(pokemonName.toLowerCase()).change();
     });
 
+    $(document).on('click', '#allPokemons', function () {
+       
+
+    });
+
     $(document).on('click', 'tbody#pokemon-content tr td a#link', function () {
         $(this.parentNode.parentNode).addClass("deleted");
         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
@@ -37,8 +42,8 @@ function SetTimer(row) {
                     $(event.target.parentNode.parentNode).fadeTo(3000, 0.0, function () {
                         var pkname = $(this).find('#tilltime').attr("pokemonName");
                         //console.log(pkname);
-                        //findPokemonSideBar(findLi(pkname), false);
-
+                        $('#allPokemons').text($('#datatable-column-filter').DataTable().page.info().recordsTotal);
+                        //findSideBarPokemon(findLi(pkname), false);
                         $(this).addClass("deleted");
                         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
                     });
@@ -53,11 +58,12 @@ function findLi(name) {
     return ulfound.find("span.badge." + name);
 }
 
+
 function InsertToSideBar(name) {
     var lifound = findLi(name);
 
     if (lifound.length > 0) {
-        findSideBarPokemon(lifound, true);
+        //findSideBarPokemon(lifound, true);
     } else {
         createSideBarPokemon(ulfound, name);
     }
@@ -87,7 +93,7 @@ function UpdateTop6Pokemons(data) {
 function createSideBarPokemon(ulfound, name) {
 
     if (checkImportantPokemon(name)) {
-        var strVar = "<a data-filter-item data-name-wrapper=\".text\" class=\"list-group-item\"><span class=\"text\">" + name + "<\/span><span style=\"float: right;\" class=\"badge " + name + "\">1<\/span><\/a>";
+        var strVar = "<a data-filter-item data-name-wrapper=\".text\" class=\"list-group-item\"><span class=\"text\">" + name + "<\/span><span style=\"float: right;\" class=\"badge " + name + "\">-<\/span><\/a>";
 
         $(ulfound).append($(strVar));
     }
@@ -100,11 +106,10 @@ function findSideBarPokemon(lifound, increase) {
         if (increase) {
             spanfound.innerText = (parseInt(spanfound.innerText) + 1);
         } else {
-            spanfound.innerText = (parseInt(spanfound.innerText) - 1);
             if (parseInt(spanfound.innerText) === 0) {
                 spanfound.parentNode.remove();
-            } else if (parseInt(spanfound.innerText) < 0) {
-                spanfound.innerText = (parseInt(spanfound.innerText) * -1);
+            } else {
+                spanfound.innerText = (parseInt(spanfound.innerText) - 1);
             }
         }
     }
@@ -114,6 +119,14 @@ function InsertJsonToPage(received) {
     //console.log(received);
     var linkk1 = "msniper://" + received.PokemonName + "/" + received.EncounterId + "/" + received.SpawnPointId + "/" + received.Latitude + "," + received.Longitude + "/" + received.Iv;
     var linkk2 = "pokesniper2://" + received.PokemonName + "/" + received.Latitude + "," + received.Longitude;
+    if (snipelist.indexOf(received.PokemonName.toString().toLowerCase()) !== -1) {
+        //console.log(autosnipeON);
+        //console.log(parseFloat(received.Iv));
+        if (autosnipeON === true && parseFloat(received.Iv) >= minIv) {
+            var x = window.open(linkk1, "window", 'height=100,width=100');
+            x.close();
+        }
+    }
 
     //console.log();
 

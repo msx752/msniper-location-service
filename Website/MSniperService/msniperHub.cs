@@ -38,8 +38,7 @@ namespace MSniperService
         {
             msniperData.Instance.Clients.Group(HubType.Listener.ToString())
                 .rate(msniperData.Instance.GetRateList()
-                .OrderByDescending(p => p.Count)
-                .ToList());
+                .OrderByDescending(p => p.Count).Take(6).ToList());
         }
 
         public override Task OnDisconnected(bool stopCalled)

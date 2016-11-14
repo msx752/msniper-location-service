@@ -1,4 +1,5 @@
-﻿
+﻿@using MSniperService.Models
+
 @section styles{
 
 }
@@ -16,6 +17,8 @@
         <nav id="main-nav" class="main-nav">
             <h3>RARE POKEMONS</h3>
             <ul id="filterlist" class="list-group">
+                <a data-filter-item data-name-wrapper=" " class="list-group-item"> <span class="text">All Pokemons</span><span id="allPokemons" style="float: right;" class="badge bg-success">0</span></a>
+
                 <a class="list-group-item"><span class="text">Feeders</span><span id="totalfeeder" style="float: right;" class="badge bg-success">0</span></a>
 
                 <a class="list-group-item"><span class="text">Hunters</span><span id="totalvisitor" style="float: right;" class="badge bg-success">0</span></a>
@@ -31,30 +34,45 @@
         <div class="primary-content-heading clearfix">
             <br>
             <!-- quick task modal -->
-            <div class="modal fade" id="quick-task-modal" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal fade" id="autosnipe-panel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">Quick Task</h4>
+                            <button id="autosnipe-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="autosnipe-state">
+                                Auto MSniper BETA
+                                <span class="label label-danger" id="autosnipe-state">Stopped</span>
+                            </h4>
+                            <span><b>be careful using bot will cause ban, using bot your own risk</b></span>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal" role="form">
-                                <div class="form-group">
-                                    <label for="task-title" class="control-label sr-only">Title</label>
-                                    <div class="col-sm-12">
-                                        <input type="text" class="form-control" id="task-title" placeholder="Title">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label sr-only">Description</label>
-                                    <div class="col-sm-12">
-                                        <textarea class="form-control" name="task-description" rows="5" cols="30" placeholder="Description"></textarea>
-                                    </div>
-                                </div>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save Task</button>
-                            </form>
+                            <datalist id="pkmlst">
+                                <option value="all" />
+                                @foreach (var pkmn in Enum.GetValues(typeof(PokemonId)))
+                                {
+                                    <option value="@pkmn.ToString().ToLower()" />
+                                }
+                            </datalist>
+                            <input id="autosnipe-selectlist" style="width:200px" type="text" class="form-control searchpkmn pull-left" placeholder="Add to list" autocomplete="on" list="pkmlst">
+                            <button id="autosnipe-add" type="button" class="btn btn-success">Add</button>
+                            <br/>
+                            <span><b>set minimum iv %</b></span>
+                            <br/>
+                            <input id="autosnipe-iv" style="min-width: 5px; width: 80px;" maxlength="5" value="80.0" type="text" class="form-control">
+                            <br/>
+                            <span class="label label-info">click to pokemon for remove</span>
+                            <span class="label label-warning">set msniper delay 2</span>
+                            <hr />
+                            <div id="autosnipe-selected-context">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">STOP</button>*@
+                            <button id="autosnipe-start" type="button" class="btn btn-primary">START</button>
+                            <button id="autosnipe-stop" type="button" class="btn btn-danger">STOP</button>
                         </div>
                     </div>
                 </div>
@@ -116,7 +134,7 @@
             <div class="widget-header clearfix">
                 <h3><i class="icon ion-ios-grid-view-outline"></i> <span>POKEMONS</span></h3>
                 <div class="btn-group widget-header-toolbar visible-lg">
-                    <button type="button" class="btn btn-xs btn-warning" disabled data-toggle="modal" data-target="#quick-task-modal"><i class="icon ion-ios-checkmark-outline"></i> <span>AUTO MSniper (OFF)</span></button>
+                    <button id="autosnipe" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#autosnipe-panel"><i class="icon ion-ios-checkmark-outline"></i> <span>AUTO MSniper (OFF)</span></button>
                 </div>
             </div>
             <div class="widget-content">

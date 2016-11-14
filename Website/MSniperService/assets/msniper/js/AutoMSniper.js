@@ -1,8 +1,9 @@
 ﻿/*        auto snipe          */
 var autosnipeON = false;
 var panelisvisible = false;
-var snipelist = ["dragonite", "snorlax"];
-var minIv = 100.0;
+var snipelist = [];
+var minIv = 80.0;
+
 $(document).ready(function () {
 
     $("#autosnipe")
@@ -83,16 +84,20 @@ $(document).ready(function () {
 function ChangeState(sate) {
     var autostate = "Auto MSniper BETA  ";
     if (sate === "stopped") {
-        autostate += "<span class=\"tag tag-danger\" id=\"autosnipe-state\">Stopped<\/span>";
+        autostate += "<span class=\"label label-danger\" id=\"autosnipe-state\">Stopped<\/span>";
         autosnipeON = false;
         $('#autosnipe-start').css("display", "inline");
         $('#autosnipe-stop').css("display", "none");
         $('#autosnipe').text("Auto MSniper [OFF]");
+        $('#autosnipe').removeClass('btn-success');
+        $('#autosnipe').addClass('btn-danger');
     } else {
-        autostate += "<span class=\"tag tag-success\" id=\"autosnipe-state\">Running<\/span>";
+        autostate += "<span class=\"label label-success\" id=\"autosnipe-state\">Running<\/span>";
         $('#autosnipe-start').css("display", "none");
         $('#autosnipe-stop').css("display", "inline");
         $('#autosnipe').text("Auto MSniper [ON]");
+        $('#autosnipe').removeClass('btn-danger');
+        $('#autosnipe').addClass('btn-success');
         var str = $('#autosnipe-iv').val();
         minIv = parseFloat(str);
         if (minIv < 0) {
@@ -153,4 +158,3 @@ function PokemonRemoveFromList(pokemonName) {
     if (snipelist.indexOf(pokemonName) !== -1)
         snipelist.splice(snipelist.indexOf(snipelist.indexOf(pokemonName), 1));
 }
-

@@ -52,6 +52,8 @@ $(document).ready(function () {
         for (var i = 0; i < obj.length; i++) {
             InsertJsonToPage(obj[i]);
         }
+        $('#allPokemons').text($('#datatable-column-filter').DataTable().page.info().recordsTotal);
+        //
     };
 
     $.connection.hub.start().done(function () {
