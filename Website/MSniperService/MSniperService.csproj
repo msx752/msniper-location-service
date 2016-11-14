@@ -307,7 +307,6 @@
     <Content Include="assets\fonts\ionicons.woff" />
     <Content Include="assets\fonts\josefinslab-semibold-webfont.ttf" />
     <Content Include="assets\fonts\josefinslab-semibold-webfont.woff" />
-    <None Include="Properties\PublishProfiles\service.msniper.com - Web Deploy.pubxml" />
     <Content Include="Pkmn\abra.png" />
     <Content Include="Pkmn\aerodactyl.png" />
     <Content Include="Pkmn\alakazam.png" />
@@ -490,6 +489,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Panel.cshtml" />
     <Content Include="Views\Home\Index - Copy.cshtml" />
+    <None Include="Properties\PublishProfiles\msniper.com - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -534,8 +534,6 @@
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>-->
- 
-
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
