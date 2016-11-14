@@ -37,7 +37,7 @@ function SetTimer(row) {
                     $(event.target.parentNode.parentNode).fadeTo(3000, 0.0, function () {
                         var pkname = $(this).find('#tilltime').attr("pokemonName");
                         //console.log(pkname);
-                        findPokemonSideBar(findLi(pkname), false);
+                        //findPokemonSideBar(findLi(pkname), false);
 
                         $(this).addClass("deleted");
                         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
