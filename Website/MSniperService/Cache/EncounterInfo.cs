@@ -13,7 +13,7 @@ namespace MSniperService.Models
 {
     public class EncounterInfo
     {
-        private bool disposed;
+        //private bool disposed;
 
         public string EncounterId { get; set; }
         public double Iv { get; set; }
@@ -21,7 +21,8 @@ namespace MSniperService.Models
         public string Longitude { get; set; }
         public string Move1 { get; set; }
         public string Move2 { get; set; }
-        public string PokemonName { get; set; }
+        public string PokemonName => ((MSniperService.Models.PokemonId)PokemonId).ToString();
+        public int PokemonId { get; set; }
         public string SpawnPointId { get; set; }
         public long Expiration { get; set; }
 
@@ -34,13 +35,13 @@ namespace MSniperService.Models
         {
             return DateConverter.JavaTimeStampToDateTime(Expiration);
         }
-        public string GetLink1()
-        {
-            return $"msniper://{PokemonName}/{EncounterId}/{SpawnPointId}/{Latitude},{Longitude}/{Iv}";
-        }
-        public string GetLink2()
-        {
-            return $"pokesniper2://{PokemonName}/{Latitude},{Longitude}";
-        }
+        //public string GetLink1()
+        //{
+        //    return $"msniper://{PokemonName}/{EncounterId}/{SpawnPointId}/{Latitude},{Longitude}/{Iv}";
+        //}
+        //public string GetLink2()
+        //{
+        //    return $"pokesniper2://{PokemonName}/{Latitude},{Longitude}";
+        //}
     }
 }
