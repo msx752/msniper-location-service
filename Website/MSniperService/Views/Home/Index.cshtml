@@ -52,7 +52,7 @@
                                 <option value="all" />
                                 @foreach (var pkmn in Enum.GetValues(typeof(PokemonId)))
                                 {
-                                <option value="@pkmn.ToString().ToLower()" />
+                                    <option value="@pkmn.ToString().ToLower()" />
                                 }
                             </datalist>
                             <input id="autosnipe-selectlist" style="width:200px" type="text" class="form-control searchpkmn pull-left" placeholder="Add to list" autocomplete="on" list="pkmlst">
@@ -93,12 +93,15 @@
                             </h4>
                             <img src="~/assets/img/identity.jpg" />
                             <br />
-                            <h4>please enter your bot's Identity of MSniperService</h4><br />
+                            <h4>please enter your bot's Identity of MSniperService</h4>
+                            <br />
+                            <span class="btn-info"> MSNIPER BUTTON NOT pokesniper2 for snipe</span>
+                            <br />
                             <span class="btn-success"><b>this feature directly sends pokemon to your identified necrobot,so you dont have to use msniper application.</b></span>
                             <br />
                             <span class="btn-warning"><b>ATTENTION1: identity is going to change, when bot reconnects or closes. You have to update here.<br />becareful if you use with mobile phone, your mobile phone may affect badly such web-browser lagging </b></span>
-                            <br/>
-                            <span  class="btn-danger"><b>IMPORTANT: if you activated this feature, you can't snipe with msniper application becareful. </b></span>
+                            <br />
+                            <span class="btn-danger"><b>IMPORTANT: if you activated this feature, you can't snipe with msniper application becareful. </b></span>
                         </div>
                         <div class="modal-body">
                             <input id="idmsniper-selectlist" style="width:400px" type="text" class="form-control searchpkmn pull-left" placeholder="00000000-0000-0000-0000-000000000000" autocomplete="on">

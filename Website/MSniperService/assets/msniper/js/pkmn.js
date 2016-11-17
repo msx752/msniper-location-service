@@ -142,7 +142,7 @@ function InsertJsonToPage(received) {
         //console.log(parseFloat(received.Iv));
 
         if (autosnipeON === true && identifiedNecrobot === true && parseFloat(received.Iv) >= minIv) {
-            signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function(obj) {  
+            signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function (obj) {
             });
 
             signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
@@ -159,7 +159,7 @@ function InsertJsonToPage(received) {
     }
 
     //console.log();
-    if (addtoList) {
+    if (addtoList && identifiedNecrobot === false/* for mobile phone performance otherwise ram will swollen */) {
         $('#datatable-column-filter')
       .DataTable()
       .row.add([
