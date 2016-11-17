@@ -19,7 +19,10 @@ namespace MSniperService
             PokemonNames = new List<string>(){
                     "dragonite", "snorlax", "pikachu", "charmeleon",
                     "vaporeon", "lapras", "gyarados","dragonair", "charizard",
-                    "blastoise", "magikarp", "dratini", "arcanine","aerodactyl","onix","mrmime" }
+                    "blastoise", "magikarp", "dratini", "arcanine","aerodactyl",
+                    "onix","mrmime","electabuzz","zapdos","articuno","ditto"
+
+            }
         };
         public static readonly List<string> Feeders = new List<string>();
         public static readonly List<string> Listeners = new List<string>();
