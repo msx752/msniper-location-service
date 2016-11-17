@@ -29,12 +29,12 @@ $(document).ready(function () {
         //$('#autosnipe').text("Auto MSniper BETA");
     });
 
-    $('#autosnipe-close').click(function () {
-        $('#autosnipe-stop').trigger("click");
+    //$('#autosnipe-close').click(function () {
+    //    $('#autosnipe-stop').trigger("click");
 
-        autosnipeON = false;
-    }
-        );
+    //    autosnipeON = false;
+    //}
+    //    );
 
 
     $('#autosnipe-start').click(function () {
@@ -135,7 +135,6 @@ function PokemonAddToList(pokemonName) {
                     PokemonRemoveFromList(this.alt);
                 }
                 );
-
             $('#autosnipe-selected-context .' + pokemonName).tooltip();
             if (snipelist.indexOf(pokemonName) === -1)
                 snipelist.push(pokemonName);

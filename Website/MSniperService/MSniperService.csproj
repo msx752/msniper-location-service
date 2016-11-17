@@ -154,6 +154,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Cache\RareList.cs" />
+    <Compile Include="Models\MSniperLink.cs" />
     <Compile Include="msniperHub.cs" />
     <Compile Include="Enums\HubType.cs" />
     <Compile Include="Cache\PokemonCounter.cs" />
@@ -183,6 +184,7 @@
     <Content Include="assets\css\font-awesome.min.css" />
     <Content Include="assets\css\ionicons.css" />
     <Content Include="assets\css\main.css" />
+    <Content Include="assets\img\identity.jpg" />
     <Content Include="assets\img\msniper-logo.png" />
     <Content Include="assets\msniper\css\msniper.css" />
     <Content Include="assets\css\skins\blue-light-nav.css" />
@@ -291,6 +293,7 @@
     <Content Include="assets\js\custom-maps.js" />
     <Content Include="assets\js\custom-page.js" />
     <Content Include="assets\js\custom-table.js" />
+    <Content Include="assets\msniper\js\IdentifiedMSniper.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />

@@ -52,16 +52,16 @@
                                 <option value="all" />
                                 @foreach (var pkmn in Enum.GetValues(typeof(PokemonId)))
                                 {
-                                    <option value="@pkmn.ToString().ToLower()" />
+                                <option value="@pkmn.ToString().ToLower()" />
                                 }
                             </datalist>
                             <input id="autosnipe-selectlist" style="width:200px" type="text" class="form-control searchpkmn pull-left" placeholder="Add to list" autocomplete="on" list="pkmlst">
                             <button id="autosnipe-add" type="button" class="btn btn-success">Add</button>
-                            <br/>
+                            <br />
                             <span><b>set minimum iv %</b></span>
-                            <br/>
+                            <br />
                             <input id="autosnipe-iv" style="min-width: 5px; width: 80px;" maxlength="5" value="80.0" type="text" class="form-control">
-                            <br/>
+                            <br />
                             <span class="label label-info">click to pokemon for remove</span>
                             <span class="label label-warning">set msniper delay 2</span>
                             <hr />
@@ -73,6 +73,45 @@
                             @*<button type="button" class="btn btn-secondary" data-dismiss="modal">STOP</button>*@
                             <button id="autosnipe-start" type="button" class="btn btn-primary">START</button>
                             <button id="autosnipe-stop" type="button" class="btn btn-danger">STOP</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end quick task modal -->
+            <br />
+            <!-- quick task modal -->
+            <div class="modal fade" id="idmsniper-panel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button id="idmsniper-close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="idmsniper-state">
+                                Identified Necrobot BETA
+                                <span class="label label-danger" id="idmsniper-state">Stopped</span>
+                            </h4>
+                            <img src="~/assets/img/identity.jpg" />
+                            <br />
+                            <h4>please enter your bot's Identity of MSniperService</h4><br />
+                            <span class="btn-success"><b>this feature directly sends pokemon to your identified necrobot,so you dont have to use msniper application.</b></span>
+                            <br />
+                            <span class="btn-warning"><b>ATTENTION1: identity is going to change, when bot reconnects or closes. You have to update here.<br />becareful if you use with mobile phone, your mobile phone may affect badly such web-browser lagging </b></span>
+                            <br/>
+                            <span  class="btn-danger"><b>IMPORTANT: if you activated this feature, you can't snipe with msniper application becareful. </b></span>
+                        </div>
+                        <div class="modal-body">
+                            <input id="idmsniper-selectlist" style="width:400px" type="text" class="form-control searchpkmn pull-left" placeholder="00000000-0000-0000-0000-000000000000" autocomplete="on">
+                            <button id="idmsniper-add" type="button" class="btn btn-success">Add</button>
+                            <br />
+                            <div id="idmsniper-selected-context">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            @*<button type="button" class="btn btn-secondary" data-dismiss="modal">STOP</button>*@
+                            <button id="idmsniper-start" type="button" class="btn btn-primary">ENABLE</button>
+                            <button id="idmsniper-stop" type="button" class="btn btn-danger">DISABLE</button>
                         </div>
                     </div>
                 </div>
@@ -92,39 +131,39 @@
                 <h3 class="sr-only">INFO</h3>
                 <div id="top6pokemons" class="row">
                     @*<div class="col-xs-6 col-sm-2 text-center"><div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>1. <span>AbraAbraAbra</span></p>
-                        </div></div>
-                    <div class="col-xs-6 col-sm-2 text-center">
-                        <div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>2. <span>Abra</span></p>
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>1. <span>AbraAbraAbra</span></p>
+                            </div></div>
+                        <div class="col-xs-6 col-sm-2 text-center">
+                            <div class="quick-info horizontal">
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>2. <span>Abra</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-2 text-center">
-                        <div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>3. <span>Abra</span></p>
+                        <div class="col-xs-6 col-sm-2 text-center">
+                            <div class="quick-info horizontal">
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>3. <span>Abra</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-2 text-center">
-                        <div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>4. <span>Abra</span></p>
+                        <div class="col-xs-6 col-sm-2 text-center">
+                            <div class="quick-info horizontal">
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>4. <span>Abra</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-2 text-center">
-                        <div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>5. <span>Abra</span></p>
+                        <div class="col-xs-6 col-sm-2 text-center">
+                            <div class="quick-info horizontal">
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>5. <span>Abra</span></p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-2 text-center">
-                        <div class="quick-info horizontal">
-                            <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
-                            <p>6. <span>Abra</span></p>
-                        </div>
-                    </div>*@
+                        <div class="col-xs-6 col-sm-2 text-center">
+                            <div class="quick-info horizontal">
+                                <img src="http://msniper.com/pkmn1x/abra.png" width="60" alt="abra" class="media-object img-circle pull-left">
+                                <p>6. <span>Abra</span></p>
+                            </div>
+                        </div>*@
                 </div>
             </div>
             <!-- END QUICK SUMMARY INFO -->
@@ -134,7 +173,8 @@
             <div class="widget-header clearfix">
                 <h3><i class="icon ion-ios-grid-view-outline"></i> <span>POKEMONS</span></h3>
                 <div class="btn-group widget-header-toolbar">
-                    <button id="autosnipe" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#autosnipe-panel"><i class="icon ion-ios-checkmark-outline"></i> <span>AUTO MSniper (OFF)</span></button>
+                    <button id="idmsniper" style="margin-right:15px; margin-top:15px" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#idmsniper-panel"><i class="icon ion-paper-airplane"></i> <span>Identified Necrobot (OFF)</span></button>
+                    <button id="autosnipe" style="margin-top:15px;" type="button" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#autosnipe-panel"><i class="icon ion-ios-checkmark-outline"></i> <span>AUTO MSniper (OFF)</span></button>
                 </div>
             </div>
             <div class="widget-content">
@@ -142,7 +182,7 @@
                     <table id="datatable-column-filter" class="table table-sorting table-striped table-hover datatable project-list">
                         <thead>
                             <tr>
-                                <th>PokemonName</th>
+                                <th>P.Name</th>
                                 <th>IV %</th>
                                 <th>Move1</th>
                                 <th>Move2</th>

@@ -4,6 +4,7 @@ var Rarelist = [];
 var ulfound = $('#filterlist');
 
 $(document).ready(function () {
+
     $(document).on('click', '[data-filter-item]', function () {
         var nameWrapper = $(this).data('name-wrapper') || '.text';
         var pokemonName = $(this).children(nameWrapper).text();
@@ -11,17 +12,33 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#allPokemons', function () {
-       
+
 
     });
 
-    $(document).on('click', 'tbody#pokemon-content tr td a#link', function () {
+    $(document).on('click', 'tbody#pokemon-content tr td a#link', function (e) {
         $(this.parentNode.parentNode).addClass("deleted");
         $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
 
         signalr.server.rate($(this).attr("pName")).done(function (obj) {
-
         });
+
+        if (identifiedNecrobot) {
+            console.log(this.href);
+            signalr.server.identifiednecrobot(IdentityList, this.href.toString()).done(function (obj) {
+            });
+            return false;
+        }
+
+    });
+    $(document).on('click', 'tbody#pokemon-content tr td a#link2', function (e) {
+        $(this.parentNode.parentNode).addClass("deleted");
+        $('#datatable-column-filter').DataTable().rows('.deleted').remove().draw();
+
+        signalr.server.rate($(this).attr("pName")).done(function (obj) {
+        });
+
+
     });
 });
 
@@ -123,10 +140,21 @@ function InsertJsonToPage(received) {
     if (snipelist.indexOf(received.PokemonName.toString().toLowerCase()) !== -1) {
         //console.log(autosnipeON);
         //console.log(parseFloat(received.Iv));
-        if (autosnipeON === true && parseFloat(received.Iv) >= minIv) {
+
+        if (autosnipeON === true && identifiedNecrobot === true && parseFloat(received.Iv) >= minIv) {
+            signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function(obj) {  
+            });
+
+            signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
+            });
+            addtoList = false;
+        }
+        else if (autosnipeON === true && identifiedNecrobot === false && parseFloat(received.Iv) >= minIv) {
             var x = window.open(linkk1, "window", 'height=100,width=100');
             x.close();
             addtoList = false;
+            signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
+            });
         }
     }
 
@@ -144,7 +172,7 @@ function InsertJsonToPage(received) {
           .addClass("avatar pull-left")
           .get(0)
           .outerHTML +
-          $('<a />', {})
+          $('<a  class=\"hidden-xs hidden-sm\" />', {})
           .addClass("pull-left")
           .append(received.PokemonName.toString())
           .get(0)
@@ -170,7 +198,7 @@ function InsertJsonToPage(received) {
           }).addClass('label label-danger').append("00:00").get(0).outerHTML,
 
           $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk1 + '" />', {}).addClass('btn btn-primary btn-xs').append("MSniper").get(0).outerHTML,
-          $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk2 + '" />', {}).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
+          $('<a id="link2" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk2 + '" />', {}).addClass('btn btn-default btn-xs').append("Pokesniper2").get(0).outerHTML
       ])
       .draw();
         InsertToSideBar(received.PokemonName.toString().toLowerCase());

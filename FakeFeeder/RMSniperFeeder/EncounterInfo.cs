@@ -12,4 +12,13 @@
         public string SpawnPointId { get; set; }
         public long Expiration { get; set; }
     }
+    public class MSniperInfo2
+    {
+        public short PokemonId { get; set; }
+        public ulong EncounterId { get; set; }
+        public string SpawnPointId { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public double Iv { get; set; }
+    }
 }

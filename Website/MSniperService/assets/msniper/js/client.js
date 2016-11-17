@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $.connection.hub.reconnecting(function () {
         tryingToReconnect = true;
-        alert("connection lost, trying to reconnect");
+        alert("connection lost, trying to reconnect please wait :)");
         reConnect();
     });
 
@@ -58,7 +58,7 @@ $(document).ready(function () {
 
     $.connection.hub.start().done(function () {
         signalr.server.recvIdentity().done(function (obj) {
-            console.log(obj);//connection established
+            //console.log(obj);//connection established
         });
     });
 
@@ -66,7 +66,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $.connection.hub.start().done(function () {
                 signalr.server.recvIdentity().done(function (obj) {
-                    console.log(obj);//connection established
+                    //console.log(obj);//connection established
                 });
             });
         }, 30000); // Restart connection after 30 seconds.

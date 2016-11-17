@@ -53,6 +53,11 @@ namespace MSniperService
             msniperData.Instance.Rate(pokemonName);
         }
 
+        public void identifiednecrobot(List<string> identities, string link)
+        {
+            msniperData.Instance.identifiednecrobot(identities, link);
+        }
+
         public void Identity()
         {
             msniperData.Instance.Identity(this.Context.ConnectionId);

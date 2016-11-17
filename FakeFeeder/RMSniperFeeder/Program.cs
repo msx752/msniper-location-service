@@ -38,7 +38,7 @@ namespace RMSniperFeeder
         {
             try
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     CloneConnection clone = new CloneConnection(i+1);
                     clone.Run();

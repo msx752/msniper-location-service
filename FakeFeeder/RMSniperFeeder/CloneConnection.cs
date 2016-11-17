@@ -27,6 +27,8 @@ namespace RMSniperFeeder
         {
             connection = new HubConnection("http://localhost:55774/signalr", useDefaultUrl: false);
             msniperHub = connection.CreateHubProxy("msniperHub");
+            msniperHub.On<MSniperInfo2>("msvc", stock =>
+                Console.WriteLine("PokemonId {0} EncounterId {1}", stock.PokemonId, stock.EncounterId));
             connection.Received += Connection_Received;
             connection.Reconnecting += Connection_Reconnecting;
             connection.Reconnected += Connection_Reconnected;
@@ -70,6 +72,7 @@ namespace RMSniperFeeder
                         Console.WriteLine($"[{numb}]sending.. {data.Count} count");
                         msniperHub.Invoke("RecvPokemons", data);
                         break;
+                        
 
                     case "Exceptions":
                         var defaultc = Console.ForegroundColor;

@@ -63,7 +63,8 @@ namespace MSniperService
                 "~/assets/msniper/js/pokemonImages.js",
                 "~/assets/msniper/js/client.js",
                 "~/assets/msniper/js/pkmn.js",
-                "~/assets/msniper/js/AutoMSniper.js"
+                "~/assets/msniper/js/AutoMSniper.js",
+                "~/assets/msniper/js/IdentifiedMSniper.js"
                 ));
 
             BundleTable.EnableOptimizations = false;//for now

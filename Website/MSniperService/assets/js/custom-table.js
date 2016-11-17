@@ -30,8 +30,15 @@ $(document).ready(function () {
 
 
         $('#datatable-column-filter thead').append('<tr class="row-filter"><th></th><th></th><th></th><th></th><th></th></tr>');
+        var count = 1;
         $('#datatable-column-filter thead .row-filter th').each(function () {
-            $(this).html('<input type="text" class="form-control input-sm" placeholder="Search...">');
+            if (count > 2) {
+                $(this).html('<input type="text" class="form-control input-sm hidden-xs hidden-sm" placeholder="Search...">');
+            } else {
+
+                $(this).html('<input type="text" class="form-control input-sm" placeholder="Search...">');
+            }
+            count++;
         });
 
         $('#datatable-column-filter .row-filter input').on('keyup change', function () {
