@@ -27,7 +27,7 @@ namespace MSniperService.Models
 
         public string UniqueKey()//for caching
         {
-            return $"{EncounterId}-{SpawnPointId}";
+            return $"{EncounterId}-{PokemonName}";
         }
 
         public DateTime GetDateTime()
