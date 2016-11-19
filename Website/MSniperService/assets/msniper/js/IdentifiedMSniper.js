@@ -45,7 +45,7 @@ $(document)
 
         $("#idmsniper")
        .click(function myfunction() {
-           console.log("identified necrobbot is opened");
+           //console.log("identified necrobbot is opened");
 
            if (identifiedNecrobot !== true)
                $('#idmsniper-stop').css("display", "none");

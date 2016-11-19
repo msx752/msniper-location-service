@@ -24,7 +24,7 @@ $(document).ready(function () {
         });
 
         if (identifiedNecrobot) {
-            console.log(this.href);
+            //console.log(this.href);
             signalr.server.identifiednecrobot(IdentityList, this.href.toString()).done(function (obj) {
             });
             return false;
@@ -147,7 +147,9 @@ function InsertJsonToPage(received) {
 
             signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
             });
-            //addtoList = false;
+            addtoList = false;
+
+            console.log("-autosnipe ON -identifiedNecrobot ON");
         }
         else if (autosnipeON === true && identifiedNecrobot === false && parseFloat(received.Iv) >= minIv) {
             var x = window.open(linkk1, "window", 'height=100,width=100');
@@ -155,11 +157,22 @@ function InsertJsonToPage(received) {
             addtoList = false;
             signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
             });
+            console.log("-autosnipe ON -identifiedNecrobot OFF");
         }
     }
 
+    if (autosnipeON === false && identifiedNecrobot === true) {
+        signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function (obj) {
+        });
+
+        signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
+        });
+        addtoList = true;
+        console.log("-autosnipe OFF -identifiedNecrobot ON");
+    }
+
     //console.log();
-    if (addtoList && identifiedNecrobot === false/* for mobile phone performance otherwise ram will swollen */) {
+    if (addtoList) {
         $('#datatable-column-filter')
       .DataTable()
       .row.add([
