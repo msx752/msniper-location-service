@@ -17,8 +17,8 @@ namespace MSniperService
         static msniperHub()
         {
             PokemonTimer = new Timer(pokemonTick, null,
-                (int)new TimeSpan(0, 0, 9).TotalMilliseconds,
-                (int)new TimeSpan(0, 0, 9).TotalMilliseconds);
+                (int)new TimeSpan(0, 0, 10).TotalMilliseconds,
+                (int)new TimeSpan(0, 0, 10).TotalMilliseconds);
 
             PokemonTop5Timer = new Timer(pokemonTop5Tick, null,
                 (int)new TimeSpan(0, 1, 0).TotalMilliseconds,
