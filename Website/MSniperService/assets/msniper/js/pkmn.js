@@ -147,7 +147,7 @@ function InsertJsonToPage(received) {
 
             signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
             });
-            addtoList = false;
+            //addtoList = false;
         }
         else if (autosnipeON === true && identifiedNecrobot === false && parseFloat(received.Iv) >= minIv) {
             var x = window.open(linkk1, "window", 'height=100,width=100');
