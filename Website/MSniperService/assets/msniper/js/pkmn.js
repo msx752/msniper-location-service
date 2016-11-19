@@ -162,13 +162,13 @@ function InsertJsonToPage(received) {
     }
 
     if (autosnipeON === false && identifiedNecrobot === true) {
-        signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function (obj) {
-        });
+        //signalr.server.identifiednecrobot(IdentityList, linkk1.toString()).done(function (obj) {
+        //});
 
-        signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
-        });
+        //signalr.server.rate(received.PokemonName.toString().toLowerCase()).done(function (obj) {
+        //});
         addtoList = true;
-        console.log("-autosnipe OFF -identifiedNecrobot ON");
+        //console.log("-autosnipe OFF -identifiedNecrobot ON");
     }
 
     //console.log();
