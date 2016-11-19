@@ -59,16 +59,21 @@ public sealed class CacheManager<T> where T : class
         var lst = new List<T>();
         foreach (var item in Keys)
         {
+            object dat = null;
             if (typeof(T) == typeof(EncounterInfo))
             {
-                object dat = GetCache((item as EncounterInfo)?.UniqueKey());
-                if (dat == null)
+                if (CheckAddState(item as EncounterInfo))
                 {
-                    if (CheckAddState(item as EncounterInfo))
+                    dat = GetCache((item as EncounterInfo)?.UniqueKey());
+                    if (dat == null)
                     {
                         AddCache(item as T);
                         lst.Add(item);
                     }
+                }
+                else
+                {
+                    continue;
                 }
             }
         }
