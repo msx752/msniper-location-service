@@ -87,11 +87,11 @@ public sealed class CacheManager<T> where T : class
             PokemonId poid = (PokemonId)Enum.Parse(typeof(PokemonId), item.PokemonName);
             PokemonGrades poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
             if (poGrade == PokemonGrades.VeryCommon)
-                return item.Iv >= 65;
-            else if (poGrade == PokemonGrades.Common)
                 return item.Iv >= 55;
+            else if (poGrade == PokemonGrades.Common)
+                return item.Iv >= 45;
             else if (poGrade == PokemonGrades.Popular)
-                return item.Iv >= 35;
+                return item.Iv >= 15;
             else if (poGrade == PokemonGrades.Rare)
                 return item.Iv >= 15;
             else if (poGrade == PokemonGrades.Popular)
