@@ -107,6 +107,8 @@ namespace MSniperService
                 if (index != -1)
                 {
                     var mslnk = MSRGX(link);
+                    if (mslnk == null)
+                        break;
                     Clients.Client(identities[i]).msvc(mslnk);
                     continue;
                 }
@@ -132,16 +134,17 @@ namespace MSniperService
 
             var r = new Regex(re0 + re1 + re2 + re3 + re4 + re5 + re6 + re7 + re8 + re9 + re10 + re11, RegexOptions.IgnoreCase | RegexOptions.Singleline);
             var m = r.Match(link);
-            MSniperInfo2 mslnk = new MSniperInfo2();
-            
+            MSniperInfo2 mslnk = null;
+
             if (m.Success)
             {
+                mslnk = new MSniperInfo2();
                 mslnk.EncounterId = ulong.Parse(m.Groups[4].Value);
                 mslnk.SpawnPointId = m.Groups[6].Value;
                 mslnk.Latitude = double.Parse(m.Groups[8].Value, CultureInfo.InvariantCulture);
-                mslnk .Longitude= double.Parse(m.Groups[10].Value, CultureInfo.InvariantCulture);
-                mslnk .Iv= double.Parse(m.Groups[12].Value);
-                var name = (PokemonId) Enum.Parse(typeof(PokemonId), m.Groups[2].Value);
+                mslnk.Longitude = double.Parse(m.Groups[10].Value, CultureInfo.InvariantCulture);
+                mslnk.Iv = double.Parse(m.Groups[12].Value, CultureInfo.InvariantCulture);
+                var name = (PokemonId)Enum.Parse(typeof(PokemonId), m.Groups[2].Value);
                 mslnk.PokemonId = (short)name;
                 return mslnk;
             }
