@@ -33,26 +33,21 @@ namespace MSniperService.Statics
         PokemonId.Krabby,
         PokemonId.Voltorb,
         PokemonId.Goldeen,
-        PokemonId.Eevee,
-        PokemonId.Magikarp
  } }
  ,
 {
 PokemonGrades.Common, new List<PokemonId> {
-        PokemonId.Bulbasaur,
-        PokemonId.Charmander ,
+        PokemonId.Magikarp,
         PokemonId.Squirtle,
         PokemonId.Kakuna,
         PokemonId.Pidgeotto,
         PokemonId.Raticate,
         PokemonId.Spearow ,
         PokemonId.Arbok ,
-        PokemonId.Pikachu ,
         PokemonId.Sandslash,
         PokemonId.Clefable,
         PokemonId.Jigglypuff ,
         PokemonId.Golbat,
-        PokemonId.Diglett,
         PokemonId.Persian ,
         PokemonId.Psyduck ,
         PokemonId.Growlithe,
@@ -74,13 +69,14 @@ PokemonGrades.Common, new List<PokemonId> {
         PokemonId.Rhyhorn ,
         PokemonId.Horsea,
         PokemonId.Staryu,
-        PokemonId.Jynx,
+        PokemonId.Diglett,
 }
 },
 {
 PokemonGrades.Popular, new List<PokemonId>()
 {
-        PokemonId.Dratini,
+        PokemonId.Bulbasaur,
+        PokemonId.Charmander ,
         PokemonId.Butterfree,
         PokemonId.Spearow,
         PokemonId.Nidorina,
@@ -107,15 +103,19 @@ PokemonGrades.Popular, new List<PokemonId>()
          PokemonId.Lickitung,
          PokemonId.Weezing,
         PokemonId.Seaking,
-        PokemonId.Starmie
+        PokemonId.Starmie,
+        PokemonId.Eevee,
+        PokemonId.Beedrill,
+        PokemonId.Pidgeot,
+         PokemonId.Pinsir ,
+        PokemonId.Jynx,
 }
 },
 {
  PokemonGrades.Rare, new List<PokemonId>()
  {
-        PokemonId.Beedrill,
-        PokemonId.Pidgeot,
-         PokemonId. Pinsir ,
+        PokemonId.Dratini,
+        PokemonId.Pikachu ,
          PokemonId.Snorlax ,
          PokemonId.Slowbro ,
          PokemonId.MrMime,
@@ -130,7 +130,7 @@ PokemonGrades.Popular, new List<PokemonId>()
          PokemonId.Arcanine,
          PokemonId.Muk,
          PokemonId.Exeggutor,
-         PokemonId.Tangela ,
+         PokemonId.Tangela
  }
 } ,
 {
@@ -155,6 +155,7 @@ PokemonGrades.Popular, new List<PokemonId>()
          PokemonId.Dewgong,
          PokemonId.Marowak,
          PokemonId.Gengar ,
+         PokemonId.Omastar,
  }
 },
 {
@@ -185,6 +186,9 @@ PokemonGrades.Popular, new List<PokemonId>()
         public static PokemonGrades GetPokemonGrade(PokemonId id)
         {
             var first = pokemonByGrades.FirstOrDefault(p => p.Value.Contains(id));
+            if (first.Value == null)
+                return PokemonGrades.NONE;
+
             return first.Key;
         }
     }

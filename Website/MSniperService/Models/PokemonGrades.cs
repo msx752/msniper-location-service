@@ -14,6 +14,7 @@ namespace MSniperService.Models
         VeryRare,
         Special,
         Epic,
-        Legendary
+        Legendary,
+        NONE
     }
 }

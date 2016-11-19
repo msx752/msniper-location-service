@@ -15,8 +15,8 @@ namespace RMSniperFeeder
         {
             var PkmnLocations = new List<EncounterInfo>();
 
-            int c = rn.Next(1, 2);
-            for (int i = 1; i < c + 30; i++)
+            int c = rn.Next(1, 30);
+            for (int i = 1; i < c ; i++)
             {
                 PkmnLocations.Add(new EncounterInfo()
                 {
@@ -38,7 +38,7 @@ namespace RMSniperFeeder
         {
             try
             {
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < 10; i++)
                 {
                     CloneConnection clone = new CloneConnection(i+1);
                     clone.Run();

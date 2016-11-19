@@ -15,7 +15,6 @@ public sealed class CacheManager<T> where T : class
     private static readonly object syncRoot = new Object();
     private readonly ObjectCache cache = null;
     private static CacheEntryRemovedCallback callback = null;
-
     private CacheManager()
     {
         cache = MemoryCache.Default;
@@ -63,15 +62,52 @@ public sealed class CacheManager<T> where T : class
             object dat = null;
             if (typeof(T) == typeof(EncounterInfo))
             {
-                dat = GetCache((item as EncounterInfo)?.UniqueKey());
-                if (dat == null)
+                if (CheckAddState(item as EncounterInfo))
                 {
-                    AddCache(item as T);
-                    lst.Add(item);
+                    dat = GetCache((item as EncounterInfo)?.UniqueKey());
+                    if (dat == null)
+                    {
+                        AddCache(item as T);
+                        lst.Add(item);
+                    }
+                }
+                else
+                {
+                    continue;
                 }
             }
         }
         return lst;
+    }
+
+    public bool CheckAddState(EncounterInfo item)
+    {
+        try
+        {
+            PokemonId poid = (PokemonId)Enum.Parse(typeof(PokemonId), item.PokemonName);
+            PokemonGrades poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
+            if (poGrade == PokemonGrades.VeryCommon)
+                return item.Iv >= 65;
+            else if (poGrade == PokemonGrades.Common)
+                return item.Iv >= 55;
+            else if (poGrade == PokemonGrades.Popular)
+                return item.Iv >= 35;
+            else if (poGrade == PokemonGrades.Rare)
+                return item.Iv >= 15;
+            else if (poGrade == PokemonGrades.Popular)
+                return item.Iv >= 0;
+            else if (poGrade == PokemonGrades.Epic)
+                return item.Iv >= 0;
+            else if (poGrade == PokemonGrades.Legendary)
+                return item.Iv >= 0;
+            else if (poGrade == PokemonGrades.NONE)
+                return item.Iv >= 0;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+        return false;
     }
 
     public T GetCache(string Key)
