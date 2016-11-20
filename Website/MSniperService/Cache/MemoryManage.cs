@@ -95,10 +95,26 @@ public sealed class CacheManager<T> where T : class
                 poid == PokemonId.Poliwag ||
                 poid == PokemonId.Exeggcute ||
                 poid == PokemonId.Staryu ||
-                poid == PokemonId.Bellsprout
-
+                poid == PokemonId.Bellsprout ||
+                poid == PokemonId.Spearow ||
+                poid == PokemonId.Ponyta ||
+                poid == PokemonId.Tentacool ||
+                poid == PokemonId.Golem ||
+                poid == PokemonId.Eevee ||
+                poid == PokemonId.Magikarp ||
+                poid == PokemonId.Growlithe ||
+                poid == PokemonId.Voltorb ||
+                poid == PokemonId.Abra ||
+                poid == PokemonId.Charmander ||
+                poid == PokemonId.Meowth ||
+                poid == PokemonId.Clefairy ||
+                poid == PokemonId.Psyduck ||
+                poid == PokemonId.Tauros ||
+                poid == PokemonId.Shellder ||
+                poid == PokemonId.Machop
                 )
-                return item.Iv >= 75;
+                return item.Iv >= 80;
+
 
             PokemonGrades poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
             if (poGrade == PokemonGrades.VeryCommon)
@@ -169,7 +185,7 @@ public sealed class CacheManager<T> where T : class
                 lock (key_)
                 {
                     if (!((data as EncounterInfo)?.GetDateTime() > DateTime.Now.AddSeconds(-5)) ||
-                        (data as EncounterInfo).GetDateTime() >= DateTime.Now.AddMinutes(25)) return;
+                        (data as EncounterInfo).GetDateTime() >= DateTime.Now.AddMinutes(10)) return;
 
                     var cacheItemPolicy = new CacheItemPolicy();
                     cacheItemPolicy.AbsoluteExpiration = DateConverter.JavaTimeStampToDateTime((data as EncounterInfo).Expiration);
