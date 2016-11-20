@@ -293,6 +293,7 @@
     <Content Include="assets\js\custom-maps.js" />
     <Content Include="assets\js\custom-page.js" />
     <Content Include="assets\js\custom-table.js" />
+    <Content Include="assets\msniper\js\countries.js" />
     <Content Include="assets\msniper\js\IdentifiedMSniper.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />

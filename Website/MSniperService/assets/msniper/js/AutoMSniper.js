@@ -8,7 +8,6 @@ $(document).ready(function () {
 
     $("#autosnipe")
         .click(function myfunction() {
-
             //autosnipeON = false;
             panelisvisible = true;
             //console.log("auto snipe opened");

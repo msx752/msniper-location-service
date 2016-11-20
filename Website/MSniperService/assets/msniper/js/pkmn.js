@@ -13,6 +13,7 @@ $(document).ready(function () {
 
     $(document).on('click', '#allPokemons', function () {
 
+       
 
     });
 
@@ -173,6 +174,16 @@ function InsertJsonToPage(received) {
 
     //console.log();
     if (addtoList) {
+        var latt = received.Latitude.toString().split('.')[0];
+        var lonn = received.Longitude.toString().split('.')[0];
+        var countrycd = latt + "-" + lonn;
+        var countryName = "";
+        if (countries[countrycd] === undefined) {
+            countryName = "UNKNOWN";
+        } else {
+            countryName = countries[countrycd].name;
+        }
+        //console.log(countryName);
         $('#datatable-column-filter')
       .DataTable()
       .row.add([
@@ -201,7 +212,7 @@ function InsertJsonToPage(received) {
           "%</div></div>",
           $('<span/>').addClass('label label-default').append(received.Move1).get(0).outerHTML,
           $('<span/>').addClass('label label-default').append(received.Move2).get(0).outerHTML,
-          $('<span/>').addClass('label label-default').append('UNDEFINED').get(0).outerHTML,
+          $('<span/>').addClass('label label-default').append(countryName).get(0).outerHTML,
           $('<span/>',
           {
               id: "tilltime",
