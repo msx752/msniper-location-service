@@ -85,17 +85,32 @@ public sealed class CacheManager<T> where T : class
         try
         {
             PokemonId poid = (PokemonId)Enum.Parse(typeof(PokemonId), item.PokemonName);
+
+            if (
+                poid == PokemonId.Pidgey ||
+                poid == PokemonId.Rattata ||
+                poid == PokemonId.Caterpie ||
+                poid == PokemonId.Weedle ||
+                poid == PokemonId.Zubat ||
+                poid == PokemonId.Poliwag ||
+                poid == PokemonId.Exeggcute ||
+                poid == PokemonId.Staryu ||
+                poid == PokemonId.Bellsprout
+
+                )
+                return item.Iv >= 75;
+
             PokemonGrades poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
             if (poGrade == PokemonGrades.VeryCommon)
                 return item.Iv >= 55;
             else if (poGrade == PokemonGrades.Common)
                 return item.Iv >= 45;
             else if (poGrade == PokemonGrades.Popular)
-                return item.Iv >= 15;
+                return item.Iv >= 20;
             else if (poGrade == PokemonGrades.Rare)
                 return item.Iv >= 15;
             else if (poGrade == PokemonGrades.Popular)
-                return item.Iv >= 0;
+                return item.Iv >= 5;
             else if (poGrade == PokemonGrades.Epic)
                 return item.Iv >= 0;
             else if (poGrade == PokemonGrades.Legendary)

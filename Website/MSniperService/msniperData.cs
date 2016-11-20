@@ -20,7 +20,8 @@ namespace MSniperService
                     "dragonite", "snorlax", "pikachu", "charmeleon",
                     "vaporeon", "lapras", "gyarados","dragonair", "charizard",
                     "blastoise", "magikarp", "dratini", "arcanine","aerodactyl",
-                    "onix","mrmime","electabuzz","zapdos","articuno","ditto"
+                    "onix","mrmime","electabuzz","zapdos","articuno","ditto","eevee",
+                "farfetchd","porygon"
 
             }
         };
