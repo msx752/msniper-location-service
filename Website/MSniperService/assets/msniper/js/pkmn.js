@@ -1,10 +1,8 @@
-﻿
-var identity;
+﻿var identity;
 var Rarelist = [];
 var ulfound = $('#filterlist');
 
 $(document).ready(function () {
-
     $(document).on('click', '[data-filter-item]', function () {
         var nameWrapper = $(this).data('name-wrapper') || '.text';
         var pokemonName = $(this).children(nameWrapper).text();
@@ -12,9 +10,6 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#allPokemons', function () {
-
-       
-
     });
 
     $(document).on('click', 'tbody#pokemon-content tr td a#link', function (e) {
@@ -30,7 +25,6 @@ $(document).ready(function () {
             });
             return false;
         }
-
     });
     $(document).on('click', 'tbody#pokemon-content tr td a#link2', function (e) {
         $(this.parentNode.parentNode).addClass("deleted");
@@ -38,8 +32,6 @@ $(document).ready(function () {
 
         signalr.server.rate($(this).attr("pName")).done(function (obj) {
         });
-
-
     });
 });
 
@@ -76,7 +68,6 @@ function findLi(name) {
     return ulfound.find("span.badge." + name);
 }
 
-
 function InsertToSideBar(name) {
     var lifound = findLi(name);
 
@@ -93,7 +84,6 @@ function checkImportantPokemon(name) {
         return false;
     }
     return true;
-
 }
 
 function UpdateTop6Pokemons(data) {
@@ -109,7 +99,6 @@ function UpdateTop6Pokemons(data) {
 }
 
 function createSideBarPokemon(ulfound, name) {
-
     if (checkImportantPokemon(name)) {
         var strVar = "<a data-filter-item data-name-wrapper=\".text\" class=\"list-group-item\"><span class=\"text\">" + name + "<\/span><span style=\"float: right;\" class=\"badge " + name + "\">-<\/span><\/a>";
 
@@ -218,7 +207,6 @@ function InsertJsonToPage(received) {
               id: "tilltime",
               pokemonName: received.PokemonName.toString().toLowerCase(),
               expiration: parseInt(received.Expiration)
-
           }).addClass('label label-danger').append("00:00").get(0).outerHTML,
 
           $('<a id="link" pname="' + received.PokemonName.toString().toLowerCase() + '" href="' + linkk1 + '" />', {}).addClass('btn btn-primary btn-xs').append("MSniper").get(0).outerHTML,

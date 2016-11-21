@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MSniperService.Statics
 {
@@ -16,14 +13,17 @@ namespace MSniperService.Statics
         }
 
         /// <summary>
-        /// Converts a given DateTime into a Unix timestamp
+        /// Converts a given DateTime into a Unix timestamp 
         /// </summary>
-        /// <param name="value">Any DateTime</param>
-        /// <returns>The given DateTime in Unix timestamp format</returns>
+        /// <param name="value">
+        /// Any DateTime 
+        /// </param>
+        /// <returns>
+        /// The given DateTime in Unix timestamp format 
+        /// </returns>
         public static long ToUnixTimestamp(this DateTime value)
         {
             return (long)Math.Truncate((value.ToUniversalTime().Subtract(new DateTime(1970, 1, 1))).TotalSeconds * 1000);
         }
-        
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Reflection;
-using System.Runtime.Caching;
-using Newtonsoft.Json;
-using MSniperService.Cache;
+﻿using MSniperService.Cache;
 using MSniperService.Models;
 using MSniperService.Statics;
+using System;
+using System.Collections.Generic;
+using System.Runtime.Caching;
 
 public sealed class CacheManager<T> where T : class
 {
@@ -15,12 +11,13 @@ public sealed class CacheManager<T> where T : class
     private static readonly object syncRoot = new Object();
     private readonly ObjectCache cache = null;
     private static CacheEntryRemovedCallback callback = null;
+
     private CacheManager()
     {
         cache = MemoryCache.Default;
         callback = new CacheEntryRemovedCallback(CachedItemRemovedCallback);
-
     }
+
     public static CacheManager<T> Instance
     {
         get
@@ -115,7 +112,6 @@ public sealed class CacheManager<T> where T : class
                 )
                 return item.Iv >= 80;
 
-
             PokemonGrades poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
             if (poGrade == PokemonGrades.VeryCommon)
                 return item.Iv >= 55;
@@ -184,8 +180,8 @@ public sealed class CacheManager<T> where T : class
 
                 lock (key_)
                 {
-                    if (!((data as EncounterInfo)?.GetDateTime() > DateTime.Now.AddSeconds(-5)) ||
-                        (data as EncounterInfo).GetDateTime() >= DateTime.Now.AddMinutes(10)) return;
+                    if (!((data as EncounterInfo)?.GetExpiration() > DateTime.Now.AddSeconds(-5)) ||
+                        (data as EncounterInfo).GetExpiration() >= DateTime.Now.AddMinutes(10)) return;
 
                     var cacheItemPolicy = new CacheItemPolicy();
                     cacheItemPolicy.AbsoluteExpiration = DateConverter.JavaTimeStampToDateTime((data as EncounterInfo).Expiration);
@@ -218,7 +214,6 @@ public sealed class CacheManager<T> where T : class
         }
         catch (Exception e)
         {
-
         }
     }
 

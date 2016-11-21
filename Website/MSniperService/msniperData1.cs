@@ -1,41 +1,24 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
+using MSniperService.Enums;
+using MSniperService.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Text.RegularExpressions;
-using System.Web;
-using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
-using MSniperService.Cache;
-using MSniperService.Enums;
-using MSniperService.Models;
 
 namespace MSniperService
 {
-    public class msniperData
+    public partial class msniperData
     {
-        public static readonly RareList DefaultRareList = new RareList()
-        {
-            PokemonNames = new List<string>(){
-                    "dragonite", "snorlax", "pikachu", "charmeleon",
-                    "vaporeon", "lapras", "gyarados","dragonair", "charizard",
-                    "blastoise", "magikarp", "dratini", "arcanine","aerodactyl",
-                    "onix","mrmime","electabuzz","zapdos","articuno","ditto","eevee",
-                "farfetchd","porygon"
-
-            }
-        };
-        public static readonly List<string> Feeders = new List<string>();
-        public static readonly List<string> Listeners = new List<string>();
-        public static readonly PokemonCounter RateList = new PokemonCounter();
-
         public static msniperData Instance => _instance.Value;
+
         private static readonly Lazy<msniperData> _instance = new Lazy<msniperData>(
             () => new msniperData(GlobalHost.ConnectionManager.GetHubContext<msniperHub>()));
 
-        private readonly object _loginstate = new object();
         private readonly object _rareList = new object();
-        private readonly object _rateList = new object();
 
         public IHubConnectionContext<dynamic> Clients { get; set; }
         public IGroupManager Groups { get; set; }
@@ -48,64 +31,51 @@ namespace MSniperService
 
         public bool Join(HubType groupName, string connectionId)
         {
-            lock (_loginstate)
+            switch (groupName)
             {
-                switch (groupName)
-                {
-                    case HubType.Feeder:
+                case HubType.Feeder:
+                    if (feeders.Get(connectionId) == null)
+                    {
                         Groups.Add(connectionId, HubType.Feeder.ToString());
-                        if (Feeders.IndexOf(connectionId) == -1)
-                        {
-                            Feeders.Add(connectionId);
-                            return true;
-                        }
-                        break;
-                    case HubType.Listener:
+                        feeders.Add(connectionId, new Connection(connectionId));
+                        return true;
+                    }
+                    break;
+
+                case HubType.Listener:
+                    if (listeners.Get(connectionId) == null)
+                    {
                         Groups.Add(connectionId, HubType.Listener.ToString());
-                        if (Listeners.IndexOf(connectionId) == -1)
-                        {
-                            Listeners.Add(connectionId);
-                            return true;
-                        }
-                        break;
-                }
-                return false;
+                        listeners.Add(connectionId, new Connection(connectionId));
+                        return true;
+                    }
+                    break;
             }
+            return false;
         }
 
         public void Leave(string connectionId)
         {
-            lock (_loginstate)
-            {
-                var index = Feeders.IndexOf(connectionId);
-                if (index != -1)
-                {
-                    Feeders.Remove(connectionId);
-                }
-                else
-                {
-                    index = Listeners.IndexOf(connectionId);
-                    if (index != -1)
-                    {
-                        Listeners.Remove(connectionId);
-                    }
-                }
-            }
+            if (feeders.Get(connectionId) == null)
+                feeders.Remove(connectionId);
+            else if (listeners.Get(connectionId) == null)
+                listeners.Remove(connectionId);
         }
 
         public void Rate(string pokemonName)
         {
-            lock (_rateList)
-            {
-                RateList.Increase(pokemonName);
-            }
+            var fnd = pokeinfos.Get(pokemonName);
+            if (fnd == null)
+                pokeinfos.Add(pokemonName, new PokeInfo(pokemonName), new TimeSpan(24, 0, 0));
+            else
+                fnd.Data.Count++;
         }
+
         public void identifiednecrobot(List<string> identities, string link)
         {
             for (var i = 0; i < identities.Count; i++)
             {
-                var index = Feeders.FindIndex(p => p == identities[i]);
-                if (index != -1)
+                if (feeders.Get(identities[i]) == null)
                 {
                     var mslnk = MSRGX(link);
                     Clients.Client(identities[i]).msvc(mslnk);
@@ -116,7 +86,7 @@ namespace MSniperService
             }
         }
 
-        public MSniperInfo2 MSRGX(string link)
+        private MSniperInfo2 MSRGX(string link)
         {
             var re0 = "(msniper://)"; //protocol
             var re1 = "((?:\\w+))";//pokemon name
@@ -134,15 +104,15 @@ namespace MSniperService
             var r = new Regex(re0 + re1 + re2 + re3 + re4 + re5 + re6 + re7 + re8 + re9 + re10 + re11, RegexOptions.IgnoreCase | RegexOptions.Singleline);
             var m = r.Match(link);
             MSniperInfo2 mslnk = new MSniperInfo2();
-            
+
             if (m.Success)
             {
                 mslnk.EncounterId = ulong.Parse(m.Groups[4].Value);
                 mslnk.SpawnPointId = m.Groups[6].Value;
                 mslnk.Latitude = double.Parse(m.Groups[8].Value, CultureInfo.InvariantCulture);
-                mslnk .Longitude= double.Parse(m.Groups[10].Value, CultureInfo.InvariantCulture);
-                mslnk .Iv= double.Parse(m.Groups[12].Value);
-                var name = (PokemonId) Enum.Parse(typeof(PokemonId), m.Groups[2].Value);
+                mslnk.Longitude = double.Parse(m.Groups[10].Value, CultureInfo.InvariantCulture);
+                mslnk.Iv = double.Parse(m.Groups[12].Value);
+                var name = (PokemonId)Enum.Parse(typeof(PokemonId), m.Groups[2].Value);
                 mslnk.PokemonId = (short)name;
                 return mslnk;
             }
@@ -151,14 +121,28 @@ namespace MSniperService
 
         public void RecvPokemons(List<EncounterInfo> data)
         {
-            if (data.Count > 0 /* && data.Count < 20 temp flood fix */ )
+            if (data.Count <= 0) return;
+            try
             {
-                Clients.Group(HubType.Listener.ToString())
-                     .NewPokemons(CacheManager<EncounterInfo>.Instance.NonContainsCache(data));
+                for (var i = 0; i < data.Count; i++)
+                {
+                    var elapsed = (int)(data[i].GetExpiration() - DateTime.Now).TotalMilliseconds;
+                    var snc = encounters.Add(data[i].UniqueKey(), data[i],
+                        new TimeSpan(0, 0, 0, 0, elapsed));
+                    if (snc) continue;
+                    data.RemoveAt(i);
+                    i--;
+                }
+                Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
+            }
+            catch (Exception)
+            {
+                // ignored
             }
         }
 
         #region rare pokemon list (sidebar) for admin
+
         public void DeleteRarePokemon(string pokemonName)
         {
             lock (_rareList)
@@ -182,6 +166,7 @@ namespace MSniperService
                 }
             }
         }
+
         public List<string> GetRareList()
         {
             lock (_rareList)
@@ -189,23 +174,22 @@ namespace MSniperService
                 return DefaultRareList.PokemonNames;
             }
         }
-        #endregion
+
+        #endregion rare pokemon list (sidebar) for admin
 
         public List<PokeInfo> GetRateList()
         {
-            lock (_rateList)
-            {
-                return RateList.PCounter;
-            }
+            return pokeinfos.GetAll();
         }
+
         #region login state
+
         public void Identity(string connectionId)
         {
             //feder joined
             if (Join(HubType.Feeder, connectionId))
             {
-                Clients.Client(connectionId)
-                    .sendIdentity(connectionId);
+                Clients.Client(connectionId).sendIdentity(connectionId);
             }
         }
 
@@ -216,20 +200,14 @@ namespace MSniperService
                 //visitor joined
                 if (Join(HubType.Listener, connectionId))
                 {
-                    Clients.Client(connectionId)
-                    .ServerInfo(Feeders.Count, Listeners.Count);
+                    Clients.Client(connectionId).ServerInfo(feeders.MemberCount, listeners.MemberCount);
                     //
-                    Clients.Client(connectionId)
-                        .RareList(GetRareList());
+                    Clients.Client(connectionId).RareList(GetRareList());
                     //
-                    var pokeInfos = RateList.PCounter.OrderByDescending(p => p.Count).Take(6).ToList();
+                    var pokeInfos = pokeinfos.GetAll().OrderByDescending(p => p.Count).Take(6).ToList();
                     Clients.Client(connectionId).rate(pokeInfos);
                     //
-                    Clients.Client(connectionId)
-                        .NewPokemons(CacheManager<EncounterInfo>
-                            .Instance.GetAll()
-                            .OrderBy(p => p.Iv)
-                            .ToList());
+                    Clients.Client(connectionId).NewPokemons(encounters.GetAll());
                     return "connection established - " + connectionId;
                 }
             }
@@ -239,7 +217,7 @@ namespace MSniperService
             }
             return null;
         }
-        #endregion
 
+        #endregion login state
     }
 }

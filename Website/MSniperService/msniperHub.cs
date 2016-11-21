@@ -1,40 +1,37 @@
-﻿using System;
+﻿using Microsoft.AspNet.SignalR;
+using MSniperService.Enums;
+using MSniperService.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
-using MSniperService.Enums;
-using MSniperService.Models;
 
 namespace MSniperService
 {
     public class msniperHub : Hub
     {
-        private static Timer PokemonTimer { get; }
-        private static Timer PokemonTop5Timer { get; }
-
         static msniperHub()
         {
-            PokemonTimer = new Timer(pokemonTick, null,
-                (int)new TimeSpan(0, 0, 9).TotalMilliseconds,
-                (int)new TimeSpan(0, 0, 9).TotalMilliseconds);
+            new Timer(PokemonTick, null,
+                (int)new TimeSpan(0, 0, 10).TotalMilliseconds,
+                (int)new TimeSpan(0, 0, 10).TotalMilliseconds);
 
-            PokemonTop5Timer = new Timer(pokemonTop5Tick, null,
-                (int)new TimeSpan(0, 1, 0).TotalMilliseconds,
-                (int)new TimeSpan(0, 1, 0).TotalMilliseconds);
+            new Timer(PokemonTop5Tick, null,
+                (int)new TimeSpan(0, 0, 30).TotalMilliseconds,
+                (int)new TimeSpan(0, 0, 30).TotalMilliseconds);
         }
 
-        private static void pokemonTick(object state)
+        private static void PokemonTick(object state)
         {
             msniperData.Instance.Clients.Group(HubType.Feeder.ToString())
                 .sendPokemon();
             msniperData.Instance.Clients.Group(HubType.Listener.ToString())
-                .ServerInfo(msniperData.Feeders.Count, msniperData.Listeners.Count);
+                .ServerInfo(msniperData.feeders.MemberCount, msniperData.listeners.MemberCount);
             // server information feeder/hunter
         }
 
-        private static void pokemonTop5Tick(object state)
+        private static void PokemonTop5Tick(object state)
         {
             msniperData.Instance.Clients.Group(HubType.Listener.ToString())
                 .rate(msniperData.Instance.GetRateList()
@@ -46,7 +43,6 @@ namespace MSniperService
             msniperData.Instance.Leave(this.Context.ConnectionId);
             return base.OnDisconnected(stopCalled);
         }
-
 
         public void Rate(string pokemonName)
         {

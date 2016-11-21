@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MemoryManaging">
+      <HintPath>..\..\..\MemoryManaging\MemoryManaging\bin\Debug\MemoryManaging.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.1\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
@@ -154,11 +157,14 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Cache\RareList.cs" />
+    <Compile Include="Memory\Connection.cs" />
+    <Compile Include="Memory\PokeInfo.cs" />
     <Compile Include="Models\MSniperLink.cs" />
+    <Compile Include="msniperData2.cs" />
     <Compile Include="msniperHub.cs" />
     <Compile Include="Enums\HubType.cs" />
     <Compile Include="Cache\PokemonCounter.cs" />
-    <Compile Include="msniperData.cs" />
+    <Compile Include="msniperData1.cs" />
     <Compile Include="Models\ErrorHubPipelineModule.cs" />
     <Compile Include="Models\LoggingPipelineModule.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -167,7 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\EncounterIdConverter.cs" />
-    <Compile Include="Cache\EncounterInfo.cs" />
+    <Compile Include="Memory\EncounterInfo.cs" />
     <Compile Include="Models\PokemonGrades.cs" />
     <Compile Include="Models\PokemonId.cs" />
     <Compile Include="Models\PokemonMove.cs" />
