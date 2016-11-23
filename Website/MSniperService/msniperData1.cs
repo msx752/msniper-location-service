@@ -176,7 +176,7 @@ namespace MSniperService
                 //visitor joined
                 if (Join(HubType.Listener, connectionId))
                 {
-                    Clients.Client(connectionId).ServerInfo(Connections.MemberCount, Connections.MemberCount);
+                    Clients.Client(connectionId).ServerInfo(Connections.GetAll.Count(p => p.Type == HubType.Feeder), Connections.GetAll.Count(p => p.Type == HubType.Listener));
                     Clients.Client(connectionId).RareList(GetRareList());
                     var pokeInfos = Pokeinfos.GetAll.OrderByDescending(p => p.Count).Take(6).ToList();
                     Clients.Client(connectionId).rate(pokeInfos);

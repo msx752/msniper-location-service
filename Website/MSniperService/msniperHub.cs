@@ -41,7 +41,7 @@ namespace MSniperService
             msniperData.Instance.Clients.Group(HubType.Feeder.ToString())
                 .sendPokemon();
             msniperData.Instance.Clients.Group(HubType.Listener.ToString())
-                .ServerInfo(msniperData.Connections.MemberCount, msniperData.Connections.MemberCount);
+                .ServerInfo(msniperData.Connections.GetAll.Count(p => p.Type == HubType.Feeder), msniperData.Connections.GetAll.Count(p => p.Type == HubType.Listener));
             // server information feeder/hunter
         }
 
