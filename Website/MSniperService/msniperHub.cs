@@ -20,6 +20,17 @@ namespace MSniperService
             new Timer(PokemonTop5Tick, null,
                 (int)new TimeSpan(0, 0, 30).TotalMilliseconds,
                 (int)new TimeSpan(0, 0, 30).TotalMilliseconds);
+
+            //var rarePokemons = new List<string> {
+            //    "dragonite", "snorlax", "pikachu", "charmeleon",
+            //    "vaporeon", "lapras", "gyarados", "dragonair",
+            //    "charizard", "blastoise", "magikarp", "dratini",
+            //    "arcanine", "aerodactyl", "onix", "mrmime",
+            //    "electabuzz", "zapdos", "articuno", "ditto",
+            //    "eevee","farfetchd", "porygon"
+            //};
+
+            //rarePokemons.ForEach(p => msniperData.rarelist.Add(new RarePokemon(p)));
         }
 
         private static void PokemonTick(object state)
@@ -27,7 +38,7 @@ namespace MSniperService
             msniperData.Instance.Clients.Group(HubType.Feeder.ToString())
                 .sendPokemon();
             msniperData.Instance.Clients.Group(HubType.Listener.ToString())
-                .ServerInfo(msniperData.feeders.MemberCount, msniperData.listeners.MemberCount);
+                .ServerInfo(msniperData.Connections.MemberCount, msniperData.Connections.MemberCount);
             // server information feeder/hunter
         }
 

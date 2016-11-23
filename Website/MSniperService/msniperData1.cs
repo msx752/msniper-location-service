@@ -2,6 +2,7 @@
 using Microsoft.AspNet.SignalR.Hubs;
 using MSniperService.Enums;
 using MSniperService.Models;
+using MSniperService.Statics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,8 +19,6 @@ namespace MSniperService
         private static readonly Lazy<msniperData> _instance = new Lazy<msniperData>(
             () => new msniperData(GlobalHost.ConnectionManager.GetHubContext<msniperHub>()));
 
-        private readonly object _rareList = new object();
-
         public IHubConnectionContext<dynamic> Clients { get; set; }
         public IGroupManager Groups { get; set; }
 
@@ -31,42 +30,31 @@ namespace MSniperService
 
         public bool Join(HubType groupName, string connectionId)
         {
-            switch (groupName)
+            if (Connections[connectionId] == null)
             {
-                case HubType.Feeder:
-                    if (feeders.Get(connectionId) == null)
-                    {
-                        Groups.Add(connectionId, HubType.Feeder.ToString());
-                        feeders.Add(connectionId, new Connection(connectionId));
-                        return true;
-                    }
-                    break;
-
-                case HubType.Listener:
-                    if (listeners.Get(connectionId) == null)
-                    {
-                        Groups.Add(connectionId, HubType.Listener.ToString());
-                        listeners.Add(connectionId, new Connection(connectionId));
-                        return true;
-                    }
-                    break;
+                Groups.Add(connectionId, groupName.ToString());
+                Connections.Add(new Connection(connectionId, groupName));
+                return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
 
         public void Leave(string connectionId)
         {
-            if (feeders.Get(connectionId) == null)
-                feeders.Remove(connectionId);
-            else if (listeners.Get(connectionId) == null)
-                listeners.Remove(connectionId);
+            if (Connections[connectionId] != null)
+            {
+                Connections.Remove(connectionId);
+            }
         }
 
         public void Rate(string pokemonName)
         {
-            var fnd = pokeinfos.Get(pokemonName);
+            var fnd = Pokeinfos[pokemonName];
             if (fnd == null)
-                pokeinfos.Add(pokemonName, new PokeInfo(pokemonName), new TimeSpan(24, 0, 0));
+                Pokeinfos.Add(new PokeInfo(pokemonName), new TimeSpan(24, 0, 0));
             else
                 fnd.Data.Count++;
         }
@@ -75,11 +63,14 @@ namespace MSniperService
         {
             for (var i = 0; i < identities.Count; i++)
             {
-                if (feeders.Get(identities[i]) == null)
+                if (Connections[identities[i]] != null)
                 {
-                    var mslnk = MSRGX(link);
-                    Clients.Client(identities[i]).msvc(mslnk);
-                    continue;
+                    if (Connections[identities[i]].Data.Type == HubType.Feeder)
+                    {
+                        var mslnk = MSRGX(link);
+                        Clients.Client(identities[i]).msvc(mslnk);
+                        continue;
+                    }
                 }
                 identities.RemoveAt(i);
                 i--;
@@ -121,19 +112,23 @@ namespace MSniperService
 
         public void RecvPokemons(List<EncounterInfo> data)
         {
+            data = data.FindNonContains(Encounters.GetAll);
             if (data.Count <= 0) return;
             try
             {
                 for (var i = 0; i < data.Count; i++)
                 {
                     var elapsed = (int)(data[i].GetExpiration() - DateTime.Now).TotalMilliseconds;
-                    var snc = encounters.Add(data[i].UniqueKey(), data[i],
-                        new TimeSpan(0, 0, 0, 0, elapsed));
-                    if (snc) continue;
+                    if (elapsed > 0)
+                    {
+                        var snc = Encounters.Add(data[i], new TimeSpan(0, 0, 0, 0, elapsed), data[i].UniqueKey());
+                        if (snc) continue;
+                    }
                     data.RemoveAt(i);
                     i--;
                 }
-                Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
+                if (data.Count > 0)
+                    Clients.Group(HubType.Listener.ToString()).NewPokemons(data);
             }
             catch (Exception)
             {
@@ -145,41 +140,24 @@ namespace MSniperService
 
         public void DeleteRarePokemon(string pokemonName)
         {
-            lock (_rareList)
-            {
-                int index = DefaultRareList.PokemonNames.IndexOf(pokemonName.ToLower());
-                if (index != -1)
-                {
-                    DefaultRareList.PokemonNames.RemoveAt(index);
-                }
-            }
+            rarelist.Remove(pokemonName);
         }
 
         public void AddRarePokemon(string pokemonName)
         {
-            lock (_rareList)
-            {
-                int index = DefaultRareList.PokemonNames.IndexOf(pokemonName.ToLower());
-                if (index == -1)
-                {
-                    DefaultRareList.PokemonNames.Add(pokemonName);
-                }
-            }
+            rarelist.Add(new RarePokemon(pokemonName));
         }
 
         public List<string> GetRareList()
         {
-            lock (_rareList)
-            {
-                return DefaultRareList.PokemonNames;
-            }
+            return rarelist.GetAll.Select(p => p.pokemonName).ToList();
         }
 
         #endregion rare pokemon list (sidebar) for admin
 
         public List<PokeInfo> GetRateList()
         {
-            return pokeinfos.GetAll();
+            return Pokeinfos.GetAll;
         }
 
         #region login state
@@ -188,9 +166,7 @@ namespace MSniperService
         {
             //feder joined
             if (Join(HubType.Feeder, connectionId))
-            {
                 Clients.Client(connectionId).sendIdentity(connectionId);
-            }
         }
 
         public string RecvIdentity(string connectionId)
@@ -200,15 +176,12 @@ namespace MSniperService
                 //visitor joined
                 if (Join(HubType.Listener, connectionId))
                 {
-                    Clients.Client(connectionId).ServerInfo(feeders.MemberCount, listeners.MemberCount);
-                    //
+                    Clients.Client(connectionId).ServerInfo(Connections.MemberCount, Connections.MemberCount);
                     Clients.Client(connectionId).RareList(GetRareList());
-                    //
-                    var pokeInfos = pokeinfos.GetAll().OrderByDescending(p => p.Count).Take(6).ToList();
+                    var pokeInfos = Pokeinfos.GetAll.OrderByDescending(p => p.Count).Take(6).ToList();
                     Clients.Client(connectionId).rate(pokeInfos);
-                    //
-                    Clients.Client(connectionId).NewPokemons(encounters.GetAll());
-                    return "connection established - " + connectionId;
+                    Clients.Client(connectionId).NewPokemons(Encounters.GetAll);
+                    return $"connection established #{connectionId}";
                 }
             }
             catch (Exception e)

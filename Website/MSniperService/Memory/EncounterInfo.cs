@@ -28,6 +28,7 @@ namespace MSniperService.Models
 
         public void Dispose()
         {
+            PrimaryKey = null;
             EncounterId = null;
             Iv = 0;
             Latitude = null;
@@ -38,5 +39,12 @@ namespace MSniperService.Models
             Move2 = null;
             GC.SuppressFinalize(this);
         }
+
+        ~EncounterInfo()
+        {
+            Dispose();
+        }
+
+        public string PrimaryKey { get; set; }
     }
 }

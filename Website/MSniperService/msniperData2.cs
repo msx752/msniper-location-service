@@ -1,5 +1,4 @@
 ﻿using MemoryManaging;
-using MSniperService.Cache;
 using MSniperService.Models;
 using System.Collections.Generic;
 
@@ -7,35 +6,20 @@ namespace MSniperService
 {
     public partial class msniperData
     {
-        static msniperData()
-        {
-        }
+        public static readonly MemoryStore<RarePokemon> rarelist = new MemoryStore<RarePokemon>();
 
-        public static readonly RareList DefaultRareList = new RareList()
-        {
-            PokemonNames = new List<string>(){
-                    "dragonite", "snorlax", "pikachu", "charmeleon",
-                    "vaporeon", "lapras", "gyarados","dragonair", "charizard",
-                    "blastoise", "magikarp", "dratini", "arcanine","aerodactyl",
-                    "onix","mrmime","electabuzz","zapdos","articuno","ditto","eevee",
-                "farfetchd","porygon"
-            }
-        };
+        public static readonly MemoryStore<EncounterInfo> Encounters = new MemoryStore<EncounterInfo>();
 
-        private static MemoryStore<EncounterInfo> encounters = new MemoryStore<EncounterInfo>(50000);
+        public static readonly MemoryStore<PokeInfo> Pokeinfos = new MemoryStore<PokeInfo>(PokeinfosEvent, 152);
 
-        private static MemoryStore<PokeInfo> pokeinfos = new MemoryStore<PokeInfo>(152, PokeinfosEvent);
-
-        internal static void PokeinfosEvent(MemoryStore<PokeInfo>.MemoryStoreEventArgs e)
+        protected static void PokeinfosEvent(MemoryStore<PokeInfo>.MemoryStoreEventArgs e)
         {
             e.Sender.Count = 1;
         }
 
-        public static MemoryStore<Connection> feeders = new MemoryStore<Connection>(50000, ConnectionsEvent);
+        public static readonly MemoryStore<Connection> Connections = new MemoryStore<Connection>(ConnectionsEvent);
 
-        public static MemoryStore<Connection> listeners = new MemoryStore<Connection>(10000, ConnectionsEvent);
-
-        internal static void ConnectionsEvent(MemoryStore<Connection>.MemoryStoreEventArgs e)
+        protected static void ConnectionsEvent(MemoryStore<Connection>.MemoryStoreEventArgs e)
         {
         }
     }
