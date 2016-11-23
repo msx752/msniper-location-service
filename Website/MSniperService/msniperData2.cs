@@ -6,7 +6,7 @@ namespace MSniperService
 {
     public partial class msniperData
     {
-        public static readonly MemoryStore<RarePokemon> rarelist = new MemoryStore<RarePokemon>();
+        public static readonly MemoryStore<RarePokemon> rarePokemons = new MemoryStore<RarePokemon>();
 
         public static readonly MemoryStore<EncounterInfo> Encounters = new MemoryStore<EncounterInfo>();
 

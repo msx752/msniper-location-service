@@ -140,17 +140,17 @@ namespace MSniperService
 
         public void DeleteRarePokemon(string pokemonName)
         {
-            rarelist.Remove(pokemonName);
+            rarePokemons.Remove(pokemonName);
         }
 
         public void AddRarePokemon(string pokemonName)
         {
-            rarelist.Add(new RarePokemon(pokemonName));
+            rarePokemons.Add(new RarePokemon(pokemonName));
         }
 
         public List<string> GetRareList()
         {
-            return rarelist.GetAll.Select(p => p.pokemonName).ToList();
+            return rarePokemons.GetAll.Select(p => p.pokemonName).ToList();
         }
 
         #endregion rare pokemon list (sidebar) for admin

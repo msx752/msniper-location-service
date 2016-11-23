@@ -11,26 +11,29 @@ namespace MSniperService
 {
     public class msniperHub : Hub
     {
+        private static Timer PokemonTimer { get; }
+        private static Timer PokemonTop5Timer { get; }
+
         static msniperHub()
         {
-            new Timer(PokemonTick, null,
-                (int)new TimeSpan(0, 0, 10).TotalMilliseconds,
-                (int)new TimeSpan(0, 0, 10).TotalMilliseconds);
+            PokemonTimer = new Timer(PokemonTick, null,
+                 (int)new TimeSpan(0, 0, 10).TotalMilliseconds,
+                 (int)new TimeSpan(0, 0, 10).TotalMilliseconds);
 
-            new Timer(PokemonTop5Tick, null,
-                (int)new TimeSpan(0, 0, 30).TotalMilliseconds,
-                (int)new TimeSpan(0, 0, 30).TotalMilliseconds);
+            PokemonTop5Timer = new Timer(PokemonTop5Tick, null,
+                (int)new TimeSpan(0, 1, 0).TotalMilliseconds,
+                (int)new TimeSpan(0, 1, 0).TotalMilliseconds);
 
-            //var rarePokemons = new List<string> {
-            //    "dragonite", "snorlax", "pikachu", "charmeleon",
-            //    "vaporeon", "lapras", "gyarados", "dragonair",
-            //    "charizard", "blastoise", "magikarp", "dratini",
-            //    "arcanine", "aerodactyl", "onix", "mrmime",
-            //    "electabuzz", "zapdos", "articuno", "ditto",
-            //    "eevee","farfetchd", "porygon"
-            //};
+            var rarePokemons = new List<string> {
+                "dragonite", "snorlax", "pikachu", "charmeleon",
+                "vaporeon", "lapras", "gyarados", "dragonair",
+                "charizard", "blastoise", "magikarp", "dratini",
+                "arcanine", "aerodactyl", "onix", "mrmime",
+                "electabuzz", "zapdos", "articuno", "ditto",
+                "eevee","farfetchd", "porygon"
+            };
 
-            //rarePokemons.ForEach(p => msniperData.rarelist.Add(new RarePokemon(p)));
+            rarePokemons.ForEach(p => msniperData.rarePokemons.Add(new RarePokemon(p)));
         }
 
         private static void PokemonTick(object state)
