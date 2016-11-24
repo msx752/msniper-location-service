@@ -1,4 +1,5 @@
 ﻿using MemoryManaging;
+using MemoryManaging.Events;
 using MSniperService.Models;
 using System.Collections.Generic;
 
@@ -12,15 +13,11 @@ namespace MSniperService
 
         public static readonly MemoryStore<PokeInfo> Pokeinfos = new MemoryStore<PokeInfo>(PokeinfosEvent, 152);
 
-        protected static void PokeinfosEvent(MemoryStore<PokeInfo>.MemoryStoreEventArgs e)
+        protected static void PokeinfosEvent(MemoryStoreEventArgs<PokeInfo> e)
         {
-            e.Sender.Count = 1;
+            e.Store.Data.Count = 0;
         }
 
-        public static readonly MemoryStore<Connection> Connections = new MemoryStore<Connection>(ConnectionsEvent);
-
-        protected static void ConnectionsEvent(MemoryStore<Connection>.MemoryStoreEventArgs e)
-        {
-        }
+        public static readonly MemoryStore<Connection> Connections = new MemoryStore<Connection>(true);
     }
 }

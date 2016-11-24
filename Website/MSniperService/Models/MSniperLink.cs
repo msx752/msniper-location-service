@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MSniperService.Models
+﻿namespace MSniperService.Models
 {
     public class MSniperInfo2
     {
@@ -14,5 +9,4 @@ namespace MSniperService.Models
         public double Longitude { get; set; }
         public double Iv { get; set; }
     }
-
 }

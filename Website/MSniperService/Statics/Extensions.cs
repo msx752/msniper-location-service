@@ -3,7 +3,6 @@ using MSniperService.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace MSniperService.Statics
 {
@@ -49,22 +48,22 @@ namespace MSniperService.Statics
                     poid == PokemonId.Shellder ||
                     poid == PokemonId.Machop
                     )
-                    return item.Iv >= 80;
+                    return item.Iv >= 85;
 
                 var poGrade = PokemonGradeHelper.GetPokemonGrade(poid);
                 switch (poGrade)
                 {
                     case PokemonGrades.VeryCommon:
-                        return item.Iv >= 55;
+                        return item.Iv >= 65;
 
                     case PokemonGrades.Common:
                         return item.Iv >= 45;
 
                     case PokemonGrades.Popular:
-                        return item.Iv >= 20;
+                        return item.Iv >= 30;
 
                     case PokemonGrades.Rare:
-                        return item.Iv >= 15;
+                        return item.Iv >= 25;
 
                     default:
                         switch (poGrade)

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.SignalR.Hubs;
-using Microsoft.AspNet.SignalR.Infrastructure;
+﻿using Microsoft.AspNet.SignalR.Hubs;
 
 namespace MSniperService.Models
 {

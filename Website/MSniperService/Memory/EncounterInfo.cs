@@ -1,4 +1,4 @@
-﻿using MemoryManaging;
+﻿using MemoryManaging.Interfaces;
 using MSniperService.Statics;
 using System;
 

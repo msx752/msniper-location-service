@@ -1,4 +1,4 @@
-﻿using MemoryManaging;
+﻿using MemoryManaging.Interfaces;
 using System;
 
 namespace MSniperService.Models

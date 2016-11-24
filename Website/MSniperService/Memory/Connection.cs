@@ -1,4 +1,4 @@
-﻿using MemoryManaging;
+﻿using MemoryManaging.Interfaces;
 using MSniperService.Enums;
 using System;
 using System.Collections.Generic;
