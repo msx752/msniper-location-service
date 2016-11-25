@@ -18,6 +18,9 @@ namespace MSniperService
             e.Store.Data.Count = 0;
         }
 
-        public static readonly MemoryStore<Connection> Connections = new MemoryStore<Connection>(true);
+        public static readonly List<string> Feeders = new List<string>();
+        public static readonly List<string> Listeners = new List<string>();
+
+        private static readonly object Loginstate = new object();
     }
 }

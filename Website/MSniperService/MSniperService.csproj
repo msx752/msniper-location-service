@@ -157,7 +157,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Memory\Connection.cs" />
     <Compile Include="Memory\PokeInfo.cs" />
     <Compile Include="Models\MSniperLink.cs" />
     <Compile Include="Memory\RareList.cs" />

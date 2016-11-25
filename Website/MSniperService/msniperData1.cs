@@ -30,23 +30,60 @@ namespace MSniperService
 
         public bool Join(HubType groupName, string connectionId)
         {
-            if (Connections[connectionId] == null)
+            lock (Loginstate)
             {
-                Groups.Add(connectionId, groupName.ToString());
-                Connections.Add(new Connection(connectionId, groupName));
-                return true;
-            }
-            else
-            {
+                switch (groupName)
+                {
+                    case HubType.Feeder:
+                        Groups.Add(connectionId, HubType.Feeder.ToString());
+                        if (Feeders.IndexOf(connectionId) == -1)
+                        {
+                            Feeders.Add(connectionId);
+                            return true;
+                        }
+                        break;
+
+                    case HubType.Listener:
+                        Groups.Add(connectionId, HubType.Listener.ToString());
+                        if (Listeners.IndexOf(connectionId) == -1)
+                        {
+                            Listeners.Add(connectionId);
+                            return true;
+                        }
+                        break;
+                }
                 return false;
             }
+
+            //if (Connections[connectionId] == null)
+            //{
+            //    Groups.Add(connectionId, groupName.ToString());
+            //    Connections.Add(new Connection(connectionId, groupName), new TimeSpan(20, 0, 0));
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
         public void Leave(string connectionId)
         {
-            if (Connections[connectionId] != null)
+            lock (Loginstate)
             {
-                Connections.Remove(connectionId);
+                var index = Feeders.IndexOf(connectionId);
+                if (index != -1)
+                {
+                    Feeders.Remove(connectionId);
+                }
+                else
+                {
+                    index = Listeners.IndexOf(connectionId);
+                    if (index != -1)
+                    {
+                        Listeners.Remove(connectionId);
+                    }
+                }
             }
         }
 
@@ -63,14 +100,14 @@ namespace MSniperService
         {
             for (var i = 0; i < identities.Count; i++)
             {
-                if (Connections[identities[i]] != null)
+                var index = Feeders.FindIndex(p => p == identities[i]);
+                if (index != -1)
                 {
-                    if (Connections[identities[i]].Data.Type == HubType.Feeder)
-                    {
-                        var mslnk = MSRGX(link);
-                        Clients.Client(identities[i]).msvc(mslnk);
-                        continue;
-                    }
+                    var mslnk = MSRGX(link);
+                    if (mslnk == null)
+                        break;
+                    Clients.Client(identities[i]).msvc(mslnk);
+                    continue;
                 }
                 identities.RemoveAt(i);
                 i--;
@@ -166,7 +203,10 @@ namespace MSniperService
         {
             //feder joined
             if (Join(HubType.Feeder, connectionId))
-                Clients.Client(connectionId).sendIdentity(connectionId);
+            {
+                Clients.Client(connectionId)
+                    .sendIdentity(connectionId);
+            }
         }
 
         public string RecvIdentity(string connectionId)
@@ -176,7 +216,7 @@ namespace MSniperService
                 //visitor joined
                 if (Join(HubType.Listener, connectionId))
                 {
-                    Clients.Client(connectionId).ServerInfo(Connections.GetAll.Count(p => p.Type == HubType.Feeder), Connections.GetAll.Count(p => p.Type == HubType.Listener));
+                    Clients.Client(connectionId).ServerInfo(Feeders.Count, Listeners.Count);
                     Clients.Client(connectionId).RareList(GetRareList());
                     var pokeInfos = Pokeinfos.GetAll.OrderByDescending(p => p.Count).Take(6).ToList();
                     Clients.Client(connectionId).rate(pokeInfos);
