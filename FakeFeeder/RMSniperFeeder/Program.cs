@@ -18,17 +18,17 @@ namespace RMSniperFeeder
         {
             var PkmnLocations = new List<EncounterInfo>();
 
-            int c = 1;
+            int c = 200;
             for (int i = 1; i < c + 1; i++)
             {
                 PkmnLocations.Add(new EncounterInfo()
                 {
                     EncounterId = (2157859740816806781 + unique).ToString(),
-                    Expiration = DateTime.Now.ToUnixTimestamp() + (int)new TimeSpan(0, 0, rn.Next(3110, 11190)).TotalMilliseconds,
+                    Expiration = DateTime.Now.ToUnixTimestamp() + (int)new TimeSpan(0, 0, rn.Next(50000, 99999)).TotalMilliseconds,
                     PokemonName = ((PokemonId)rn.Next(1, 152)).ToString(),
                     Iv = rn.Next(0, 101),
-                    Latitude = (-33.8646353402715 + rn.Next(1, 99999)).ToString("G17", CultureInfo.InvariantCulture),
-                    Longitude = (151.20600957337419 + rn.Next(1, 99999)).ToString("G17", CultureInfo.InvariantCulture),
+                    Latitude = (-33.8646353402715 + rn.Next(1, 999999)).ToString("G17", CultureInfo.InvariantCulture),
+                    Longitude = (151.20600957337419 + rn.Next(1, 999999)).ToString("G17", CultureInfo.InvariantCulture),
                     Move1 = ((PokemonMove)rn.Next(1, 241)).ToString(),
                     Move2 = ((PokemonMove)rn.Next(1, 241)).ToString(),
                     SpawnPointId = "6b12ae46d31"
@@ -42,7 +42,7 @@ namespace RMSniperFeeder
         {
             try
             {
-                for (int i = 0; i < 256; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     CloneConnection clone = new CloneConnection(i + 1);
                     clone.Run();
